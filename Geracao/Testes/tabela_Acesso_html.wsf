@@ -1,0 +1,25 @@
+<package>
+    <job id="geraHTMLTests">
+        <?job error="true" debug="true" ?>
+        <script language="JScript" src="..\\bin\\printf.js" />
+        <script language="JScript" src="..\\bin\\arquivos.js" />
+        <script language="JScript" src="..\\bin\\template.js" />
+        <script language="JScript">
+var Tabela = {
+  Nome: "Acesso",
+  Campos: [
+    {Nome: "IdAcesso", Dominio: "Identificador", Descricao: "Chave primária, código do recurso a ser acessado"},
+    {Nome: "Tipo", Dominio: "Identificador", Invisivel: true, Descricao: "Tipo de recurso, 0: Grupo, 1:  Janela, 2: Recurso"},
+    {Nome: "Padrao", Dominio: "Identificador", Invisivel: true, Descricao: "Qual é o tipo de acesso padrão, 0: Completo, 1: Bloqueio, 2: BloqueioLibera, 3: Desabilitado, 4: Invisivel"},
+    {Nome: "Permitidos", Dominio: "Identificador", Invisivel: true, Descricao: "Quais os tipos permitidos (somar), 1: Completo, 2: Bloqueio, 4: BloqueioLibera, 8: Desabilitado, 16: Invisivel"},
+    {Nome: "Descricao", Tipo: "varchar", Tamanho: 255, Descricao: "Texto que diz o que é o acesso"},
+    {Nome: "IdPai", Dominio: "Identificador", Nullable: true, Descricao: "IdAcesso do pai deste acesso (hierarquia), FK Acesso.IdAcesso"}
+  ]
+}
+        </script>
+        <script language="JScript" src="..\\Debug\\tabela_Acesso_html.js" />
+        <script language="JScript">
+gravaArquivo("..\\Debug\\tabela_Acesso.html", saida);
+        </script>
+    </job>
+</package>

@@ -1,0 +1,1779 @@
+{
+  ***************************************************
+  * Este código é gerado automaticamente, não edite *
+  ***************************************************
+
+  Template: ActiveRecord.pas_template
+  Descrição: Cria classes e interfaces para acessar a tabela -->Tabela.Nome<--
+}==>
+function determinaTipoPascal () {
+  for(var i = 0; i < Tabela.Campos.length; i++) {
+    if(Tabela.Campos[i].Nullable) {
+      switch (Tabela.Campos[i].Tipo) {
+        case "datetime":
+          Tabela.Campos[i].TipoPascal = "TNullableDateTime";
+          Tabela.Campos[i].TipoADO = "adDBTimeStamp";
+          Tabela.Campos[i].Acesso2FieldBDE = "NullableDateTime({0}.AsDateTime, {0}.IsNull)";
+          Tabela.Campos[i].AcessoFieldADO = "VariantToNullableDateTime(ARecordSet.Fields[Campo_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + " + AOffset].Value)";
+          Tabela.Campos[i].AtribueFieldBDE = "SetFieldNullable({0}, {1})";
+          Tabela.Campos[i].AtribueParametroADO = "{0}.Value := TActiveRecord.ToVariant({1})";
+          if (!Tabela.Campos[i].Padrao) 
+            Tabela.Campos[i].Padrao = "NullDateTime";
+          Tabela.Campos[i].GetAsString = "ToString({0})";
+          Tabela.Campos[i].GetValue = "ToVariant({0})";
+          Tabela.Campos[i].SetAsString = "Set{0}(StringToNullableDateTime(Value))";
+          Tabela.Campos[i].SetValue = "Set{0}(VariantToNullableDateTime(Value))";
+          Tabela.Campos[i].FieldType = "arftDateTime";
+          Tabela.Campos[i].QuerySetParameter = "SetNextParameter";
+          if (!Tabela.Campos[i].ColumnCharWidth) 
+            Tabela.Campos[i].ColumnCharWidth = "ColumnCharWidthForDateTime";
+          break;
+        case "float":
+          if(Tabela.Campos[i].Dominio == "Dinheiro") {
+            Tabela.Campos[i].TipoPascal = "TNullableCurrency";
+            Tabela.Campos[i].TipoADO = "adCurrency";
+            Tabela.Campos[i].Acesso2FieldBDE = "NullableCurrency({0}.AsCurrency, {0}.IsNull)";
+            Tabela.Campos[i].AcessoFieldADO = "VariantToNullableCurrency(ARecordSet.Fields[Campo_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + " + AOffset].Value)";
+            Tabela.Campos[i].AtribueFieldBDE = "SetFieldNullable({0}, {1})";
+            Tabela.Campos[i].AtribueParametroADO = "{0}.Value := TActiveRecord.ToVariant({1})";
+            if (!Tabela.Campos[i].Padrao) 
+              Tabela.Campos[i].Padrao = "NullCurrency";
+            Tabela.Campos[i].GetAsString = "ToString({0})";
+            Tabela.Campos[i].GetValue = "ToVariant({0})";
+            Tabela.Campos[i].SetAsString = "Set{0}(StringToNullableCurrency(Value))";
+            Tabela.Campos[i].SetValue = "Set{0}(VariantToNullableCurrency(Value))";
+            Tabela.Campos[i].DisplayText = "NullOrString({0}.Null, FormatFloat(',0.00', {0}.Value))";
+            Tabela.Campos[i].FieldType = "arftMoney";
+            Tabela.Campos[i].QuerySetParameter = "SetNextParameter";
+            if (!Tabela.Campos[i].ColumnCharWidth) 
+              Tabela.Campos[i].ColumnCharWidth = "ColumnCharWidthForMoney";
+          } else {
+            Tabela.Campos[i].TipoPascal = "TNullableExtended";
+            Tabela.Campos[i].TipoADO = "adDouble";
+            Tabela.Campos[i].Acesso2FieldBDE = "NullableExtended({0}.AsFloat, {0}.IsNull)";
+            Tabela.Campos[i].AcessoFieldADO = "VariantToNullableExtended(ARecordSet.Fields[Campo_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + " + AOffset].Value)";
+            Tabela.Campos[i].AtribueFieldBDE = "SetFieldNullable({0}, {1})";
+            Tabela.Campos[i].AtribueParametroADO = "{0}.Value := TActiveRecord.ToVariant({1})";
+            if (!Tabela.Campos[i].Padrao) 
+              Tabela.Campos[i].Padrao = "NullExtended";
+            Tabela.Campos[i].GetAsString = "ToString({0})";
+            Tabela.Campos[i].GetValue = "ToVariant({0})";
+            Tabela.Campos[i].SetAsString = "Set{0}(StringToNullableExtended(Value))";
+            Tabela.Campos[i].SetValue = "Set{0}(VariantToNullableExtended(Value))";
+            Tabela.Campos[i].FieldType = "arftFloat";
+            Tabela.Campos[i].QuerySetParameter = "SetNextParameter";
+            if (!Tabela.Campos[i].ColumnCharWidth) 
+              Tabela.Campos[i].ColumnCharWidth = "ColumnCharWidthForFloat";
+          }
+          break;
+		case "bit":
+        case "int":
+          if(Tabela.Campos[i].Dominio == "B01") {
+            Tabela.Campos[i].TipoPascal = "TNullableBoolean";
+            Tabela.Campos[i].TipoADO = "adInteger";
+            Tabela.Campos[i].Acesso2FieldBDE = "NullableB01({0}.AsInteger, {0}.IsNull)";
+            Tabela.Campos[i].AcessoFieldADO = "VariantToNullableB01(ARecordSet.Fields[Campo_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + " + AOffset].Value)";
+            Tabela.Campos[i].AtribueFieldBDE = "SetFieldNullableB01({0}, {1})";
+            Tabela.Campos[i].AtribueParametroADO = "{0}.Value := TActiveRecord.ToVariantB01({1})";
+            if (!Tabela.Campos[i].Padrao) 
+              Tabela.Campos[i].Padrao = "NullBoolean"
+            Tabela.Campos[i].GetAsString = "ToStringNS({0})";
+            Tabela.Campos[i].GetValue = "ToVariant({0})";
+            Tabela.Campos[i].SetAsString = "Set{0}(NSToNullableBoolean(Value))";
+            Tabela.Campos[i].SetValue = "Set{0}(VariantToNullableBoolean(Value))";
+            Tabela.Campos[i].DisplayText = "NullOrString({0}.Null, NaoSim[{0}.Value])";
+            Tabela.Campos[i].FieldType = "arftB01";
+            Tabela.Campos[i].QuerySetParameter = "SetNextParameterB01";
+            if (!Tabela.Campos[i].ColumnCharWidth) 
+              Tabela.Campos[i].ColumnCharWidth = "ColumnCharWidthForB01";
+            break;
+          } else if(Tabela.Campos[i].Dominio == "Cor") {
+            Tabela.Campos[i].TipoPascal = "TNullableColor";
+            Tabela.Campos[i].TipoADO = "adInteger";
+            Tabela.Campos[i].Acesso2FieldBDE = "NullableColor(TColor({0}.AsInteger), {0}.IsNull)";
+            Tabela.Campos[i].AcessoFieldADO = "VariantToNullableColor(ARecordSet.Fields[Campo_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + " + AOffset].Value)";
+            Tabela.Campos[i].AtribueFieldBDE = "SetFieldNullable({0}, {1})";
+            Tabela.Campos[i].AtribueParametroADO = "{0}.Value := TActiveRecord.ToVariant({1})";
+            if (!Tabela.Campos[i].Padrao) 
+              Tabela.Campos[i].Padrao = "NullColor"
+            Tabela.Campos[i].GetAsString = "ToString({0})";
+            Tabela.Campos[i].GetValue = "ToVariant({0})";
+            Tabela.Campos[i].SetAsString = "Set{0}(StringToNullableColor(Value))";
+            Tabela.Campos[i].SetValue = "Set{0}(VariantToNullableColor(Value))";
+            Tabela.Campos[i].FieldType = "arftColor";
+            Tabela.Campos[i].QuerySetParameter = "SetNextParameter";
+            if (!Tabela.Campos[i].ColumnCharWidth) 
+              Tabela.Campos[i].ColumnCharWidth = "ColumnCharWidthForColor";
+            break;
+          }	else {
+            Tabela.Campos[i].TipoPascal = "TNullableInteger";
+            Tabela.Campos[i].TipoADO = "adInteger";
+            Tabela.Campos[i].Acesso2FieldBDE = "Nullable({0}.AsInteger, {0}.IsNull)";
+            Tabela.Campos[i].AcessoFieldADO = "VariantToNullableInteger(ARecordSet.Fields[Campo_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + " + AOffset].Value)";
+            Tabela.Campos[i].AtribueFieldBDE = "SetFieldNullable({0}, {1})";
+            Tabela.Campos[i].AtribueParametroADO = "{0}.Value := TActiveRecord.ToVariant({1})";
+            if (!Tabela.Campos[i].Padrao) 
+              Tabela.Campos[i].Padrao = "NullInteger"
+            Tabela.Campos[i].GetAsString = "ToString({0})";
+            Tabela.Campos[i].GetValue = "ToVariant({0})";
+            Tabela.Campos[i].SetAsString = "Set{0}(StringToNullableInteger(Value))";
+            Tabela.Campos[i].SetValue = "Set{0}(VariantToNullableInteger(Value))";
+            Tabela.Campos[i].FieldType = "arftInteger";
+            Tabela.Campos[i].QuerySetParameter = "SetNextParameter";
+            if (!Tabela.Campos[i].ColumnCharWidth) 
+              Tabela.Campos[i].ColumnCharWidth = "ColumnCharWidthForInteger";
+            break;
+          }
+        case "varchar":
+          if(Tabela.Campos[i].Dominio == "NS") {
+            Tabela.Campos[i].TipoPascal = "TNullableBoolean";
+            Tabela.Campos[i].TipoADO = "adVarChar";
+            Tabela.Campos[i].Acesso2FieldBDE = "NullableNS({0}.AsString, {0}.IsNull)";
+            Tabela.Campos[i].AcessoFieldADO = "VariantToNullableNS(ARecordSet.Fields[Campo_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + " + AOffset].Value)";
+            Tabela.Campos[i].AtribueFieldBDE = "SetFieldNullableNS({0}, {1})";
+            Tabela.Campos[i].AtribueParametroADO = "{0}.Value := TActiveRecord.ToVariantNS({1})";
+            if (!Tabela.Campos[i].Padrao) 
+              Tabela.Campos[i].Padrao = "NullBoolean"
+            Tabela.Campos[i].GetAsString = "ToStringNS({0})";
+            Tabela.Campos[i].GetValue = "ToVariant({0})";
+            Tabela.Campos[i].SetAsString = "Set{0}(NSToNullableBoolean(Value))";
+            Tabela.Campos[i].SetValue = "Set{0}(VariantToNullableNS(Value))";
+            Tabela.Campos[i].DisplayText = "NullOrString({0}.Null, NaoSim[{0}.Value])";
+            Tabela.Campos[i].FieldType = "arftNS";
+            Tabela.Campos[i].QuerySetParameter = "SetNextParameterNS";
+            if (!Tabela.Campos[i].ColumnCharWidth) 
+              Tabela.Campos[i].ColumnCharWidth = "ColumnCharWidthForNS";
+          } else {
+            Tabela.Campos[i].TipoPascal = "TNullableString";
+            Tabela.Campos[i].TipoADO = "adVarChar";
+            Tabela.Campos[i].Acesso2FieldBDE = "Nullable({0}.AsString, {0}.IsNull)";
+            Tabela.Campos[i].AcessoFieldADO = "VariantToNullableString(ARecordSet.Fields[Campo_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + " + AOffset].Value)";
+            Tabela.Campos[i].AtribueFieldBDE = "SetFieldNullable({0}, {1})";
+            Tabela.Campos[i].AtribueParametroADO = "{0}.Value := TActiveRecord.ToVariant({1})";
+            Tabela.Campos[i].AjustaSet = "AjustaVarchar(Value, " + Tabela.Campos[i].Tamanho + ")";
+            if (!Tabela.Campos[i].Padrao) 
+              Tabela.Campos[i].Padrao = "NullString"
+            Tabela.Campos[i].GetAsString = "ToString({0})";
+            Tabela.Campos[i].GetValue = "ToVariant({0})";
+            Tabela.Campos[i].SetAsString = "Set{0}(Nullable(Value))";
+            Tabela.Campos[i].SetValue = "Set{0}(VariantToNullableString(Value))";
+            Tabela.Campos[i].FieldType = "arftVarchar";
+            Tabela.Campos[i].QuerySetParameter = "SetNextParameter";
+            if (!Tabela.Campos[i].ColumnCharWidth) 
+              Tabela.Campos[i].ColumnCharWidth = Tabela.Campos[i].Tamanho;
+          }
+          break;
+		case "text":
+          Tabela.Campos[i].TipoPascal = "TNullableString";
+          Tabela.Campos[i].TipoADO = "adLongVarChar";
+          Tabela.Campos[i].TamanhoADO = "MaxInt";
+          Tabela.Campos[i].Acesso2FieldBDE = "TActiveRecord.Nullable({0}.AsString, {0}.IsNull)";
+          Tabela.Campos[i].AcessoFieldADO = "VariantToNullableString(ARecordSet.Fields[Campo_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + " + AOffset].Value)";
+          Tabela.Campos[i].AtribueFieldBDE = "SetFieldNullableMemo({0}, {1})";
+          Tabela.Campos[i].AtribueParametroADO = "{0}.Value := TActiveRecord.ToVariant({1})";
+          if (!Tabela.Campos[i].Padrao) 
+            Tabela.Campos[i].Padrao = "NullString"
+          Tabela.Campos[i].GetAsString = "ToString({0})";
+          Tabela.Campos[i].GetValue = "ToVariant({0})";
+          Tabela.Campos[i].SetAsString = "Set{0}(Nullable(Value))";
+          Tabela.Campos[i].SetValue = "Set{0}(VariantToNullableString(Value))";
+          Tabela.Campos[i].FieldType = "arftMemo";
+          Tabela.Campos[i].QuerySetParameter = "SetNextParameterMemo";
+          if (!Tabela.Campos[i].ColumnCharWidth) 
+            Tabela.Campos[i].ColumnCharWidth = "ColumnCharWidthForMemo";
+          break;
+        default:
+          WScript.Echo("Tipo " + Tabela.Campos[i].Tipo + " não definido");
+      }
+    } else {
+      switch (Tabela.Campos[i].Tipo) {
+        case "datetime":
+          Tabela.Campos[i].TipoPascal = "TDateTime";
+          Tabela.Campos[i].TipoADO = "adDBTimeStamp";
+          Tabela.Campos[i].Acesso2FieldBDE = "{0}.AsDateTime";
+          Tabela.Campos[i].AcessoFieldADO = "ARecordSet.Fields[Campo_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + " + AOffset].Value";
+          Tabela.Campos[i].AtribueFieldBDE = "{0}.AsDateTime := {1}";
+          Tabela.Campos[i].AtribueParametroADO = "{0}.Value := {1}";
+          Tabela.Campos[i].GetAsString = "DateTimeToStr({0})";
+          Tabela.Campos[i].GetValue = "{0}";
+          Tabela.Campos[i].SetAsString = "Set{0}(StrToDateTime(Value))";
+          Tabela.Campos[i].SetValue = "Set{0}(Value)";
+          Tabela.Campos[i].FieldType = "arftDateTime";
+          Tabela.Campos[i].QuerySetParameter = "SetNextParameterDateTime";
+          if (!Tabela.Campos[i].ColumnCharWidth) 
+            Tabela.Campos[i].ColumnCharWidth = "ColumnCharWidthForDateTime";
+          break;
+        case "float":
+          if(Tabela.Campos[i].Dominio == "Dinheiro") {
+            Tabela.Campos[i].TipoPascal = "Currency";
+            Tabela.Campos[i].TipoADO = "adCurrency";
+            Tabela.Campos[i].Acesso2FieldBDE = "{0}.AsCurrency";
+            Tabela.Campos[i].AcessoFieldADO = "ARecordSet.Fields[Campo_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + " + AOffset].Value";
+            Tabela.Campos[i].AtribueFieldBDE = "{0}.AsCurrency := {1}";
+            Tabela.Campos[i].AtribueParametroADO = "{0}.Value := {1}";
+            Tabela.Campos[i].GetAsString = "CurrToStr({0})";
+            Tabela.Campos[i].GetValue = "{0}";
+            Tabela.Campos[i].SetAsString = "Set{0}(StrToCurr(Value))";
+            Tabela.Campos[i].SetValue = "Set{0}(Value)";
+            Tabela.Campos[i].DisplayText = "FormatFloat(',0.00', {0})";
+            Tabela.Campos[i].FieldType = "arftMoney";
+            Tabela.Campos[i].QuerySetParameter = "SetNextParameterCurrency";
+            if (!Tabela.Campos[i].ColumnCharWidth) 
+              Tabela.Campos[i].ColumnCharWidth = "ColumnCharWidthForMoney";
+          } else {
+            Tabela.Campos[i].TipoPascal = "Extended";
+            Tabela.Campos[i].TipoADO = "adDouble";
+            Tabela.Campos[i].Acesso2FieldBDE = "{0}.AsFloat";
+            Tabela.Campos[i].AcessoFieldADO = "ARecordSet.Fields[Campo_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + " + AOffset].Value";
+            Tabela.Campos[i].AtribueFieldBDE = "{0}.AsFloat := {1}";
+            Tabela.Campos[i].AtribueParametroADO = "{0}.Value := {1}";
+            Tabela.Campos[i].GetAsString = "FloatToStr({0})";
+            Tabela.Campos[i].GetValue = "{0}";
+            Tabela.Campos[i].SetAsString = "Set{0}(StrToFloat(Value))";
+            Tabela.Campos[i].SetValue = "Set{0}(Value)";
+            Tabela.Campos[i].FieldType = "arftFloat";
+            Tabela.Campos[i].QuerySetParameter = "SetNextParameterExtended";
+            if (!Tabela.Campos[i].ColumnCharWidth) 
+              Tabela.Campos[i].ColumnCharWidth = "ColumnCharWidthForFloat";
+          }
+          break;
+        case "bit":
+        case "int":
+          if(Tabela.Campos[i].Dominio == "B01") {
+            Tabela.Campos[i].TipoPascal = "Boolean";
+            Tabela.Campos[i].TipoADO = "adInteger";
+            Tabela.Campos[i].Acesso2FieldBDE = "{0}.AsInteger = 1";
+            Tabela.Campos[i].AcessoFieldADO = "ARecordSet.Fields[Campo_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + " + AOffset].Value = 1";
+            Tabela.Campos[i].AtribueFieldBDE = "{0}.AsInteger := Ord({1})";
+            Tabela.Campos[i].AtribueParametroADO = "{0}.Value := Ord({1})";
+            Tabela.Campos[i].GetAsString = "NS[{0}]";
+            Tabela.Campos[i].GetValue = "{0}";
+            Tabela.Campos[i].SetAsString = "Set{0}(UpperCase(Copy(Value, 1, 1)) = 'S')";
+            Tabela.Campos[i].SetValue = "Set{0}(Value)";
+            Tabela.Campos[i].DisplayText = "NaoSim[{0}]";
+            Tabela.Campos[i].FieldType = "arftB01";
+            Tabela.Campos[i].QuerySetParameter = "SetNextParameterB01";
+            if (!Tabela.Campos[i].ColumnCharWidth) 
+              Tabela.Campos[i].ColumnCharWidth = "ColumnCharWidthForB01";
+            break;
+          } else if(Tabela.Campos[i].Dominio == "Cor") {
+            Tabela.Campos[i].TipoPascal = "TColor";
+            Tabela.Campos[i].TipoADO = "adInteger";
+            Tabela.Campos[i].Acesso2FieldBDE = "TColor({0}.AsInteger)";
+            Tabela.Campos[i].AcessoFieldADO = "TColor(ARecordSet.Fields[Campo_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + " + AOffset].Value)";
+            Tabela.Campos[i].AtribueFieldBDE = "{0}.AsInteger := {1}";
+            Tabela.Campos[i].AtribueParametroADO = "{0}.Value := {1}";
+            Tabela.Campos[i].GetAsString = "IntToStr({0})";
+            Tabela.Campos[i].GetValue = "{0}";
+            Tabela.Campos[i].SetAsString = "Set{0}(StrToInt(Value))";
+            Tabela.Campos[i].SetValue = "Set{0}(Value)";
+            Tabela.Campos[i].FieldType = "arftColor";
+            Tabela.Campos[i].QuerySetParameter = "SetNextParameter";
+            if (!Tabela.Campos[i].ColumnCharWidth) 
+              Tabela.Campos[i].ColumnCharWidth = "ColumnCharWidthForColor";
+            break;
+          } else {
+            Tabela.Campos[i].TipoPascal = "Integer";
+            Tabela.Campos[i].TipoADO = "adInteger";
+            Tabela.Campos[i].Acesso2FieldBDE = "{0}.AsInteger";
+            Tabela.Campos[i].AcessoFieldADO = "ARecordSet.Fields[Campo_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + " + AOffset].Value";
+            Tabela.Campos[i].AtribueFieldBDE = "{0}.AsInteger := {1}";
+            Tabela.Campos[i].AtribueParametroADO = "{0}.Value := {1}";
+            Tabela.Campos[i].GetAsString = "IntToStr({0})";
+            Tabela.Campos[i].GetValue = "{0}";
+            Tabela.Campos[i].SetAsString = "Set{0}(StrToInt(Value))";
+            Tabela.Campos[i].SetValue = "Set{0}(Value)";
+            Tabela.Campos[i].FieldType = "arftInteger";
+            Tabela.Campos[i].QuerySetParameter = "SetNextParameter";
+            if (!Tabela.Campos[i].ColumnCharWidth) 
+              Tabela.Campos[i].ColumnCharWidth = "ColumnCharWidthForInteger";
+            break;
+          }
+        case "varchar":
+          if(Tabela.Campos[i].Dominio == "NS") {
+            Tabela.Campos[i].TipoPascal = "Boolean";
+            Tabela.Campos[i].TipoADO = "adVarChar";
+            Tabela.Campos[i].Acesso2FieldBDE = "UpperCase({0}.AsString) = 'S'";
+            Tabela.Campos[i].AcessoFieldADO = "UpperCase(ARecordSet.Fields[Campo_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + " + AOffset].Value) = 'S'";
+            Tabela.Campos[i].AtribueFieldBDE = "{0}.AsString := NS[{1}]";
+            Tabela.Campos[i].AtribueParametroADO = "{0}.Value := NS[{1}]";
+            Tabela.Campos[i].GetAsString = "NS[{0}]";
+            Tabela.Campos[i].GetValue = "{0}";
+            Tabela.Campos[i].SetAsString = "Set{0}(UpperCase(Copy(Value, 1, 1)) = 'S')";
+            Tabela.Campos[i].SetValue = "Set{0}(Value)";
+            Tabela.Campos[i].DisplayText = "NaoSim[{0}]";
+            Tabela.Campos[i].FieldType = "arftNS";
+            Tabela.Campos[i].QuerySetParameter = "SetNextParameterNS";
+            if (!Tabela.Campos[i].ColumnCharWidth) 
+              Tabela.Campos[i].ColumnCharWidth = "ColumnCharWidthForNS";
+          } else {
+            Tabela.Campos[i].TipoPascal = "string";
+            Tabela.Campos[i].TipoADO = "adVarChar";
+            Tabela.Campos[i].Acesso2FieldBDE = "{0}.AsString";
+            Tabela.Campos[i].AcessoFieldADO = "ARecordSet.Fields[Campo_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + " + AOffset].Value";
+            Tabela.Campos[i].AtribueFieldBDE = "{0}.AsString := {1}";
+            Tabela.Campos[i].AtribueParametroADO = "{0}.Value := {1}";
+            Tabela.Campos[i].AjustaSet = "AjustaVarchar(Value, " + Tabela.Campos[i].Tamanho + ")";
+            Tabela.Campos[i].GetAsString = "{0}";
+            Tabela.Campos[i].GetValue = "{0}";
+            Tabela.Campos[i].SetAsString = "Set{0}(Value)";
+            Tabela.Campos[i].SetValue = "Set{0}(Value)";
+            Tabela.Campos[i].FieldType = "arftVarchar";
+            Tabela.Campos[i].QuerySetParameter = "SetNextParameter";
+            if (!Tabela.Campos[i].ColumnCharWidth) 
+              Tabela.Campos[i].ColumnCharWidth = Tabela.Campos[i].Tamanho;
+          }
+          break;
+        case "text":
+          Tabela.Campos[i].TipoPascal = "string";
+          Tabela.Campos[i].TipoADO = "adLongVarChar";
+          Tabela.Campos[i].TamanhoADO = "MaxInt";
+          Tabela.Campos[i].Acesso2FieldBDE = "{0}.AsString";
+          Tabela.Campos[i].AcessoFieldADO = "ARecordSet.Fields[Campo_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + " + AOffset].Value";
+          Tabela.Campos[i].AtribueFieldBDE = "{0}.AsMemo := {1}";
+          Tabela.Campos[i].AtribueParametroADO = "{0}.Value := {1}";
+          Tabela.Campos[i].GetAsString = "{0}";
+          Tabela.Campos[i].GetValue = "{0}";
+          Tabela.Campos[i].SetAsString = "Set{0}(Value)";
+          Tabela.Campos[i].SetValue = "Set{0}(Value)";
+          Tabela.Campos[i].FieldType = "arftMemo";
+          Tabela.Campos[i].QuerySetParameter = "SetNextParameterMemo";
+          if (!Tabela.Campos[i].ColumnCharWidth) 
+            Tabela.Campos[i].ColumnCharWidth = "ColumnCharWidthForMemo";
+          break;
+        case "image":
+          Tabela.Campos[i].TipoPascal = "TBinary";
+          Tabela.Campos[i].TipoADO = "adLongVarBinary";
+          Tabela.Campos[i].TamanhoADO = "MaxInt";
+          Tabela.Campos[i].Acesso2FieldBDE = "Falta implementar";
+          Tabela.Campos[i].AcessoFieldADO = "VariantToBinary(ARecordSet.Fields[Campo_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + " + AOffset].Value)";
+          Tabela.Campos[i].AtribueFieldBDE = "Falta implementar";
+          Tabela.Campos[i].AtribueParametroADO = "{0}.Value := TActiveRecord.BinaryToVariant({1})";
+          Tabela.Campos[i].GetAsString = "rsTextoBinario";
+          Tabela.Campos[i].GetValue = "BinaryToVariant({0})";
+          Tabela.Campos[i].SetAsString = "raise EActiveRecord.Create(rsNaoImplementado)";
+          Tabela.Campos[i].SetValue = "Set{0}(VariantToBinary(Value))";
+          Tabela.Campos[i].FieldType = "arftBinary";
+          Tabela.Campos[i].QuerySetParameter = "SetNextParameterBinary";
+          if (!Tabela.Campos[i].ColumnCharWidth) 
+            Tabela.Campos[i].ColumnCharWidth = "ColumnCharWidthForBinary";
+          break;
+        default:
+          WScript.Echo("Tipo " + Tabela.Campos[i].Tipo + " não definido, dominio: " + Tabela.Campos[i].Dominio);
+      }
+    }
+    if(Tabela.Campos[i].Dominio == "ApagadoEm") {
+      Tabela.CampoApagadoEm = Tabela.Campos[i].Nome;
+    }
+    if(Tabela.Campos[i].Dominio == "ApagadoPorQuem") {
+      Tabela.CampoApagadoPorQuem = Tabela.Campos[i].Nome;
+    }
+    if (!Tabela.Campos[i].TamanhoADO) {
+      if (Tabela.Campos[i].Tamanho)
+        Tabela.Campos[i].TamanhoADO = Tabela.Campos[i].Tamanho;
+      else
+        Tabela.Campos[i].TamanhoADO = 0;
+    }
+    if (Tabela.Campos[i].BeforeSave) {
+      Tabela.TemBeforeSave = true;
+    }
+  }
+}
+
+function summaryAcessoFieldADO(tipo) {
+  switch (tipo) {
+    case "TNullableInteger":
+      return "TActiveRecord.VariantToNullableInteger(LRecordSet.Fields[0].Value)";
+    case "Integer":
+      return "LRecordSet.Fields[0].Value";
+    case "TNullableDateTime":
+      return "TActiveRecord.VariantToNullableDateTime(LRecordSet.Fields[0].Value)";
+    case "TNullableCurrency":
+      return "TActiveRecord.VariantToNullableCurrency(LRecordSet.Fields[0].Value)";
+    default:
+      WScript.Echo("summaryAcessoFieldADO " + tipo + " não definido");
+  }  
+}
+
+function summaryAjustaAtributosParametro(AParametro) {
+  var campo = retornaCampo(AParametro.Campo);
+  if (typeof AParametro.TipoPascal === "undefined") 
+    AParametro.TipoPascal = campo.TipoPascal;
+  if (typeof AParametro.TipoADO === "undefined") 
+    AParametro.TipoADO = campo.TipoADO;
+  if (typeof AParametro.TamanhoADO === "undefined") 
+    AParametro.TamanhoADO = campo.TamanhoADO;
+  if (typeof AParametro.AtribueParametroADO === "undefined") 
+    AParametro.AtribueParametroADO = campo.AtribueParametroADO;
+  if (typeof AParametro.Operacao === "undefined") 
+    AParametro.Operacao = AParametro.Campo.toLowerCase() + " = ?";
+}
+
+function nomeFindBy(campos) {
+  var saida;
+  if(campos.length > 0) {
+    saida = "By";
+    for(var i = 0; i < campos.length; i++) {
+      if(i != 0) saida += "And";
+      saida += campos[i];
+    }
+  } else {
+    saida = "All";
+  }
+  return saida;
+}
+
+function retornaCampo(campo) {
+  for(var i = 0; i < Tabela.Campos.length; i++) {
+    if(Tabela.Campos[i].Nome == campo) {
+      return Tabela.Campos[i];
+    }
+  }
+}
+
+function parametrosFindBy(campos, prefixo) {
+  var saida = "";
+  if (campos.length > 0) {
+    saida = prefixo;
+    for (var i = 0; i < campos.length; i++) {
+      if (typeof campos[i] === "string") 
+        saida += "const A" + campos[i] + ": " + retornaCampo(campos[i]).TipoPascal + "; ";
+      else {
+        summaryAjustaAtributosParametro(campos[i])
+        saida += "const A" + campos[i].Campo + ": " + campos[i].TipoPascal + "; ";
+      }
+    }
+  }
+  return saida;
+}
+
+function parametrosFindBySimples(campos, prefixo) {
+  var saida = "";
+  if (campos.length > 0) {
+    saida = prefixo;
+    for (var i = 0; i < campos.length; i++)
+      if (typeof campos[i] === 'string')
+        saida += "A" + campos[i] + ", ";
+      else
+        saida += "A" + campos[i].Campo + ", ";
+  }
+  return saida;
+}
+
+function clausulaWhere(campos) {
+  var saida = new String();
+  for(var i = 0; i < campos.length; i++) {
+    if(i != 0) saida += " and ";
+    saida += campos[i].toLowerCase() + " = ?";
+  }
+  return saida;
+}
+
+function retornaUses() {
+  var saida = "";
+  var jaFoi = [];
+  var linha = 0;
+  if(Tabela.Relacionamentos) {
+    for(var i = 0; i < Tabela.Relacionamentos.length; i++) {
+      if(!jaFoi[Tabela.Relacionamentos[i].Model]){
+        saida += ', ';
+		linha += 1;
+		if(linha > 9){
+			saida += '\r\n  ';
+			linha = 0;
+		  }
+		saida += 'u' + Tabela.Relacionamentos[i].Model;
+		}
+      jaFoi[Tabela.Relacionamentos[i].Model] = true;
+    }
+  }
+  return saida;
+}
+
+function nomeRelacionamento(relacionamento) {
+  if(relacionamento.Nome) {
+    return relacionamento.Nome
+  } else {
+    if(relacionamento.Tipo == "1:N")
+      return relacionamento.Model + "s";
+    else
+      return relacionamento.Model;
+  }
+}
+
+function autoIncremento(campo) {
+  if(Tabela.ChavePrimaria.Tipo == "AutoInc") {
+    for(var i = 0; i < Tabela.ChavePrimaria.Campos.length; i++) {
+      if(Tabela.ChavePrimaria.Campos[i] == campo) {
+	    Tabela.ChavePrimaria.CampoAutoInc = campo;
+        return true;
+      }
+    }
+    return false;
+  } else {
+    return false;
+  }
+}
+
+function relacionamentoParametrosFindBy(campos) {
+  var saida = "";
+  if(campos.length > 0) {
+    saida = "";
+    for(var i = 0; i < campos.length; i++)
+      saida += "Get" + campos[i] + ", ";
+  }
+  return saida;
+}
+
+function relacionamentoParametrosNullableFindBy(campos) {
+  var saida = "";
+  if(campos.length > 0) {
+    saida = "";
+    for(var i = 0; i < campos.length; i++)
+      saida += "Nullable(Get" + campos[i] + "), ";
+  }
+  return saida;
+}
+
+var afetaCamposOrigem = [];
+
+function relacionamentoDeterminaOndeAfetaCamposOrigem() {
+  if(Tabela.Relacionamentos) {
+    for(var i = 0; i < Tabela.Relacionamentos.length; i++) {
+      for(var j = 0; j < Tabela.Relacionamentos[i].CamposOrigem.length; j++) {
+        var campoOrigem = retiraPontoValue(Tabela.Relacionamentos[i].CamposOrigem[j]);
+        if (!afetaCamposOrigem[campoOrigem])
+          afetaCamposOrigem[campoOrigem] = [];
+        afetaCamposOrigem[campoOrigem].push(nomeRelacionamento(Tabela.Relacionamentos[i]));
+      }
+    }
+  }
+}
+
+function constructorRelacionamento(relacionamento) {
+  if (relacionamento.UseService == true)
+    return "(SL as I" + relacionamento.Model + "Service)";
+  else
+    return "T" + relacionamento.Model;
+}
+
+function retiraPontoValue(entrada) {
+  var p = entrada.indexOf(".Value");
+  if (p == -1)
+    return entrada
+  else
+    return entrada.substring(0, p);
+}
+
+function relacionamentoCampos(campos) {
+  var saida = "";
+  if(campos) {
+    for(var i = 0; i < campos.length; i++) {
+      if(i != 0) saida += ",";
+      saida += retiraPontoValue(campos[i]);
+    }
+  }
+  return saida;
+}
+
+function temRelacionamentoComposicao() {
+  if(Tabela.Relacionamentos) {
+    for(var i = 0; i < Tabela.Relacionamentos.length; i++) {
+      if(Tabela.Relacionamentos[i].Tipo == "1:N" || Tabela.Relacionamentos[i].Tipo == "1:1") {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+determinaTipoPascal();
+relacionamentoDeterminaOndeAfetaCamposOrigem();
+
+<==
+unit uAR-->Tabela.Nome<--;
+
+interface
+
+uses
+  SysUtils, db, ADOInt, Graphics, ServiceLocator, SyncObjs, Variants, 
+  uActiveRecord-->retornaUses()<--;
+
+type
+  //Tabela: -->Tabela.Nome<---->Tabela.Descricao?" - " + Tabela.Descricao:""<--
+  IAR-->Tabela.Nome<-- = interface(IActiveRecord)
+    -->Tabela.GUID<--==>
+for(var i = 0; i < Tabela.Campos.length; i++) {<==
+    -->Tabela.Campos[i].Invisivel?"//":""<--function Get-->Tabela.Campos[i].Nome<--: -->Tabela.Campos[i].TipoPascal<--;==>
+}
+if(Tabela.Relacionamentos) {
+  for(var i = 0; i < Tabela.Relacionamentos.length; i++) {<==
+    -->Tabela.Relacionamentos[i].Invisivel?"//":""<--function Get-->nomeRelacionamento(Tabela.Relacionamentos[i])<--: -->Tabela.Relacionamentos[i].Tipo == "1:N"?"ICollection":"I"<---->Tabela.Relacionamentos[i].Model<--;==>
+  }
+}
+for(var i = 0; i < Tabela.Campos.length; i++) {
+  if(!Tabela.Campos[i].ReadOnly) {<==
+    -->Tabela.Campos[i].Invisivel || Tabela.Campos[i].SetCommented?"//":""<--procedure Set-->Tabela.Campos[i].Nome<--(const Value: -->Tabela.Campos[i].TipoPascal<--);==>
+  }
+}<==
+    //--- Campos ---==>
+for(var i = 0; i < Tabela.Campos.length; i++) {<==
+    //-->Tabela.Campos[i].Nome<-- -->Tabela.Campos[i].Tipo<---->Tabela.Campos[i].Tamanho?" ("+Tabela.Campos[i].Tamanho+")":""<---->Tabela.Campos[i].Descricao?" - " + Tabela.Campos[i].Descricao:""<--
+    -->Tabela.Campos[i].Invisivel?"//":""<--property -->Tabela.Campos[i].Nome<--: -->Tabela.Campos[i].TipoPascal<-- read Get-->Tabela.Campos[i].Nome<--==>
+  if(!(Tabela.Campos[i].ReadOnly || Tabela.Campos[i].SetCommented)) {<== write Set-->Tabela.Campos[i].Nome<--==>}<==;==>
+}
+if(Tabela.Relacionamentos) {<==
+    //--- Tabelas ---==>
+  for(var i = 0; i < Tabela.Relacionamentos.length; i++) {<==
+    -->Tabela.Relacionamentos[i].Invisivel?"//":""<--property -->nomeRelacionamento(Tabela.Relacionamentos[i])<--: -->Tabela.Relacionamentos[i].Tipo == "1:N"?"ICollection":"I"<---->Tabela.Relacionamentos[i].Model<-- read Get-->nomeRelacionamento(Tabela.Relacionamentos[i])<--;==>
+  }
+}
+if(Tabela.MetodosAuxiliares) {<==
+    //--- Métodos ---
+    procedure Assign(const AAR-->Tabela.Nome<--: IAR-->Tabela.Nome<--);
+    procedure CopyFrom(const ADataSet: TDataSet); overload;
+    procedure CopyTo(const ADataSet: TDataSet);
+    function Equal(const AAR-->Tabela.Nome<--: IAR-->Tabela.Nome<--): Boolean;==>
+}<==
+  end;
+
+  IIteratorAR-->Tabela.Nome<-- = interface(IIteratorActiveRecord)
+    function CurrentItem: IAR-->Tabela.Nome<--;
+  end;
+
+  ICollectionAR-->Tabela.Nome<-- = interface(ICollectionActiveRecord)
+    function GetItem(Index: Integer): IAR-->Tabela.Nome<--;
+
+    function Add(const Item: IAR-->Tabela.Nome<--): Integer;
+    function First: IAR-->Tabela.Nome<--;
+    procedure Insert(Index: Integer; const Item: IAR-->Tabela.Nome<--);
+    function Last: IAR-->Tabela.Nome<--;
+    function New(const AConnection: IActiveRecordConnection): IAR-->Tabela.Nome<--;
+    property Item[Index: Integer]: IAR-->Tabela.Nome<-- read GetItem; default;
+  end;
+
+  TCollectionAR-->Tabela.Nome<-- = class(TCollectionActiveRecord, ICollectionAR-->Tabela.Nome<--)
+  protected
+    { ICollectionAR-->Tabela.Nome<-- }
+    function GetItem(Index: Integer): IAR-->Tabela.Nome<--;
+
+    function Add(const Item: IAR-->Tabela.Nome<--): Integer;
+    function First: IAR-->Tabela.Nome<--;
+    procedure Insert(Index: Integer; const Item: IAR-->Tabela.Nome<--);
+    function Last: IAR-->Tabela.Nome<--;
+    function New(const AConnection: IActiveRecordConnection): IAR-->Tabela.Nome<--;
+  end;
+
+  TIteratorAR-->Tabela.Nome<--Decorator = class(TIteratorCollectionActiveRecordDecorator, IIteratorAR-->Tabela.Nome<--)
+  protected
+    { IIteratorAR-->Tabela.Nome<-- }
+    function CurrentItem: IAR-->Tabela.Nome<--;
+  public
+    class function Decore(const ACollectionAR-->Tabela.Nome<--: ICollectionAR-->Tabela.Nome<--): IIteratorAR-->Tabela.Nome<--;
+  end;
+
+  TIteratorAR-->Tabela.Nome<--QueryDecorator = class(TIteratorActiveRecordQueryDecorator, IIteratorAR-->Tabela.Nome<--)
+  protected
+    { IIteratorAR-->Tabela.Nome<-- }
+    function CurrentItem: IAR-->Tabela.Nome<--;
+  public
+    class function Decore(const AAR-->Tabela.Nome<--Query: IActiveRecordQuery): IIteratorAR-->Tabela.Nome<--;
+  end;
+
+  TAR-->Tabela.Nome<-- = class(TActiveRecord, IAR-->Tabela.Nome<--)
+  private==>
+for(var i = 0; i < Tabela.ChavePrimaria.Campos.length; i++) {<==
+    FPrimaryKey-->Tabela.ChavePrimaria.Campos[i]<--: -->retornaCampo(Tabela.ChavePrimaria.Campos[i]).TipoPascal<--;==>
+}
+for(var i = 0; i < Tabela.Campos.length; i++) {<==
+    F-->Tabela.Campos[i].Nome<--: -->Tabela.Campos[i].TipoPascal<--;==>
+}
+if(Tabela.Relacionamentos) {
+  for(var i = 0; i < Tabela.Relacionamentos.length; i++) {<==
+    F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--: -->Tabela.Relacionamentos[i].Tipo == "1:N"?"ICollection":"I"<---->Tabela.Relacionamentos[i].Model<--;==>
+  }
+}<==
+  protected
+    { IActiveRecordAccess }
+    procedure Clear(Index: Integer); override;
+    function DisplayText(Index: Integer): string; override;
+    function GetAsString(Index: Integer): string; override;
+    function GetValue(Index: Integer): Variant; override;
+    function IsNull(Index: Integer): Boolean; override;
+    procedure SetAsString(Index: Integer; const Value: string); override;
+    procedure SetValue(Index: Integer; const Value: Variant); override;
+    { IAR-->Tabela.Nome<-- }==>
+for(var i = 0; i < Tabela.Campos.length; i++) {<==
+    function Get-->Tabela.Campos[i].Nome<--: -->Tabela.Campos[i].TipoPascal<--;==>
+}
+if(Tabela.Relacionamentos) {
+  for(var i = 0; i < Tabela.Relacionamentos.length; i++) {<==
+    function Get-->nomeRelacionamento(Tabela.Relacionamentos[i])<--: -->Tabela.Relacionamentos[i].Tipo == "1:N"?"ICollection":"I"<---->Tabela.Relacionamentos[i].Model<--;==>
+  }
+}
+for(var i = 0; i < Tabela.Campos.length; i++) {
+  if(!Tabela.Campos[i].ReadOnly) {<==
+    procedure Set-->Tabela.Campos[i].Nome<--(const Value: -->Tabela.Campos[i].TipoPascal<--);==>
+  }
+}
+if (Tabela.TemBeforeSave) {<==
+    procedure BeforeSave; override;==>
+}<==
+    procedure CopyFrom(AActiveRecord: TActiveRecord); overload; override;
+    function CreateItemRelationship(Index: Integer): TActiveRecord; override;==>
+if(Tabela.MetodosAuxiliares) {<==
+    procedure Assign(const AAR-->Tabela.Nome<--: IAR-->Tabela.Nome<--);
+    procedure CopyFrom(const ADataSet: TDataSet); overload;
+    procedure CopyTo(const ADataSet: TDataSet);
+    function Equal(const AAR-->Tabela.Nome<--: IAR-->Tabela.Nome<--): Boolean;==>
+}<==
+    procedure Persist; override;
+    procedure PersistSQL;
+    procedure SetRecordSet(const ARecordSet: _RecordSet; AOffset: Integer); override;==>
+if(temRelacionamentoComposicao()) {<==
+    procedure CancelSavePoint; override;
+    procedure RollBack; override;
+    procedure SavePoint; override;==>
+}<==
+  public
+    constructor Create(const AConnection: IActiveRecordConnection); override;==>
+if(Tabela.CampoApagadoEm) {<==
+    class procedure CleanDeleted(const AnteriorA: TDateTime; const AConnection: IActiveRecordConnection);==>
+}
+for(var i = 0; i < Tabela.Acesso.length; i++) {<==
+    class function Query-->nomeFindBy(Tabela.Acesso[i].Campos)<--(-->parametrosFindBy(Tabela.Acesso[i].Campos, "")<--const AConnection: IActiveRecordConnection): IActiveRecordQuery;
+    class function Find-->nomeFindBy(Tabela.Acesso[i].Campos)<--(-->parametrosFindBy(Tabela.Acesso[i].Campos, "")<--const AConnection: IActiveRecordConnection): -->Tabela.Acesso[i].RetornaVarios?"IIteratorAR" + Tabela.Nome:"IAR" + Tabela.Nome<--;==>
+}
+if(Tabela.Totalizacoes) {
+  for(var i = 0; i < Tabela.Totalizacoes.length; i++) {<==
+    class function Summary-->Tabela.Totalizacoes[i].Nome<--(-->parametrosFindBy(Tabela.Totalizacoes[i].CamposEntrada, "")<--const AConnection: IActiveRecordConnection): -->Tabela.Totalizacoes[i].TipoRetorno<--;==>
+  }
+}<==
+    class function GUIDItem: TGUID; override;
+    class function Metadata: IActiveRecordMetadata; override;
+    class function ViewMetadata: IActiveRecordMetadata; override;
+  end;
+
+  TAR-->Tabela.Nome<--Metadata = record
+    Table: TTableMetadata;==>
+if(Tabela.Relacionamentos && Tabela.Relacionamentos.length > 0) {<==
+    Relationships: array [0..-->Tabela.Relacionamentos.length - 1<--] of TRelationshipMetadata;==>
+}<==
+    Fields: array [0..-->Tabela.Campos.length - 1<--] of TFieldMetadata;
+  end;
+
+const==>
+if(Tabela.Relacionamentos && Tabela.Relacionamentos.length > 0) {
+  var anyToOne = [];
+  for(var i = 0; i < Tabela.Relacionamentos.length; i++) {
+    if (Tabela.Relacionamentos[i].Tipo != "1:N")
+      anyToOne.push(Tabela.Relacionamentos[i]);<==
+  Rel_-->Tabela.Nome<--_-->nomeRelacionamento(Tabela.Relacionamentos[i])<-- = -->i<--;==>
+  }
+  if (anyToOne.length > 0) {<==
+  Rel_-->Tabela.Nome<--_AllAnyToOne: array [0..-->anyToOne.length - 1<--] of Integer = (==>
+    for(var i = 0; i < anyToOne.length; i++) {<==
+    Rel_-->Tabela.Nome<--_-->nomeRelacionamento(anyToOne[i])<---->(i+1)<anyToOne.length?",":""<--==>
+    }<==);==>
+  }<==
+  Rel_-->Tabela.Nome<--_All: array [0..-->Tabela.Relacionamentos.length - 1<--] of Integer = (==>
+  for(var i = 0; i < Tabela.Relacionamentos.length; i++) {<==
+    Rel_-->Tabela.Nome<--_-->nomeRelacionamento(Tabela.Relacionamentos[i])<---->(i+1)<Tabela.Relacionamentos.length?",":""<--==>
+  }<==);==>
+}
+
+for(var i = 0; i < Tabela.Campos.length; i++) {<==
+  Campo_-->Tabela.Nome<--_-->Tabela.Campos[i].Nome<-- = -->i<--;==>
+}<==
+  -->Tabela.Nome<--_ReferenciaParaNovosCampos = Campo_-->Tabela.Nome<--_-->Tabela.Campos[Tabela.Campos.length - 1].Nome<-- + 1;
+  AR-->Tabela.Nome<--Metadata: TAR-->Tabela.Nome<--Metadata = (
+    Table: (Name: '-->Tabela.Nome<--'; PrimaryKeyFields: '-->relacionamentoCampos(Tabela.ChavePrimaria.Campos)<--'; DeletedField: '-->Tabela.CampoApagadoEm?Tabela.CampoApagadoEm:""<--');==>
+if(Tabela.Relacionamentos && Tabela.Relacionamentos.length > 0) {<==
+    Relationships: (==>
+  for(var i = 0; i < Tabela.Relacionamentos.length; i++) {<==
+      (Index: Rel_-->Tabela.Nome<--_-->nomeRelacionamento(Tabela.Relacionamentos[i])<--; Name: '-->nomeRelacionamento(Tabela.Relacionamentos[i])<--'; Commented: -->Tabela.Relacionamentos[i].Invisivel?"True":"False"<--;
+        RelationshipType: -->Tabela.Relacionamentos[i].Tipo=="1:N"?"arrtOneToMany":(Tabela.Relacionamentos[i].Tipo=="1:1"?"arrtOneToOne":"arrtManyToOne")<--; ClassActiveRecord: T-->Tabela.Relacionamentos[i].Model<--;
+        FromFields: '-->relacionamentoCampos(Tabela.Relacionamentos[i].CamposOrigem)<--'; ToFields: '-->relacionamentoCampos(Tabela.Relacionamentos[i].CamposDestino)<--';
+        AdditionalToConditions: '-->relacionamentoCampos(Tabela.Relacionamentos[i].CondicoesAdicionaisDestino)<--')-->i + 1 < Tabela.Relacionamentos.length?",":""<--==>
+  }<==
+    );==>
+}<==
+    Fields: (==>
+for(var i = 0; i < Tabela.Campos.length; i++) {<==
+      (Index: Campo_-->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--; Name: '-->Tabela.Campos[i].Nome<--'; FieldType: -->Tabela.Campos[i].FieldType<--; Length: -->Tabela.Campos[i].Tamanho?Tabela.Campos[i].Tamanho:"0"<--; Nullable: -->Tabela.Campos[i].Nullable?"True":"False"<--;
+        Caption: '-->Tabela.Campos[i].Caption?Tabela.Campos[i].Caption:Tabela.Campos[i].Nome<--'; Visible: -->Tabela.Campos[i].Hidden?"False":"True"<--; ReadOnly: -->Tabela.Campos[i].ReadOnly || Tabela.Campos[i].SetCommented?"True":"False"<--; Commented: -->Tabela.Campos[i].Invisivel?"True":"False"<--; 
+        Title: '-->Tabela.Campos[i].Title?Tabela.Campos[i].Title:(Tabela.Campos[i].Caption?Tabela.Campos[i].Caption:Tabela.Campos[i].Nome)<--'; ColumnCharWidth: -->Tabela.Campos[i].ColumnCharWidth<--)-->i + 1 < Tabela.Campos.length?",":""<--==>
+}<==
+    ));
+
+implementation
+
+type==>
+if(Tabela.Totalizacoes) {
+  for(var i = 0; i < Tabela.Totalizacoes.length; i++) {<==
+  TAR-->Tabela.Nome<--Summary-->Tabela.Totalizacoes[i].Nome<-- = class(TActiveRecordSingletonADO)
+  protected
+    procedure DefineParameters; override;
+    function GetCommandSQL: string; override;
+  public
+    function Summary-->Tabela.Totalizacoes[i].Nome<--(-->parametrosFindBy(Tabela.Totalizacoes[i].CamposEntrada, "")<--const AConnection: IActiveRecordConnection): -->Tabela.Totalizacoes[i].TipoRetorno<--;
+  end;
+==>
+  }
+}
+if(!Tabela.CampoApagadoEm) {<==
+  TAR-->Tabela.Nome<--Delete = class(TActiveRecordSingletonADO)
+  protected
+    procedure DefineParameters; override;
+    function GetCommandSQL: string; override;
+  public
+    procedure Persist(AAR-->Tabela.Nome<--: TAR-->Tabela.Nome<--);
+  end;
+==>
+} else {<==
+  TAR-->Tabela.Nome<--CleanDeleted = class(TActiveRecordSingletonADO)
+  protected
+    procedure DefineParameters; override;
+    function GetCommandSQL: string; override;
+  public
+    procedure Clean(const AnteriorA: TDateTime; const AConnection: IActiveRecordConnection);
+  end;
+==>
+}<==
+  TAR-->Tabela.Nome<--Insert = class(TActiveRecordSingletonADO)
+  protected
+    procedure DefineParameters; override;
+    function GetCommandSQL: string; override;
+  public
+    procedure Persist(AAR-->Tabela.Nome<--: TAR-->Tabela.Nome<--);
+  end;
+
+  TAR-->Tabela.Nome<--Update = class(TActiveRecordSingletonADO)
+  protected
+    procedure DefineParameters; override;
+    function GetCommandSQL: string; override;
+  public
+    procedure Persist(AAR-->Tabela.Nome<--: TAR-->Tabela.Nome<--);
+  end;
+
+  TAR-->Tabela.Nome<--MetadataObject = class(TInterfacedObject, IActiveRecordMetadata)
+  protected
+    { IActiveRecordMetadata }
+    function FieldCount: Integer;
+    function IndexOfName(const AName: string): Integer;
+    function FieldMetadata(Index: Integer): TFieldMetadata;
+    function FieldMetadataByName(const AName: string): TFieldMetadata;
+    function RelationshipCount: Integer;
+    function RelationshipMetadata(Index: Integer): TRelationshipMetadata;
+    function TableMetadata: TTableMetadata;
+  end;
+
+var==>
+for(var i = 0; i < Tabela.Acesso.length; i++) {<==
+  GQueryFactory-->nomeFindBy(Tabela.Acesso[i].Campos)<--: IActiveRecordQueryFactory;==>
+}
+
+if(!Tabela.CampoApagadoEm) {<==
+  GAR-->Tabela.Nome<--DeleteCriticalSection: TCriticalSection;==>
+}<==
+  GAR-->Tabela.Nome<--InsertCriticalSection: TCriticalSection;
+  GAR-->Tabela.Nome<--UpdateCriticalSection: TCriticalSection;
+
+{ TCollectionAR-->Tabela.Nome<-- }
+
+function TCollectionAR-->Tabela.Nome<--.Add(const Item: IAR-->Tabela.Nome<--): Integer;
+begin
+  Result := AddActiveRecord(Item);
+end;
+
+function TCollectionAR-->Tabela.Nome<--.First: IAR-->Tabela.Nome<--;
+begin
+  Result := nil;
+  if Count > 0 then
+    Result := GetItem(0);
+end;
+
+function TCollectionAR-->Tabela.Nome<--.GetItem(Index: Integer): IAR-->Tabela.Nome<--;
+begin
+  Result := List[Index] as IAR-->Tabela.Nome<--;
+end;
+
+procedure TCollectionAR-->Tabela.Nome<--.Insert(Index: Integer; const Item: IAR-->Tabela.Nome<--);
+begin
+  List.Insert(Index, Item);
+end;
+
+function TCollectionAR-->Tabela.Nome<--.Last: IAR-->Tabela.Nome<--;
+begin
+  Result := nil;
+  if Count > 0 then
+    Result := GetItem(Count - 1);
+end;
+
+function TCollectionAR-->Tabela.Nome<--.New(const AConnection: IActiveRecordConnection): IAR-->Tabela.Nome<--;
+begin
+  Result := ClassActiveRecord.Create(AConnection) as IAR-->Tabela.Nome<--;
+  Add(Result);
+end;
+
+{ TIteratorAR-->Tabela.Nome<--Decorator }
+
+function TIteratorAR-->Tabela.Nome<--Decorator.CurrentItem: IAR-->Tabela.Nome<--;
+begin
+  Result := CurrentItemActiveRecord as IAR-->Tabela.Nome<--;
+end;
+
+class function TIteratorAR-->Tabela.Nome<--Decorator.Decore(const ACollectionAR-->Tabela.Nome<--: ICollectionAR-->Tabela.Nome<--): IIteratorAR-->Tabela.Nome<--;
+begin
+  Result := Create(ACollectionAR-->Tabela.Nome<--);
+end;
+
+{ TIteratorAR-->Tabela.Nome<--QueryDecorator }
+
+function TIteratorAR-->Tabela.Nome<--QueryDecorator.CurrentItem: IAR-->Tabela.Nome<--;
+begin
+  Result := CurrentItemActiveRecord as IAR-->Tabela.Nome<--;
+end;
+
+class function TIteratorAR-->Tabela.Nome<--QueryDecorator.Decore(const AAR-->Tabela.Nome<--Query: IActiveRecordQuery): IIteratorAR-->Tabela.Nome<--;
+begin
+  Result := Create(AAR-->Tabela.Nome<--Query);
+end;
+
+{ TAR-->Tabela.Nome<-- }
+==>
+if(Tabela.MetodosAuxiliares) {<==
+procedure TAR-->Tabela.Nome<--.Assign(const AAR-->Tabela.Nome<--: IAR-->Tabela.Nome<--);
+begin==>
+  for(var i = 0; i < Tabela.Campos.length; i++) {
+    if(!Tabela.Campos[i].ReadOnly) {<==
+  -->Tabela.Campos[i].Invisivel?"//":""<--Set-->Tabela.Campos[i].Nome<--(AAR-->Tabela.Nome<--.-->Tabela.Campos[i].Nome<--);==>
+    }
+  }<==
+end;
+==>
+}
+
+if(Tabela.CampoApagadoEm) {<==
+class procedure TAR-->Tabela.Nome<--.CleanDeleted(const AnteriorA: TDateTime; const AConnection: IActiveRecordConnection);
+begin
+  TAR-->Tabela.Nome<--CleanDeleted.Create.Clean(AnteriorA, AConnection);
+end;
+==>
+}<==
+procedure TAR-->Tabela.Nome<--.Clear(Index: Integer);
+begin==>
+var titulo = false;
+for(var i = 0; i < Tabela.Campos.length; i++) {
+  if(Tabela.Campos[i].Padrao && !(Tabela.Campos[i].ReadOnly || Tabela.Campos[i].SetCommented)) {
+    if(!titulo) {<==
+  case Index of==>
+      titulo = true;
+    }<==
+    -->Tabela.Campos[i].Invisivel?"//":""<--Campo_-->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--: Set-->Tabela.Campos[i].Nome<--(-->Tabela.Campos[i].Padrao<--);==>
+  }
+}
+if(titulo) {<==
+  else
+    inherited;
+  end;==>
+} else {<==
+  inherited;==>
+}<==
+end;==>
+if (Tabela.TemBeforeSave) {
+<==
+
+procedure TAR-->Tabela.Nome<--.BeforeSave;
+begin
+  inherited;==>
+  for (var i = 0; i < Tabela.Campos.length; i++) {
+    if (Tabela.Campos[i].BeforeSave) {<==
+  F-->Tabela.Campos[i].Nome<-- := -->Tabela.Campos[i].BeforeSave<--;==>
+    }
+  }<==
+end;==>
+}<==
+
+procedure TAR-->Tabela.Nome<--.CopyFrom(AActiveRecord: TActiveRecord);
+var
+  LAR-->Tabela.Nome<--: TAR-->Tabela.Nome<--;
+begin
+  inherited;
+  LAR-->Tabela.Nome<-- := AActiveRecord as TAR-->Tabela.Nome<--;==>
+for(var i = 0; i < Tabela.Campos.length; i++) {<==
+  F-->Tabela.Campos[i].Nome<-- := LAR-->Tabela.Nome<--.F-->Tabela.Campos[i].Nome<--;==>
+}<==
+end;
+==>
+if(Tabela.MetodosAuxiliares) {<==
+procedure TAR-->Tabela.Nome<--.CopyFrom(const ADataSet: TDataSet);
+var
+  LField: TField;
+begin
+  if ADataSet.Active then
+  begin==>
+  for(var i = 0; i < Tabela.Campos.length; i++) {<==
+    LField := ADataSet.FindField('-->Tabela.Campos[i].Nome<--');
+    if Assigned(LField) then
+      F-->Tabela.Campos[i].Nome<-- := -->printf(Tabela.Campos[i].Acesso2FieldBDE, "LField")<--;==>
+  }<==
+  end;
+end;
+
+procedure TAR-->Tabela.Nome<--.CopyTo(const ADataSet: TDataSet);
+var
+  LField: TField;
+begin
+  if ADataSet.State in [dsEdit, dsInsert] then
+  begin==>
+  for(var i = 0; i < Tabela.Campos.length; i++) {<==
+    LField := ADataSet.FindField('-->Tabela.Campos[i].Nome<--');
+    if Assigned(LField) then
+      -->printf(Tabela.Campos[i].AtribueFieldBDE, "LField", "F"  + Tabela.Campos[i].Nome)<--;==>
+  }<==
+  end;
+end;
+==>
+}<==
+constructor TAR-->Tabela.Nome<--.Create(const AConnection: IActiveRecordConnection);
+begin
+  inherited;==>
+for(var i = 0; i < Tabela.Campos.length; i++) {
+  if(Tabela.Campos[i].Padrao) {<==
+  F-->Tabela.Campos[i].Nome<-- := -->Tabela.Campos[i].Padrao<--;==>
+  }
+}<==
+end;
+
+function TAR-->Tabela.Nome<--.CreateItemRelationship(Index: Integer): TActiveRecord;
+begin==>
+if(Tabela.Relacionamentos && Tabela.Relacionamentos.length > 0) {<==
+  case Index of==>
+  for(var i = 0; i < Tabela.Relacionamentos.length; i++) {<==
+    Rel_-->Tabela.Nome<--_-->nomeRelacionamento(Tabela.Relacionamentos[i])<--: begin==>
+    if (Tabela.Relacionamentos[i].Tipo == "1:N") {<==
+      if not Assigned(F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--) then
+        F-->nomeRelacionamento(Tabela.Relacionamentos[i])<-- := TCollection-->Tabela.Relacionamentos[i].Model<--.Create(T-->Tabela.Relacionamentos[i].Model<--);
+      Result := T-->Tabela.Relacionamentos[i].Model<--.Create(GetConnection);
+      F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--.Add(Result as I-->Tabela.Relacionamentos[i].Model<--);==>
+	} else {<==
+      Result := T-->Tabela.Relacionamentos[i].Model<--.Create(GetConnection);
+      F-->nomeRelacionamento(Tabela.Relacionamentos[i])<-- := Result as I-->Tabela.Relacionamentos[i].Model<--;==>
+	}<==
+    end;==>
+  }<==
+  else
+    Result := nil;
+  end;==>
+} else {<==
+  Result := nil;==>
+}<==
+end;
+
+function TAR-->Tabela.Nome<--.DisplayText(Index: Integer): string;
+begin==>
+var titulo = false;
+for(var i = 0; i < Tabela.Campos.length; i++) {
+  if(Tabela.Campos[i].DisplayText) {
+    if(!titulo) {<==
+  case Index of==>
+      titulo = true;
+    }<==
+    -->Tabela.Campos[i].Invisivel?"//":""<--Campo_-->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--: Result := -->printf(Tabela.Campos[i].DisplayText, "Get" + Tabela.Campos[i].Nome)<--;==>
+  }
+}
+if(titulo) {<==
+  else
+    Result := inherited DisplayText(Index);
+  end;==>
+} else {<==
+  Result := inherited DisplayText(Index);==>
+}<==
+end;==>
+
+if(Tabela.MetodosAuxiliares) {<==
+
+function TAR-->Tabela.Nome<--.Equal(const AAR-->Tabela.Nome<--: IAR-->Tabela.Nome<--): Boolean;
+begin
+  Result :===>
+  for(var i = 0; i < Tabela.Campos.length; i++) {
+    if(i % 50 == 0 && i != 0) {<==
+  Result := Result and==>
+    }
+    if(Tabela.Campos[i].Nullable) {<==
+    -->Tabela.Campos[i].Invisivel?"//":""<--EqualValues(Get-->Tabela.Campos[i].Nome<--, AAR-->Tabela.Nome<--.-->Tabela.Campos[i].Nome<--)-->(i + 1) % 50 != 0 && i + 1 < Tabela.Campos.length?" and":";"<--==>
+    } else {<==
+    -->Tabela.Campos[i].Invisivel?"//":""<--(Get-->Tabela.Campos[i].Nome<-- = AAR-->Tabela.Nome<--.-->Tabela.Campos[i].Nome<--)-->(i + 1) % 50 != 0 && i + 1 < Tabela.Campos.length?" and":";"<--==>
+    }
+  }<==
+end;==>
+}<==
+==>
+
+for(var i = 0; i < Tabela.Acesso.length; i++) {<==
+class function TAR-->Tabela.Nome<--.Query-->nomeFindBy(Tabela.Acesso[i].Campos)<--(-->parametrosFindBy(Tabela.Acesso[i].Campos, "")<--const AConnection: IActiveRecordConnection): IActiveRecordQuery;
+begin
+  Result := GQueryFactory-->nomeFindBy(Tabela.Acesso[i].Campos)<--.CreateQuery(AConnection, Self);==>
+  for(var j = 0; j < Tabela.Acesso[i].Campos.length; j++) {<==
+  Result.-->retornaCampo(Tabela.Acesso[i].Campos[j]).QuerySetParameter<--(A-->Tabela.Acesso[i].Campos[j]<--);==>
+  }<==
+end;
+
+class function TAR-->Tabela.Nome<--.Find-->nomeFindBy(Tabela.Acesso[i].Campos)<--(-->parametrosFindBy(Tabela.Acesso[i].Campos, "")<--const AConnection: IActiveRecordConnection): -->Tabela.Acesso[i].RetornaVarios?"IIteratorAR" + Tabela.Nome:"IAR" + Tabela.Nome<--;
+begin==>
+  if(Tabela.Acesso[i].RetornaVarios) {<==
+  Result := TIteratorAR-->Tabela.Nome<--QueryDecorator.Decore(Query-->nomeFindBy(Tabela.Acesso[i].Campos)<--(-->parametrosFindBySimples(Tabela.Acesso[i].Campos, "")<--AConnection));==>
+  } else {<==
+  Result := Query-->nomeFindBy(Tabela.Acesso[i].Campos)<--(-->parametrosFindBySimples(Tabela.Acesso[i].Campos, "")<--AConnection).FirstActiveRecord as IAR-->Tabela.Nome<--;==>
+  }<==
+end;
+==>
+}
+
+if(Tabela.Totalizacoes) {
+  for(var i = 0; i < Tabela.Totalizacoes.length; i++) {<==
+class function TAR-->Tabela.Nome<--.Summary-->Tabela.Totalizacoes[i].Nome<--(-->parametrosFindBy(Tabela.Totalizacoes[i].CamposEntrada, "")<--const AConnection: IActiveRecordConnection): -->Tabela.Totalizacoes[i].TipoRetorno<--;
+begin
+  Result := TAR-->Tabela.Nome<--Summary-->Tabela.Totalizacoes[i].Nome<--.Create.Summary-->Tabela.Totalizacoes[i].Nome<--(-->parametrosFindBySimples(Tabela.Totalizacoes[i].CamposEntrada, "")<--AConnection);
+end;
+==>
+  }
+}
+
+for(var i = 0; i < Tabela.Campos.length; i++) {<==
+function TAR-->Tabela.Nome<--.Get-->Tabela.Campos[i].Nome<--: -->Tabela.Campos[i].TipoPascal<--;
+begin
+  Result := F-->Tabela.Campos[i].Nome<--;
+end;
+==>
+}
+
+if(Tabela.Relacionamentos) {
+  for(var i = 0; i < Tabela.Relacionamentos.length; i++) {<==
+function TAR-->Tabela.Nome<--.Get-->nomeRelacionamento(Tabela.Relacionamentos[i])<--: -->Tabela.Relacionamentos[i].Tipo == "1:N"?"ICollection":"I"<---->Tabela.Relacionamentos[i].Model<--;
+begin
+  if not Assigned(F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--) then==>
+    switch (Tabela.Relacionamentos[i].Tipo) {
+      case "N:1":<==
+    F-->nomeRelacionamento(Tabela.Relacionamentos[i])<-- := -->constructorRelacionamento(Tabela.Relacionamentos[i])<--.Find-->nomeFindBy(Tabela.Relacionamentos[i].CamposDestino)<--(-->relacionamentoParametrosFindBy(Tabela.Relacionamentos[i].CamposOrigem)<--GetConnection);==>
+        break;
+      case "1:N":<==
+    if not GetNovo then
+      F-->nomeRelacionamento(Tabela.Relacionamentos[i])<-- := TCollection-->Tabela.Relacionamentos[i].Model<--.CreateFromIterator(-->constructorRelacionamento(Tabela.Relacionamentos[i])<--.Find-->nomeFindBy(Tabela.Relacionamentos[i].CamposDestino)<--(-->Tabela.Relacionamentos[i].DestinoNullable?relacionamentoParametrosNullableFindBy(Tabela.Relacionamentos[i].CamposOrigem):relacionamentoParametrosFindBy(Tabela.Relacionamentos[i].CamposOrigem)<--GetConnection))
+    else
+      F-->nomeRelacionamento(Tabela.Relacionamentos[i])<-- := TCollection-->Tabela.Relacionamentos[i].Model<--.Create(T-->Tabela.Relacionamentos[i].Model<--);==>
+        break;
+      case "1:1":<==
+    if not GetNovo then
+      F-->nomeRelacionamento(Tabela.Relacionamentos[i])<-- := -->constructorRelacionamento(Tabela.Relacionamentos[i])<--.Find-->nomeFindBy(Tabela.Relacionamentos[i].CamposDestino)<--(-->relacionamentoParametrosFindBy(Tabela.Relacionamentos[i].CamposOrigem)<--GetConnection);
+    if not Assigned(F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--) then
+      F-->nomeRelacionamento(Tabela.Relacionamentos[i])<-- := T-->Tabela.Relacionamentos[i].Model<--.Create(GetConnection);==>
+        break;
+    }<==
+  Result := F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--;
+end;
+==>
+  }
+}
+<==
+function TAR-->Tabela.Nome<--.GetAsString(Index: Integer): string;
+begin
+  case Index of==>
+for(var i = 0; i < Tabela.Campos.length; i++) {<==
+    -->Tabela.Campos[i].Invisivel?"//":""<--Campo_-->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--: Result := -->printf(Tabela.Campos[i].GetAsString, "Get" + Tabela.Campos[i].Nome)<--;==>
+}<==
+  else
+    Result := inherited GetAsString(Index);
+  end;
+end;
+
+function TAR-->Tabela.Nome<--.GetValue(Index: Integer): Variant;
+begin
+  case Index of==>
+for(var i = 0; i < Tabela.Campos.length; i++) {<==
+    -->Tabela.Campos[i].Invisivel?"//":""<--Campo_-->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--: Result := -->printf(Tabela.Campos[i].GetValue, "Get" + Tabela.Campos[i].Nome)<--;==>
+}<==
+  else
+    Result := inherited GetValue(Index);
+  end;
+end;
+
+class function TAR-->Tabela.Nome<--.GUIDItem: TGUID;
+begin
+  Result := IAR-->Tabela.Nome<--;
+end;
+
+function TAR-->Tabela.Nome<--.IsNull(Index: Integer): Boolean;
+begin
+  case Index of
+    ==>
+var temNaoNullable = false;
+for(var i = 0; i < Tabela.Campos.length; i++) {
+  if(!Tabela.Campos[i].Nullable) {
+    <==-->(temNaoNullable?",\r\n    ":"")<--Campo_-->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--==>
+    temNaoNullable = true;
+  }
+}
+if(temNaoNullable) {
+<==: Result := False;==>
+}
+for(var i = 0; i < Tabela.Campos.length; i++) {
+  if(Tabela.Campos[i].Nullable) {<==
+    -->Tabela.Campos[i].Invisivel?"//":""<--Campo_-->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--: Result := Get-->Tabela.Campos[i].Nome<--.Null;==>
+  }
+}<==
+  else
+    Result := inherited IsNull(Index);
+  end;
+end;
+
+procedure TAR-->Tabela.Nome<--.SetAsString(Index: Integer; const Value: string);
+begin
+  case Index of==>
+for(var i = 0; i < Tabela.Campos.length; i++) {
+  if(!(Tabela.Campos[i].ReadOnly || Tabela.Campos[i].SetCommented)) {<==
+    -->Tabela.Campos[i].Invisivel?"//":""<--Campo_-->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--: -->printf(Tabela.Campos[i].SetAsString, Tabela.Campos[i].Nome)<--;==>
+  } else {<==
+    -->Tabela.Campos[i].Invisivel?"//":""<--Campo_-->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--: raise EActiveRecord.Create('Campo -->Tabela.Campos[i].Nome<-- é somente leitura');==>
+  }
+}<==
+  else
+    inherited;
+  end;
+end;
+
+procedure TAR-->Tabela.Nome<--.SetValue(Index: Integer; const Value: Variant);
+begin
+  case Index of==>
+for(var i = 0; i < Tabela.Campos.length; i++) {
+  if(!(Tabela.Campos[i].ReadOnly || Tabela.Campos[i].SetCommented)) {<==
+    -->Tabela.Campos[i].Invisivel?"//":""<--Campo_-->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--: -->printf(Tabela.Campos[i].SetValue, Tabela.Campos[i].Nome)<--;==>
+  } else {<==
+    -->Tabela.Campos[i].Invisivel?"//":""<--Campo_-->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--: raise EActiveRecord.Create('Campo -->Tabela.Campos[i].Nome<-- é somente leitura');==>
+  }
+}<==
+  else
+    inherited;
+  end;
+end;
+==>
+for(var i = 0; i < Tabela.Campos.length; i++) {
+  if(!Tabela.Campos[i].ReadOnly) {<==
+procedure TAR-->Tabela.Nome<--.Set-->Tabela.Campos[i].Nome<--(const Value: -->Tabela.Campos[i].TipoPascal<--);
+begin
+  F-->Tabela.Campos[i].Nome<-- := -->Tabela.Campos[i].AjustaSet?Tabela.Campos[i].AjustaSet:"Value"<--;==>
+    if (afetaCamposOrigem[Tabela.Campos[i].Nome]) {
+      for (var j = 0; j < afetaCamposOrigem[Tabela.Campos[i].Nome].length; j++) {<==
+  F-->afetaCamposOrigem[Tabela.Campos[i].Nome][j]<-- := nil;==>
+      }
+    }<==
+end;
+==>
+  }
+}
+
+<==
+class function TAR-->Tabela.Nome<--.Metadata: IActiveRecordMetadata;
+begin
+  Result := TAR-->Tabela.Nome<--MetadataObject.Create;
+end;
+
+procedure TAR-->Tabela.Nome<--.Persist;
+begin
+  PersistSQL;
+end;
+
+procedure TAR-->Tabela.Nome<--.PersistSQL;
+begin
+  if GetDeleted then==>
+if(!Tabela.CampoApagadoEm) {<==
+  begin
+    GAR-->Tabela.Nome<--DeleteCriticalSection.Acquire;
+    try
+      TAR-->Tabela.Nome<--Delete.Create.Persist(Self);
+    finally
+      GAR-->Tabela.Nome<--DeleteCriticalSection.Release;
+    end;
+  end==>
+} else {<==
+  begin
+    GAR-->Tabela.Nome<--UpdateCriticalSection.Acquire;
+    try
+      F-->Tabela.CampoApagadoEm<-- := NullableDateTime(DatabaseNow(GetConnection));==>
+  if(Tabela.CampoApagadoPorQuem) {<==
+      F-->Tabela.CampoApagadoPorQuem<-- := Nullable(UserCode);==>
+  }<==
+      TAR-->Tabela.Nome<--Update.Create.Persist(Self);
+    finally
+      GAR-->Tabela.Nome<--UpdateCriticalSection.Release;
+    end;
+  end==>
+}<==
+  else
+  begin
+    if GetNovo then
+    begin
+      GAR-->Tabela.Nome<--InsertCriticalSection.Acquire;
+      try
+        TAR-->Tabela.Nome<--Insert.Create.Persist(Self);
+      finally
+        GAR-->Tabela.Nome<--InsertCriticalSection.Release;
+      end;
+    end
+    else
+    begin
+      GAR-->Tabela.Nome<--UpdateCriticalSection.Acquire;
+      try
+        TAR-->Tabela.Nome<--Update.Create.Persist(Self);
+      finally
+        GAR-->Tabela.Nome<--UpdateCriticalSection.Release;
+      end;
+    end;==>
+if(Tabela.Relacionamentos) {
+  for(var i = 0; i < Tabela.Relacionamentos.length; i++) {
+    if(Tabela.Relacionamentos[i].Tipo == "1:N") {<==
+    if Assigned(F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--) then
+    begin
+      with TIterator-->Tabela.Relacionamentos[i].Model<--Decorator.Decore(Get-->nomeRelacionamento(Tabela.Relacionamentos[i])<--) do
+        while Next do
+        begin==>
+      for(var j = 0; j < Tabela.Relacionamentos[i].CamposDestino.length; j++) {<==
+          CurrentItem.-->Tabela.Relacionamentos[i].CamposDestino[j]<-- := -->Tabela.Relacionamentos[i].DestinoNullable?"Nullable(":""<--Self.Get-->Tabela.Relacionamentos[i].CamposOrigem[j]<---->Tabela.Relacionamentos[i].DestinoNullable?")":""<--;==>
+      }<==
+          CurrentItem.Save;
+        end;
+      if not GetNovo then
+        F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--.CleanDeleted;
+    end;==>
+    }
+    if(Tabela.Relacionamentos[i].Tipo == "1:1") {<==
+    if Assigned(F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--) then
+    begin==>
+      for(var j = 0; j < Tabela.Relacionamentos[i].CamposDestino.length; j++) {<==
+      F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--.-->Tabela.Relacionamentos[i].CamposDestino[j]<-- := -->Tabela.Relacionamentos[i].DestinoNullable?"Nullable(":""<--Self.Get-->Tabela.Relacionamentos[i].CamposOrigem[j]<---->Tabela.Relacionamentos[i].DestinoNullable?")":""<--;==>
+      }<==
+      F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--.Save;
+    end;==>
+    }
+  }
+}<==
+  end;
+end;
+
+procedure TAR-->Tabela.Nome<--.SetRecordSet(const ARecordSet: _RecordSet; AOffset: Integer);
+begin==>
+for(var i = 0; i < Tabela.ChavePrimaria.Campos.length; i++) {<==
+  FPrimaryKey-->Tabela.ChavePrimaria.Campos[i]<-- := -->retornaCampo(Tabela.ChavePrimaria.Campos[i]).AcessoFieldADO<--;==>
+}
+for(var j = 0; j < Tabela.Campos.length; j++) {<==
+  F-->Tabela.Campos[j].Nome<-- := -->Tabela.Campos[j].AcessoFieldADO<--;==>
+}<==
+end;==>
+if(temRelacionamentoComposicao()) {<==
+
+procedure TAR-->Tabela.Nome<--.CancelSavePoint;
+begin
+  inherited;==>
+  for(var i = 0; i < Tabela.Relacionamentos.length; i++) {
+    if(Tabela.Relacionamentos[i].Tipo == "1:N") {<==
+  if Assigned(F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--) then
+  begin
+    with TIterator-->Tabela.Relacionamentos[i].Model<--Decorator.Decore(Get-->nomeRelacionamento(Tabela.Relacionamentos[i])<--) do
+      while Next do
+        CurrentItem.CancelSavePoint;
+  end;==>
+    }
+    if(Tabela.Relacionamentos[i].Tipo == "1:1") {<==
+  if Assigned(F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--) then
+    F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--.CancelSavePoint;==>
+    }
+  }<==
+end;
+
+procedure TAR-->Tabela.Nome<--.RollBack;
+begin
+  inherited;==>
+  for(var i = 0; i < Tabela.Relacionamentos.length; i++) {
+    if(Tabela.Relacionamentos[i].Tipo == "1:N") {<==
+  if Assigned(F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--) then
+  begin
+    with TIterator-->Tabela.Relacionamentos[i].Model<--Decorator.Decore(Get-->nomeRelacionamento(Tabela.Relacionamentos[i])<--) do
+      while Next do
+        if CurrentItem.Novo then
+          CurrentItem.MarkDeleted
+        else
+          CurrentItem.RollBack;
+    Get-->nomeRelacionamento(Tabela.Relacionamentos[i])<--.CleanDeleted;
+  end;==>
+    }
+    if(Tabela.Relacionamentos[i].Tipo == "1:1") {<==
+  if Assigned(F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--) then
+    F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--.RollBack;==>
+    }
+  }<==
+end;
+
+procedure TAR-->Tabela.Nome<--.SavePoint;
+begin
+  inherited;==>
+  for(var i = 0; i < Tabela.Relacionamentos.length; i++) {
+    if(Tabela.Relacionamentos[i].Tipo == "1:N") {<==
+  if Assigned(F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--) then
+  begin
+    with TIterator-->Tabela.Relacionamentos[i].Model<--Decorator.Decore(Get-->nomeRelacionamento(Tabela.Relacionamentos[i])<--) do
+      while Next do
+        CurrentItem.SavePoint;
+  end;==>
+    }
+    if(Tabela.Relacionamentos[i].Tipo == "1:1") {<==
+  if Assigned(F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--) then
+    F-->nomeRelacionamento(Tabela.Relacionamentos[i])<--.SavePoint;==>
+    }
+  }<==
+end;==>
+}<==
+
+class function TAR-->Tabela.Nome<--.ViewMetadata: IActiveRecordMetadata;
+begin
+  Result := Metadata;
+end;
+==>
+if(Tabela.Totalizacoes) {
+  for(var i = 0; i < Tabela.Totalizacoes.length; i++) {<==
+{ TAR-->Tabela.Nome<--Summary-->Tabela.Totalizacoes[i].Nome<-- }
+
+procedure TAR-->Tabela.Nome<--Summary-->Tabela.Totalizacoes[i].Nome<--.DefineParameters;
+begin==>
+    var campo = "";
+    for(var j = 0; j < Tabela.Totalizacoes[i].CamposEntrada.length; j++) {
+      if (typeof Tabela.Totalizacoes[i].CamposEntrada[j] === "string") {<==
+  Command.Parameters.Append(Command.CreateParameter('-->Tabela.Totalizacoes[i].CamposEntrada[j]<--', -->retornaCampo(Tabela.Totalizacoes[i].CamposEntrada[j]).TipoADO<--, adParamInput, -->retornaCampo(Tabela.Totalizacoes[i].CamposEntrada[j]).TamanhoADO<--, Null));==>
+      } else {<==
+  Command.Parameters.Append(Command.CreateParameter('-->Tabela.Totalizacoes[i].CamposEntrada[j].Campo<--', -->Tabela.Totalizacoes[i].CamposEntrada[j].TipoADO<--, adParamInput, -->Tabela.Totalizacoes[i].CamposEntrada[j].TamanhoADO<--, Null));==>
+      }
+    }<==
+end;
+
+function TAR-->Tabela.Nome<--Summary-->Tabela.Totalizacoes[i].Nome<--.GetCommandSQL: string;
+begin
+  Result :=
+    'select'#13#10 +
+    '  -->Tabela.Totalizacoes[i].Funcao<--'#13#10 +
+    'from'#13#10 +
+    '  -->Tabela.Nome.toLowerCase()<--'#13#10==>
+    if((Tabela.Totalizacoes[i].CamposEntrada.length > 0) || Tabela.CampoApagadoEm) {<== +
+    'where'#13#10 +==>
+      for(var j = 0; j < Tabela.Totalizacoes[i].CamposEntrada.length; j++) {
+        if (typeof Tabela.Totalizacoes[i].CamposEntrada[j] === "string") {<==
+    '  -->Tabela.Totalizacoes[i].CamposEntrada[j].toLowerCase()<-- = ?-->(j + 1 < Tabela.Totalizacoes[i].CamposEntrada.length || Tabela.CampoApagadoEm)?" and'#13#10 +":"'"<--==>
+        } else {<==
+    '  -->Tabela.Totalizacoes[i].CamposEntrada[j].Operacao<---->(j + 1 < Tabela.Totalizacoes[i].CamposEntrada.length || Tabela.CampoApagadoEm)?" and'#13#10 +":"'"<--==>
+        }
+      }
+    }
+    if(Tabela.CampoApagadoEm) {<==
+    '  -->Tabela.CampoApagadoEm.toLowerCase()<-- is null'==>
+    }<==;
+end;
+
+function TAR-->Tabela.Nome<--Summary-->Tabela.Totalizacoes[i].Nome<--.Summary-->Tabela.Totalizacoes[i].Nome<--(-->parametrosFindBy(Tabela.Totalizacoes[i].CamposEntrada, "")<--const AConnection: IActiveRecordConnection): -->Tabela.Totalizacoes[i].TipoRetorno<--;
+var
+  LRecordSet: _RecordSet;
+  LRecordsAffected: OleVariant;
+begin
+  SetConnection(AConnection);==>
+    var campo = "";
+    for(var j = 0; j < Tabela.Totalizacoes[i].CamposEntrada.length; j++) {
+      if (typeof Tabela.Totalizacoes[i].CamposEntrada[j] === "string") {<==
+  -->printf(retornaCampo(Tabela.Totalizacoes[i].CamposEntrada[j]).AtribueParametroADO, "Command.Parameters[" + j + "]", "A" + Tabela.Totalizacoes[i].CamposEntrada[j])<--;==>
+      } else {<==
+  -->printf(Tabela.Totalizacoes[i].CamposEntrada[j].AtribueParametroADO, "Command.Parameters[" + j + "]", "A" + Tabela.Totalizacoes[i].CamposEntrada[j].Campo)<--;==>
+      }
+    }<==
+  LRecordSet := Command.Execute(LRecordsAffected, EmptyParam, 0);
+  try
+    Result := -->summaryAcessoFieldADO(Tabela.Totalizacoes[i].TipoRetorno)<--;
+  finally
+    LRecordSet.Close;
+    Command.Set_ActiveConnection(nil);
+  end;
+end;
+==>
+  }
+}
+if(!Tabela.CampoApagadoEm) {<==
+{ TAR-->Tabela.Nome<--Delete }
+
+procedure TAR-->Tabela.Nome<--Delete.DefineParameters;
+begin==>
+  for(var i = 0; i < Tabela.ChavePrimaria.Campos.length; i++) {<==
+  Command.Parameters.Append(Command.CreateParameter('-->Tabela.ChavePrimaria.Campos[i]<--', -->retornaCampo(Tabela.ChavePrimaria.Campos[i]).TipoADO<--, adParamInput, -->retornaCampo(Tabela.ChavePrimaria.Campos[i]).TamanhoADO<--, Null));==>
+  }<==
+end;
+
+function TAR-->Tabela.Nome<--Delete.GetCommandSQL: string;
+begin
+  Result :=
+    'delete from -->Tabela.Nome.toLowerCase()<--'#13#10 +==>
+  if(Tabela.ChavePrimaria.Campos.length > 0) {<==
+    'where'#13#10 +==>
+    for(var i = 0; i < Tabela.ChavePrimaria.Campos.length; i++) {<==
+    '  -->Tabela.ChavePrimaria.Campos[i].toLowerCase()<-- = ?-->i + 1 < Tabela.ChavePrimaria.Campos.length?" and'#13#10 +":"';"<--==>
+    }
+  }<==
+end;
+
+procedure TAR-->Tabela.Nome<--Delete.Persist(AAR-->Tabela.Nome<--: TAR-->Tabela.Nome<--);
+begin
+  inherited Persist(AAR-->Tabela.Nome<--);==>
+var c = 0;<==
+  //Chaves==>
+for(var i = 0; i < Tabela.ChavePrimaria.Campos.length; i++) {<==
+  -->printf(retornaCampo(Tabela.ChavePrimaria.Campos[i]).AtribueParametroADO, "Command.Parameters[" + (c++) + "]", "AAR" + Tabela.Nome + ".F"  + Tabela.ChavePrimaria.Campos[i])<--;==>
+}<==
+  if Execute <> 1 then
+    raise EActiveRecord.Create('Delete Failed TAR-->Tabela.Nome<--Delete');
+end;
+==>
+} else {<==
+{ TAR-->Tabela.Nome<--CleanDeleted }
+
+procedure TAR-->Tabela.Nome<--CleanDeleted.Clean(const AnteriorA: TDateTime; const AConnection: IActiveRecordConnection);
+begin
+  SetConnection(AConnection);
+  Command.Parameters[0].Value := AnteriorA;
+  Execute;
+end;
+
+procedure TAR-->Tabela.Nome<--CleanDeleted.DefineParameters;
+begin
+  Command.Parameters.Append(Command.CreateParameter('-->Tabela.CampoApagadoEm.toLowerCase()<--', adDBTimeStamp, adParamInput, 0, Null));
+end;
+
+function TAR-->Tabela.Nome<--CleanDeleted.GetCommandSQL: string;
+begin
+  Result :=
+    'delete from -->Tabela.Nome.toLowerCase()<--'#13#10 +
+    'where'#13#10 +
+    '  -->Tabela.CampoApagadoEm.toLowerCase()<-- < ?';
+end;
+==>
+}<==
+{ TAR-->Tabela.Nome<--Insert }
+
+procedure TAR-->Tabela.Nome<--Insert.DefineParameters;
+begin==>
+for(var i = 0; i < Tabela.Campos.length; i++) {
+  if(!autoIncremento(Tabela.Campos[i].Nome) && !Tabela.Campos[i].FormulaInsert && !Tabela.Campos[i].NotInsert) {<==
+  Command.Parameters.Append(Command.CreateParameter('-->Tabela.Campos[i].Nome<--', -->Tabela.Campos[i].TipoADO<--, adParamInput, -->Tabela.Campos[i].TamanhoADO<--, Null));==>
+  }
+}<==
+end;
+
+function TAR-->Tabela.Nome<--Insert.GetCommandSQL: string;
+begin
+  Result :=
+    'insert into -->Tabela.Nome.toLowerCase()<-- ('#13#10 +==>
+for(var j = 0; (j * 5) < Tabela.Campos.length; j++) {<==
+    ' ==>
+  for(var k = 0; k < 5; k++) {
+    if((j * 5) + k < Tabela.Campos.length) {
+      if(!autoIncremento(Tabela.Campos[(j * 5) + k].Nome) && !Tabela.Campos[(j * 5) + k].NotInsert) {
+        <== -->Tabela.Campos[(j * 5) + k].Nome.toLowerCase() + ((j * 5) + k + 1 < Tabela.Campos.length?",":"")<--==>
+      }
+    }
+  }<=='#13#10 +==>
+}<==
+    ')-->(Tabela.ChavePrimaria.Tipo == "AutoInc")?" output inserted." + Tabela.ChavePrimaria.CampoAutoInc.toLowerCase():""<-- values ('#13#10 +==>
+for(var j = 0; (j * 5) < Tabela.Campos.length; j++) {<==
+    ' ==>
+  for(var k = 0; k < 5; k++) {
+    if((j * 5) + k < Tabela.Campos.length) {
+      if(!autoIncremento(Tabela.Campos[(j * 5) + k].Nome) && !Tabela.Campos[(j * 5) + k].NotInsert) {
+        <== -->(Tabela.Campos[(j * 5) + k].FormulaInsert?Tabela.Campos[(j * 5) + k].FormulaInsert:"?") + ((j * 5) + k + 1 < Tabela.Campos.length?",":"")<--==>
+      }
+    }
+  }<=='#13#10 +==>
+}<==
+    ')';
+end;
+
+procedure TAR-->Tabela.Nome<--Insert.Persist(AAR-->Tabela.Nome<--: TAR-->Tabela.Nome<--);
+begin
+  inherited Persist(AAR-->Tabela.Nome<--);==>
+switch (Tabela.ChavePrimaria.Tipo) {
+  case "CtrlID":
+    if(retornaCampo(Tabela.ChavePrimaria.Campos[0]).Nullable) {<==
+  if AAR-->Tabela.Nome<--.F-->Tabela.ChavePrimaria.Campos[0]<--.Null then
+    AAR-->Tabela.Nome<--.F-->Tabela.ChavePrimaria.Campos[0]<-- := TActiveRecord.Nullable(GetNewCtrl_ID('-->Tabela.ChavePrimaria.CtrlID?Tabela.ChavePrimaria.CtrlID:Tabela.Nome<--'));==>
+    } else {<==
+  if AAR-->Tabela.Nome<--.F-->Tabela.ChavePrimaria.Campos[0]<-- = 0 then
+    AAR-->Tabela.Nome<--.F-->Tabela.ChavePrimaria.Campos[0]<-- := GetNewCtrl_ID('-->Tabela.ChavePrimaria.CtrlID?Tabela.ChavePrimaria.CtrlID:Tabela.Nome<--');==>
+    }
+    break;
+}
+for(var i = 0, c = 0; i < Tabela.Campos.length; i++) {
+  if(!autoIncremento(Tabela.Campos[i].Nome) && !Tabela.Campos[i].FormulaInsert && !Tabela.Campos[i].NotInsert) {<==
+  -->printf(Tabela.Campos[i].AtribueParametroADO, "Command.Parameters[" + c + "]", "AAR" + Tabela.Nome + ".F"  + Tabela.Campos[i].Nome)<--;==>
+    c++;
+  }
+}
+if (Tabela.ChavePrimaria.Tipo == "AutoInc") {<==
+  -->"AAR" + Tabela.Nome + ".F" + Tabela.ChavePrimaria.CampoAutoInc<-- := ExecuteReturnAutoInc;==>
+} else {<==
+  Execute;==>
+}<==
+  //Atribuições das Chaves após o insert==>
+for(var i = 0; i < Tabela.ChavePrimaria.Campos.length; i++) {<==
+  -->"AAR" + Tabela.Nome + ".FPrimaryKey"  + Tabela.ChavePrimaria.Campos[i]<-- := -->"AAR" + Tabela.Nome + ".F" + Tabela.ChavePrimaria.Campos[i]<--;==>
+}<==
+end;
+
+{ TAR-->Tabela.Nome<--Update }
+
+procedure TAR-->Tabela.Nome<--Update.DefineParameters;
+begin==>
+for(var i = 0; i < Tabela.Campos.length; i++) {
+  if(!autoIncremento(Tabela.Campos[i].Nome) && !Tabela.Campos[i].FormulaUpdate && !Tabela.Campos[i].NotUpdate) {<==
+  Command.Parameters.Append(Command.CreateParameter('-->Tabela.Campos[i].Nome<--', -->Tabela.Campos[i].TipoADO<--, adParamInput, -->Tabela.Campos[i].TamanhoADO<--, Null));==>
+  }
+}<==
+  //Chaves==>
+for(var i = 0; i < Tabela.ChavePrimaria.Campos.length; i++) {<==
+  Command.Parameters.Append(Command.CreateParameter('PrimaryKey-->Tabela.ChavePrimaria.Campos[i]<--', -->retornaCampo(Tabela.ChavePrimaria.Campos[i]).TipoADO<--, adParamInput, -->retornaCampo(Tabela.ChavePrimaria.Campos[i]).TamanhoADO<--, Null));==>
+}<==
+end;
+
+function TAR-->Tabela.Nome<--Update.GetCommandSQL: string;
+begin
+  Result :=
+    'update -->Tabela.Nome.toLowerCase()<-- set'#13#10 +==>
+for(var j = 0; (j * 3) < Tabela.Campos.length; j++) {<==
+    ' ==>
+  for(var k = 0; k < 3; k++) {
+    if((j * 3) + k < Tabela.Campos.length) {
+      if(!autoIncremento(Tabela.Campos[(j * 3) + k].Nome) && !Tabela.Campos[(j * 3) + k].NotUpdate) {
+        <== -->Tabela.Campos[(j * 3) + k].Nome.toLowerCase() + " = " + (Tabela.Campos[(j * 3) + k].FormulaUpdate?Tabela.Campos[(j * 3) + k].FormulaUpdate:"?") + ((j * 3) + k + 1 < Tabela.Campos.length?",":"")<--==>
+      }
+    }
+  }<=='#13#10 +==>
+}
+if(Tabela.ChavePrimaria.Campos.length > 0) {<==
+    'where'#13#10 +==>
+  for(var i = 0; i < Tabela.ChavePrimaria.Campos.length; i++) {<==
+    '  -->Tabela.ChavePrimaria.Campos[i].toLowerCase()<-- = ?-->i + 1 < Tabela.ChavePrimaria.Campos.length?" and'#13#10 +":"';"<--==>
+  }
+}<==
+end;
+
+procedure TAR-->Tabela.Nome<--Update.Persist(AAR-->Tabela.Nome<--: TAR-->Tabela.Nome<--);
+begin
+  inherited Persist(AAR-->Tabela.Nome<--);==>
+var c = 0;
+for(var i = 0; i < Tabela.Campos.length; i++) {
+  if(!autoIncremento(Tabela.Campos[i].Nome) && !Tabela.Campos[i].FormulaUpdate && !Tabela.Campos[i].NotUpdate) {<==
+  -->printf(Tabela.Campos[i].AtribueParametroADO, "Command.Parameters[" + c + "]", "AAR" + Tabela.Nome + ".F"  + Tabela.Campos[i].Nome)<--;==>
+    c++;
+  }
+}<==
+  //Chaves==>
+for(var i = 0; i < Tabela.ChavePrimaria.Campos.length; i++) {<==
+  -->printf(retornaCampo(Tabela.ChavePrimaria.Campos[i]).AtribueParametroADO, "Command.Parameters[" + (c++) + "]", "AAR" + Tabela.Nome + ".FPrimaryKey"  + Tabela.ChavePrimaria.Campos[i])<--;==>
+}<==
+  if Execute <> 1 then
+    raise EActiveRecord.Create('Update Failed TAR-->Tabela.Nome<--Update');
+end;
+
+{ TAR-->Tabela.Nome<--MetadataObject }
+
+function TAR-->Tabela.Nome<--MetadataObject.FieldCount: Integer;
+begin
+  Result := Length(AR-->Tabela.Nome<--Metadata.Fields);
+end;
+
+function TAR-->Tabela.Nome<--MetadataObject.FieldMetadata(Index: Integer): TFieldMetadata;
+begin
+  Result := AR-->Tabela.Nome<--Metadata.Fields[Index];
+end;
+
+function TAR-->Tabela.Nome<--MetadataObject.FieldMetadataByName(const AName: string): TFieldMetadata;
+begin
+  Result := FieldMetadata(IndexOfName(AName));
+end;
+
+function TAR-->Tabela.Nome<--MetadataObject.IndexOfName(const AName: string): Integer;
+var
+  laco: Integer;
+begin
+  Result := -1;
+  for laco := 0 to High(AR-->Tabela.Nome<--Metadata.Fields) do
+    if SameText(AR-->Tabela.Nome<--Metadata.Fields[laco].Name, AName) then
+    begin
+      Result := laco;
+      Break;
+    end;
+end;
+
+function TAR-->Tabela.Nome<--MetadataObject.RelationshipCount: Integer;
+begin==>
+if(Tabela.Relacionamentos && Tabela.Relacionamentos.length > 0) {<==
+  Result := Length(AR-->Tabela.Nome<--Metadata.Relationships);==>
+} else {<==
+  Result := 0;==>
+}<==
+end;
+
+function TAR-->Tabela.Nome<--MetadataObject.RelationshipMetadata(Index: Integer): TRelationshipMetadata;
+begin==>
+if(Tabela.Relacionamentos && Tabela.Relacionamentos.length > 0) {<==
+  Result := AR-->Tabela.Nome<--Metadata.Relationships[Index];==>
+} else {<==
+  FillChar(Result, SizeOf(TRelationshipMetadata), #0);==>
+}<==
+end;
+
+function TAR-->Tabela.Nome<--MetadataObject.TableMetadata: TTableMetadata;
+begin
+  Result := AR-->Tabela.Nome<--Metadata.Table;
+end;
+
+initialization
+==>
+if(!Tabela.CampoApagadoEm) {<==
+  GAR-->Tabela.Nome<--DeleteCriticalSection := TCriticalSection.Create;==>
+}<==
+  GAR-->Tabela.Nome<--InsertCriticalSection := TCriticalSection.Create;
+  GAR-->Tabela.Nome<--UpdateCriticalSection := TCriticalSection.Create;
+==>
+for(var i = 0; i < Tabela.Acesso.length; i++) {<==
+  GQueryFactory-->nomeFindBy(Tabela.Acesso[i].Campos)<-- := TAR-->Tabela.Nome<--.From==>
+  if(!Tabela.Acesso[i].RetornaVarios) {<==
+    .Top(1)==>
+  }
+  if(Tabela.Acesso[i].Campos.length > 0 || Tabela.CampoApagadoEm) {
+    if(Tabela.Acesso[i].Campos.length > 0) {<==
+    .Where('-->clausulaWhere(Tabela.Acesso[i].Campos)<---->Tabela.CampoApagadoEm?" and ' +":"')"<--==>
+    }
+    if(Tabela.CampoApagadoEm) {<==
+    -->(Tabela.Acesso[i].Campos.length > 0)?"  '":".Where('"<---->Tabela.CampoApagadoEm.toLowerCase()<-- is null')==>
+    }
+  }
+  if(Tabela.Acesso[i].OrderBy) {<==
+    .OrderBy('-->Tabela.Acesso[i].OrderBy<--')==>
+  }<==;==>
+}<==
+
+finalization
+==>
+for(var i = 0; i < Tabela.Acesso.length; i++) {<==
+  GQueryFactory-->nomeFindBy(Tabela.Acesso[i].Campos)<-- := nil;==>
+}
+
+if(!Tabela.CampoApagadoEm) {<==
+  FreeAndNil(GAR-->Tabela.Nome<--DeleteCriticalSection);==>
+}<==
+  FreeAndNil(GAR-->Tabela.Nome<--InsertCriticalSection);
+  FreeAndNil(GAR-->Tabela.Nome<--UpdateCriticalSection);
+
+end.

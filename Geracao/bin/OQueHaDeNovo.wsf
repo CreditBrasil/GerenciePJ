@@ -1,0 +1,12 @@
+<package>
+    <job id="OQueHaDeNovo">
+        <?job error="true" debug="true" ?>
+        <script language="JScript">
+var GravaArquivoDebug = false;
+        </script>
+        <script language="JScript" src="json.js" />
+        <script language="JScript" src="arquivos.js" />
+        <script language="JScript" src="template.js" />
+        <script language="JScript" src="OQueHaDeNovo.js" />
+    </job>
+</package>

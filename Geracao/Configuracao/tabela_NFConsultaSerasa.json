@@ -1,0 +1,37 @@
+{
+  "Nome": "NFConsultaSerasa", 
+  "GUID": "['{80E62973-CB9F-4E4A-AE0D-8DDA2B5365B0}']",
+  "Descricao": "Registro de consultas feitas no Serasa",
+  "ChavePrimaria": {"Tipo": "AutoInc", "Campos": ["ID"]},
+  "Campos": [
+    {"Nome": "ID", "Dominio": "Identificador", "ReadOnly": true, "Descricao": "???"},
+    {"Nome": "SConsCnpjCpf", "Dominio": "Descricao", "Nullable": true, "Descricao": "???"},
+    {"Nome": "SConsData", "Dominio": "Data", "Nullable": true, "Descricao": "???"},
+    {"Nome": "SConsHora", "Dominio": "Descricao", "Nullable": true, "Descricao": "???"},
+    {"Nome": "SConsRazao", "Dominio": "Descricao", "Nullable": true, "Descricao": "???"},
+    {"Nome": "SConsEmpTipo", "Dominio": "Descricao", "Nullable": true, "Descricao": "???"},
+    {"Nome": "SConsPesTipo", "Dominio": "Descricao", "Nullable": true, "Descricao": "???"},
+    {"Nome": "UsuLogin", "Dominio": "Descricao", "Nullable": true, "Descricao": "???"},
+    {"Nome": "SConsCodigo", "Dominio": "Identificador", "Nullable": true, "SetCommented": true, "Descricao": "???"},
+    {"Nome": "SCaminhoArquivo", "Tipo": "varchar", "Tamanho": 100, "Nullable": true, "Descricao": "???"},
+    {"Nome": "RetLinhaSerasa", "Dominio": "Memo", "Nullable": true, "Descricao": "???"},
+    {"Nome": "EmpCodigo", "Dominio": "Identificador", "Nullable": true, "Descricao": "???"},
+    {"Nome": "UserConsulta", "Tipo": "varchar", "Tamanho": 25, "Nullable": true, "Descricao": "???"},
+    {"Nome": "ParNaoMostrarDadosFactoringComplemento", "Dominio": "B01", "Nullable": true, "Descricao": "???"},
+    {"Nome": "SConsAcaoGerencie", "Dominio": "NS", "Nullable": true, "Descricao": "???"},
+    {"Nome": "SConsPrazoGerencie", "Dominio": "Quantidade", "Nullable": true, "Descricao": "???"},
+    {"Nome": "Gru_ID", "Dominio": "Identificador", "Nullable": true, "Descricao": "???"},
+    {"Nome": "Per_ID", "Dominio": "Identificador", "Nullable": true, "Descricao": "???"},
+    {"Nome": "SConsRetornoMonitore", "Dominio": "B01", "Nullable": true, "Descricao": "???"},
+    {"Nome": "SConsRetornoMonitorePF", "Dominio": "B01", "Nullable": true, "Descricao": "???"},
+    {"Nome": "GerouPendencia", "Dominio": "B01", "Nullable": true, "Descricao": "???"},
+    {"Nome": "SConsPrecisouAutorizacao", "Dominio": "B01", "Nullable": true, "Descricao": "???"},
+    {"Nome": "SConsUsuLoginAutorizou", "Tipo": "varchar", "Tamanho": 100, "Nullable": true, "Descricao": "???"}
+  ],
+  "Acesso": [
+    {"Campos": ["ID"], "RetornaVarios": false}
+  ],
+  "Totalizacoes": [
+    {"Nome": "MaiorSConsCodigo", "CamposEntrada": [], "Funcao": "max(SConsCodigo)", "TipoRetorno": "TNullableInteger"}
+  ]
+}

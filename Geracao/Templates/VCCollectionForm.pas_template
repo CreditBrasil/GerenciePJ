@@ -1,0 +1,68 @@
+unit w-->nomeForm<--;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, uActiveRecordCollectionForm, ImgList, 
+  ActnList, ComCtrls, ToolWin, StdCtrls, u-->nomeVC<--VCInterface==>
+if (usaDrawGrid == true) {<==, Grids, uDrawGridColumns, uGuiHelper, 
+  Menus, u-->nomeModel<--==>}<==;
+
+type
+  T-->nomeForm<-- = class(TActiveRecordCollectionForm)==>
+if (usaDrawGrid == true) {<==
+    grid-->nomeModelInt<--: TDrawGrid;
+    pop-->nomeModelInt<--: TPopupMenu;
+    procedure FormCreate(Sender: TObject);==>
+} else {<==
+    lst-->nomeModelInt<--: TListBox;==>
+}<==
+  private==>
+if (usaDrawGrid == true) {<==
+    FARDrawGridColumnsHelper: TARDrawGridColumnsHelper;
+    FARDrawGridColumnsHelperExportHelper: TARDrawGridColumnsHelperExportHelper;==>
+}<==
+    function Get-->nomeVC<--Controler: I-->nomeVC<--Controler;
+    procedure Set-->nomeVC<--Controler(const Value: I-->nomeVC<--Controler);
+  protected
+    //procedure SetReadOnly(const Value: Boolean); override;
+    //procedure SetSelected(const Value: Integer); override;
+    property -->nomeVC<--Controler: I-->nomeVC<--Controler read Get-->nomeVC<--Controler write Set-->nomeVC<--Controler;
+  public
+  end;
+
+implementation
+
+{$R *.DFM}
+
+{ T-->nomeForm<-- }
+==>
+if (usaDrawGrid == true) {<==
+procedure T-->nomeForm<--.FormCreate(Sender: TObject);
+var
+  LColumns: TDrawGridColumns;
+begin
+  inherited;
+  LColumns := TDrawGridColumns.Create;
+  try
+    LColumns.CreateColumnsFromMetadata(T-->nomeModel<--.ViewMetadata);
+    FARDrawGridColumnsHelper := TARDrawGridColumnsHelper.CreateParam(Self, grid-->nomeModelInt<--, LColumns);
+    FArDrawGridColumnsHelperExportHelper := TARDrawGridColumnsHelperExportHelper.Create(FARDrawGridColumnsHelper);
+  except
+    LColumns.Free;
+    raise;
+  end;
+end;==>
+}<==
+
+function T-->nomeForm<--.Get-->nomeVC<--Controler: I-->nomeVC<--Controler;
+begin
+  Result := Controler as I-->nomeVC<--Controler;
+end;
+
+procedure T-->nomeForm<--.Set-->nomeVC<--Controler(const Value: I-->nomeVC<--Controler);
+begin
+  Controler := Value;
+end;
+
+end.

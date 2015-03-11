@@ -1,0 +1,116 @@
+{
+  ***************************************************
+  * Este código é gerado automaticamente, não edite *
+  ***************************************************
+
+  Template: VisaoHTML.pas_template
+  Descrição: Cria uma visão (geração de HTML) a partir do arquivo -->Configuracao.NomeDoArquivo<--
+}
+
+unit -->Configuracao.NomeUnit<--;
+
+interface
+
+uses
+  SysUtils, Classes, Variants, ServiceLocator, HTTPApp, MVC_Interfaces, MVC_Visao_HTML, 
+  -->Configuracao.Usa<--;
+
+type
+  -->Configuracao.NomeClasse<-- = class(-->Configuracao.NomeClasseHeranca<--)
+  private==>
+if (Configuracao.Modelo != "") {<==
+    FModelo: -->Configuracao.Modelo<--;==>
+}<==
+  protected==>
+if (Configuracao.TituloHTMLPagina != "") {<==
+    function GetTituloHTMLPagina: string; override;==>
+}
+if (Configuracao.TituloPainel != "") {<==
+    function GetTituloPainel: string; override;==>
+}
+if (Configuracao.TituloPagina != "") {<==
+    function GetTituloPagina: string; override;==>
+}
+for (var laco = 0; laco < Secoes.Itens.length; laco ++) {<==
+    -->Secoes.Itens[laco].TipoRetorno != ""?"function":"procedure"<-- -->Secoes.Itens[laco].Assinatura<---->Secoes.Itens[laco].TipoRetorno != ""?": ":""<---->Secoes.Itens[laco].TipoRetorno<--;-->Secoes.Itens[laco].Diretrizes?" " + Secoes.Itens[laco].Diretrizes + ";":""<--==>
+}
+if (Configuracao.Modelo != "") {<==
+    function GetModelo-->Configuracao.TipoModelo<--: -->TiposDeRetornoParaModelo[Configuracao.TipoModelo].type<--; override;
+    procedure SetModelo-->Configuracao.TipoModelo<--(const AValue: -->TiposDeRetornoParaModelo[Configuracao.TipoModelo].type<--); override;
+    property Modelo: -->Configuracao.Modelo<-- read FModelo;==>
+}
+if (Configuracao.Modelo != "" && TiposDeRetornoParaModelo[Configuracao.TipoModelo].Liberacao) {<==
+  public
+    destructor Destroy; override;==>
+}<==
+  end;
+
+implementation
+
+{ -->Configuracao.NomeClasse<-- }==>
+if (Configuracao.Modelo != "" && TiposDeRetornoParaModelo[Configuracao.TipoModelo].Liberacao) {<==
+
+destructor -->Configuracao.NomeClasse<--.Destroy;
+begin
+  -->TiposDeRetornoParaModelo[Configuracao.TipoModelo].Liberacao<--;
+  inherited;
+end;==>
+}
+if (Configuracao.TituloHTMLPagina != "") {<==
+
+function -->Configuracao.NomeClasse<--.GetTituloHTMLPagina: string;
+begin
+  Result := -->Configuracao.TituloHTMLPagina<--;
+end;==>
+}
+if (Configuracao.TituloPainel != "") {<==
+
+function -->Configuracao.NomeClasse<--.GetTituloPainel: string;
+begin
+  Result := -->Configuracao.TituloPainel<--;
+end;==>
+}
+if (Configuracao.TituloPagina != "") {<==
+
+function -->Configuracao.NomeClasse<--.GetTituloPagina: string;
+begin
+  Result := -->Configuracao.TituloPagina<--;
+end;==>
+}
+
+for (var laco = 0; laco < Secoes.Itens.length; laco ++) {<==
+
+-->Secoes.Itens[laco].TipoRetorno != ""?"function":"procedure"<-- -->Configuracao.NomeClasse<--.-->Secoes.Itens[laco].Assinatura<---->Secoes.Itens[laco].TipoRetorno != ""?": ":""<---->Secoes.Itens[laco].TipoRetorno<--;==>
+  if (Secoes.Itens[laco].GetDeclaracoesLocais() != "") {<==
+-->Secoes.Itens[laco].GetDeclaracoesLocais()<--==>
+  }<==
+begin==>
+  if (Secoes.Itens[laco].TipoRetorno != "") {<==
+-->Secoes.Itens[laco].GetSaida()<--==>
+  } else {<==  
+-->compilaHTML2Pascal(Secoes.Itens[laco].GetSaida())<--==>
+  }<==
+end;==>
+}
+
+if (Configuracao.Modelo != "") {<==
+
+function -->Configuracao.NomeClasse<--.GetModelo-->Configuracao.TipoModelo<--: -->TiposDeRetornoParaModelo[Configuracao.TipoModelo].type<--;
+begin
+  Result := FModelo;
+end;
+
+procedure -->Configuracao.NomeClasse<--.SetModelo-->Configuracao.TipoModelo<--(const AValue: -->TiposDeRetornoParaModelo[Configuracao.TipoModelo].type<--);
+begin
+  FModelo := -->printf(TiposDeRetornoParaModelo[Configuracao.TipoModelo].TypeCast, Configuracao.Modelo)<--;
+  inherited;
+end;==>
+}<==
+==>
+if (Configuracao.Registra) {<==
+initialization
+
+  -->Configuracao.NomeClasse<--.RegistreSe;
+==>
+}<==
+end.

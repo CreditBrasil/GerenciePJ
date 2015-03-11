@@ -1,0 +1,89 @@
+==>
+
+function retornaPosicaoRelacionamento(APartir, ATabelaNome, ACampoNome) {
+  for (var i = APartir; i < Relacionamentos.length; i++) {
+    if (Relacionamentos[i].TabelaOrigem == ATabelaNome && Relacionamentos[i].CampoOrigem == ACampoNome) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+function htmlRelacionamentoInt2(ARelacionamento) {
+  var html = "";
+  var LNome = ARelacionamento.Nome==""?"":"<em>" + ARelacionamento.Nome + "</em>";
+  switch (ARelacionamento.Tipo) {
+    case "N:1":
+      if (ARelacionamento.Saida)
+        html += "&#9674;&#8213;" + LNome + "&#8594; ";
+      else
+        html += "&#9674;&#8592;" + LNome + "&#8213; ";
+      break;
+    case "1:N":
+      if (ARelacionamento.Saida)
+        html += "&#8213;" + LNome + "&#8594;&#9674; ";
+      else
+        html += "&#8592;" + LNome + "&#8213;&#9674; ";
+      break;
+    case "1:1":
+      if (ARelacionamento.Saida)
+        html += "&#8213;" + LNome + "&#8594;&#0185; ";
+      else
+        html += "&#8592;" + LNome + "&#8213;&#0185; ";
+      break;
+  }
+  return html + "[<a href=\"tabela_" + ARelacionamento.TabelaDestino + ".html#" + ARelacionamento.CampoDestino + "\">" + 
+    ARelacionamento.TabelaDestino + "." + ARelacionamento.CampoDestino + "</a>]";
+}
+
+function htmlRelacionamentoInt(html, APartir, ATabelaNome, ACampoNome) {
+  var p = retornaPosicaoRelacionamento(APartir, ATabelaNome, ACampoNome);
+  if (p >= 0)
+    return htmlRelacionamentoInt((html!=""?html+"<br><br>":"") + htmlRelacionamentoInt2(Relacionamentos[p]), p + 1, ATabelaNome, ACampoNome);
+  else
+    return html;
+}
+
+function htmlRelacionamento(ATabelaNome, ACampoNome) {
+  return htmlRelacionamentoInt("", 0, ATabelaNome, ACampoNome);
+}
+
+<==<html>
+<head>
+	<link href="../Instalacao/wba_help.css" rel="stylesheet" type="text/css">
+	<title>-->Tabela.Nome<-- - Dicionário de dados do WBA Factoring</title>
+</head>
+<body>
+	<h1>-->Tabela.Nome<-- - Dicionário de dados do WBA Factoring</h1>
+	<p><a href="index.html">Tabelas</a></p>
+	<table border="1">
+	  <tr>
+		<th colspan="7">-->Tabela.Nome<--</th>
+	  </tr>
+	  <tr>
+		<td colspan="7">-->Tabela.Descricao<--</td>
+	  </tr>
+	  <tr>
+		<th>Campo</th>
+		<th>Tipo</th>
+		<th>Tam</th>
+		<th>Null?</th>
+		<th>Descrição</th>
+		<th>Rótulo</th>
+		<th>&#8592;&#8594;</th>
+	  </tr>==>
+	for(var i = 0; i < Tabela.Campos.length; i++) {
+	  var campo = Tabela.Campos[i];<==
+	  <tr>
+		<td><a name="-->campo.Nome<--"></a>-->campo.Nome<--</td>
+		<td>-->campo.Tipo<--</td>
+		<td>-->campo.Tamanho?campo.Tamanho:"&nbsp;"<--</td>
+		<td>-->campo.Nullable?"Sim":"&nbsp;"<--</td>
+		<td>-->campo.Descricao?campo.Descricao:"&nbsp;"<--</td>
+		<td>-->campo.Caption?campo.Caption:((!campo.Invisivel && !campo.Hidden)?campo.Nome:"&nbsp;")<--</td>
+		<td>-->htmlRelacionamento(Tabela.Nome, campo.Nome)<--</td>
+	  </tr>==>
+	}<==
+	</table>
+</body>
+</html>

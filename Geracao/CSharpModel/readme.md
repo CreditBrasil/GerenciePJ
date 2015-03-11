@@ -1,0 +1,1 @@
+Esta pasta contém os códigos gerados pelo GeraFontes opção C#

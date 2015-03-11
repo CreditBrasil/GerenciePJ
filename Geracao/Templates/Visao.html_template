@@ -1,0 +1,194 @@
+==>
+
+var comIterator = [
+  "Tabela",
+  "Selecao"
+  ];
+
+function verificaUsaIterator(ATipoVisao) {
+  for(var i = 0; i < comIterator.length; i++) {
+    if(comIterator[i] == ATipoVisao) {
+      return true;
+    }
+  }
+  return false;
+}
+var usaIterator = verificaUsaIterator(tipoVisao);
+
+function ajustesNoCampo(ACampo, AReadOnly) {
+  var ajustes = "";
+  if (ACampo.ReadOnly == true || AReadOnly)
+    ajustes += ".SetDisabled(True)";
+  switch (ACampo.Tipo) {
+    case "int":
+      if (ACampo.Dominio == "Identificador")
+        ajustes += ".SetTamanho(cgMinimo)";
+      else
+        ajustes += ".SetTamanho(cgPequeno)";
+      break;
+    case "varchar":
+      if (ACampo.Dominio != "NS") {
+        if (ACampo.Tamanho <= 8)
+          ajustes += ".SetTamanho(cgMinimo)";
+        else if (ACampo.Tamanho <= 12)
+          ajustes += ".SetTamanho(cgPequeno)";
+        else if (ACampo.Tamanho <= 21)
+          ajustes += ".SetTamanho(cgMedio)";
+        else if (ACampo.Tamanho <= 30)
+          ajustes += ".SetTamanho(cgGrande)";
+        else if (ACampo.Tamanho <= 38)
+          ajustes += ".SetTamanho(cgExtraGrande)";
+        else
+          ajustes += ".SetTamanho(cgExtraExtraGrande)";
+      }
+      break;
+  }
+  return ajustes;
+}
+
+//------------------------------------------------------------------------
+  
+function visaoVer() {<==<div class="page-header">
+-->"\t"<--<h2>-->Tabela.Nome<--</h2>
+</div>
+<dl class="dl-horizontal">==>
+      for (var i = 0; i < Tabela.Campos.length; i++) {
+        if (!Tabela.Campos[i].Invisivel && !Tabela.Campos[i].Hidden) {<==
+-->"\t"<--<%VerCampo(Campo_-->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--)%>==>
+        }
+      }<==
+</dl><#
+
+
+
+  Secoes.NovaSecao("VerCampo(AFieldIndex: Integer)");
+#><dt>[[TituloPara(AFieldIndex, False)]]</dt><dd>[[RetornaNBSP(ValorAMostrarPara(AFieldIndex))]]</dd><#
+
+
+
+  Secoes.NovaSecao("RetornaNBSP(const AConteudo: string)");
+  Secoes.SecaoAtual.TipoRetorno = "THTMLPuro";
+#>if AConteudo = '' then
+-->"\t"<--Result := HTMLPuro('&nbsp;')
+else
+-->"\t"<--Result := HTMLPuro(HTMLEncode(AConteudo));==>
+}
+
+
+
+//------------------------------------------------------------------------
+
+function visaoTabela() {<==<h2>-->Tabela.Nome<--</h2>
+[[TabelaPara
+-->"\t"<--//.CamposASeremMostrados([Campo_-->Tabela.Nome<--_NomeDoCampo])
+-->"\t"<--//.Link(Campo_-->Tabela.Nome<--_NomeDoCampoDoLink, Campo_-->Tabela.Nome<--_NomeDoCampoDoTerceiroElementoDaRota, NovaRota.Controlador(Rota.NomeControlador).Acao('Ver'))
+-->"\t"<--.HTML.AddClasse('table table-bordered table-striped')]]==>
+}
+
+
+
+//------------------------------------------------------------------------
+
+function visaoSelecao() {<==<h2>-->Tabela.Nome<--</h2>
+[[SelecaoPara(Campo_-->Tabela.Nome<--_NomeDoCampoDoTerceiroElementoDaRota, NovaRota.Controlador(Rota.NomeControlador).Acao('Editar'))
+-->"\t"<--.SetIcone(icon_edit)]]==>
+}
+
+
+
+//------------------------------------------------------------------------
+
+function visaoCriar() {<==[[AvisoModelo]]
+[[FormularioInicio.AddClasse('form-horizontal')]]
+-->"\t"<--<fieldset>
+-->"\t\t"<--<legend>Novo -->Tabela.Nome<--</legend>==>
+      for (var i = 0; i < Tabela.Campos.length; i++) {
+        if (!Tabela.Campos[i].Invisivel && !Tabela.Campos[i].Hidden && !Tabela.Campos[i].ReadOnly) {<==
+[[ControlGroupPara(Campo_-->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--)-->ajustesNoCampo(Tabela.Campos[i])<--]]==>
+        }
+      }<==
+-->"\t\t"<--<div class="form-group">
+-->"\t\t\t"<--<div class="col-lg-offset-3 col-md-offset-3 col-lg-9 col-md-9">
+-->"\t\t\t\t"<--<button type="submit" class="btn btn-primary">[[Icone(glyphicon_ok)]]Incluir</button>
+-->"\t\t\t\t"<--[[Botao(tbDefault, NovaRota.Controlador(Rota.NomeControlador), 'Cancelar', glyphicon_remove)]]
+-->"\t\t\t"<--</div>
+-->"\t\t"<--</div>
+-->"\t"<--</fieldset>
+[[FormularioFim]]==>
+}
+
+
+
+//------------------------------------------------------------------------
+
+function visaoEditar() {<==[[AvisoModelo]]
+[[FormularioInicio.AddClasse('form-horizontal')]]
+-->"\t"<--<fieldset>
+-->"\t\t"<--<legend>Editando -->Tabela.Nome<--</legend>==>
+      for (var i = 0; i < Tabela.Campos.length; i++) {
+        if (!Tabela.Campos[i].Invisivel && !Tabela.Campos[i].Hidden) {<==
+[[ControlGroupPara(Campo_-->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--)-->ajustesNoCampo(Tabela.Campos[i])<--]]==>
+        }
+      }<==
+-->"\t\t"<--<div class="form-group">
+-->"\t\t\t"<--<div class="col-lg-offset-3 col-md-offset-3 col-lg-9 col-md-9">
+-->"\t\t\t\t"<--<button type="submit" class="btn btn-primary">[[Icone(glyphicon_ok)]]Salvar alteração</button>
+-->"\t\t\t\t"<--[[Botao(tbDefault, NovaRota.Controlador(Rota.NomeControlador), 'Cancelar', glyphicon_remove)]]
+-->"\t\t\t\t"<--[[Botao(tbDanger, RotaAtual.Acao('Apagar'), 'Apagar', glyphicon_trash)]]
+-->"\t\t\t"<--</div>
+-->"\t\t"<--</div>
+-->"\t"<--</fieldset>
+[[FormularioFim]]==>
+}
+
+
+
+//------------------------------------------------------------------------
+
+function visaoApagar() {<==[[FormularioInicio.AddClasse('form-horizontal')]]
+-->"\t"<--<fieldset>
+-->"\t\t"<--<legend>Tem certeza que deseja apagar este -->Tabela.Nome<--?</legend>==>
+      for (var i = 0; i < Tabela.Campos.length; i++) {
+        if (!Tabela.Campos[i].Invisivel && !Tabela.Campos[i].Hidden) {<==
+[[ControlGroupPara(Campo_-->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--)-->ajustesNoCampo(Tabela.Campos[i], true)<--]]==>
+        }
+      }<==
+-->"\t\t"<--<div class="form-group">
+-->"\t\t\t"<--<div class="col-lg-offset-3 col-md-offset-3 col-lg-9 col-md-9">
+-->"\t\t\t\t"<--<button type="submit" class="btn btn-danger">[[Icone(glyphicon_ok)]]Sim</button>
+-->"\t\t\t\t"<--[[Botao(tbDefault, NovaRota.Controlador(Rota.NomeControlador), 'Não', glyphicon_remove)]]
+-->"\t\t\t"<--</div>
+-->"\t\t"<--</div>
+-->"\t"<--</fieldset>
+[[FormularioFim]]==>
+}
+
+
+
+<==<#
+  /*
+  Template: Visao.html_template
+  Esse html irá gerar o arquivo -->nomeProjeto<--_Visao_-->nomeControlador<--_-->nomeVisao<--.pas
+  Controlador: -->nomeControlador<--
+  Visão: -->nomeVisao<--
+  */
+
+  Configuracao.Usa += ", uAR-->Tabela.Nome<--, u-->nomeModel<--";
+  Configuracao.Modelo = "I-->usaIterator==true?"Iterator":""<---->nomeModel<--";
+  //Configuracao.TituloPagina = "'-->nomeControlador<--'";
+  //Configuracao.TituloHTMLPagina = "'-->nomeControlador<-- <small>-->nomeVisao<--</small>'";
+  //Configuracao.TituloPainel = "''";
+#>==>
+  if (tipoVisao=="Ver")
+    visaoVer();
+  if (tipoVisao=="Tabela")
+    visaoTabela();
+  if (tipoVisao=="Selecao")
+    visaoSelecao();
+  if (tipoVisao=="Criar")
+    visaoCriar();
+  if (tipoVisao=="Editar")
+    visaoEditar();
+  if (tipoVisao=="Apagar")
+    visaoApagar();
+<==

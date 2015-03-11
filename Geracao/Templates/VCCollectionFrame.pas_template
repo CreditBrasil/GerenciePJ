@@ -1,0 +1,172 @@
+{ Template: VCCollectionFrame.pas_template }
+unit u-->nomeVC<--Class;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,  uARCollectionFrame, ComCtrls, ToolWin, 
+  Grids, ActnList, uDrawGridColumns, ServiceLocator, uActiveRecord, uActiveRecordSimpleViewInterface, 
+  uActiveRecordSimpleView, uActiveRecordSimpleControler, u-->nomeVC<--Interface, 
+  u-->nomeModel<--, w-->nomeFormSimple<--;
+
+type
+  T-->nomeVC<-- = class(TARCollectionFrame)
+    grid-->nomeVC<--: TDrawGrid;
+    procedure grid-->nomeVC<--DblClick(Sender: TObject);
+  private
+    FARDrawGridColumnsHelper: TARDrawGridColumnsHelper;
+    function Get-->nomeVC<--Controler: I-->nomeVC<--Controler;
+    procedure Set-->nomeVC<--Controler(const Value: I-->nomeVC<--Controler);
+  public
+    constructor Create(AOwner: TComponent); override;
+    property -->nomeVC<--Controler: I-->nomeVC<--Controler read Get-->nomeVC<--Controler 
+      write Set-->nomeVC<--Controler;
+  end;
+
+  T-->nomeVC<--Controler = class(TARCollectionFrameControler, I-->nomeVC<--Controler)
+  private
+    function Get-->nomeVC<--: T-->nomeVC<--;
+    function Get-->nomeModel<--Service: I-->nomeModel<--Service;
+  protected
+    function DoEditItem(const AAccess: IActiveRecordAccess): TModalResult; override;
+    property -->nomeVC<--: T-->nomeVC<-- read Get-->nomeVC<--;
+    property -->nomeModel<--Service: I-->nomeModel<--Service read Get-->nomeModel<--Service;
+    { I-->nomeVC<--Controler }
+    //procedure Load;
+  end;
+
+  T-->nomeVCSimple<--View = class(TActiveRecordSimpleView, I-->nomeVCSimple<--View)
+  protected
+    { I-->nomeVCSimple<--View }
+    function Get-->nomeVCSimple<--Controler: I-->nomeVCSimple<--Controler;
+    procedure Set-->nomeVCSimple<--Controler(const Value: I-->nomeVCSimple<--Controler);
+  end;
+
+  T-->nomeVCSimple<--Controler = class(TActiveRecordSimpleControler, I-->nomeVCSimple<--Controler)
+  protected
+    { I-->nomeVCSimple<--Controler }
+    function Get-->nomeVCSimple<--View: I-->nomeVCSimple<--View;
+    procedure Set-->nomeVCSimple<--View(const Value: I-->nomeVCSimple<--View);
+  end;
+
+implementation
+
+{$R *.DFM}
+
+function -->nomeVC<--ControlerFactory: IUnknown;
+var
+  LControler: I-->nomeVC<--Controler;
+begin
+  LControler := T-->nomeVC<--Controler.Create;
+  LControler.Metadata := T-->nomeModel<--.ViewMetadata;
+  LControler.Service := SL as I-->nomeModel<--Service;
+  Result := LControler;
+end;
+
+function -->nomeVCSimple<--ViewFactory: IUnknown;
+var
+  L-->nomeVCSimple<--View: I-->nomeVCSimple<--View;
+begin
+  L-->nomeVCSimple<--View := T-->nomeVCSimple<--View.Create(T-->nomeFormSimple<--);
+  L-->nomeVCSimple<--View.Metadata := T-->nomeModel<--.ViewMetadata;
+  Result := L-->nomeVCSimple<--View;
+end;
+
+function -->nomeVCSimple<--ControlerFactory: IUnknown;
+var
+  L-->nomeVCSimple<--Controler: I-->nomeVCSimple<--Controler;
+begin
+  L-->nomeVCSimple<--Controler := T-->nomeVCSimple<--Controler.Create;
+  L-->nomeVCSimple<--Controler.-->nomeVCSimple<--View := SL as I-->nomeVCSimple<--View;
+  Result := L-->nomeVCSimple<--Controler;
+end;
+
+{ T-->nomeVC<-- }
+
+constructor T-->nomeVC<--.Create(AOwner: TComponent);
+var
+  LColumns: TDrawGridColumns;
+begin
+  inherited;
+  LColumns := TDrawGridColumns.Create;
+  try
+    LColumns.CreateColumnsFromMetadata(T-->nomeModel<--.ViewMetadata);
+    FARDrawGridColumnsHelper := TARDrawGridColumnsHelper.CreateParam(Self, grid-->nomeVC<--, LColumns);
+  except
+    LColumns.Free;
+    raise;
+  end;
+end;
+
+function T-->nomeVC<--.Get-->nomeVC<--Controler: I-->nomeVC<--Controler;
+begin
+  Result := Controler as I-->nomeVC<--Controler;
+end;
+
+procedure T-->nomeVC<--.grid-->nomeVC<--DblClick(Sender: TObject);
+begin
+  ActionEditItem.Execute;
+end;
+
+procedure T-->nomeVC<--.Set-->nomeVC<--Controler(const Value: I-->nomeVC<--Controler);
+begin
+  Controler := Value;
+end;
+
+{ T-->nomeVC<--Controler }
+
+function T-->nomeVC<--Controler.DoEditItem(const AAccess: IActiveRecordAccess): TModalResult;
+var
+  LEditControler: I-->nomeVCSimple<--Controler;
+begin
+  LEditControler := SL as I-->nomeVCSimple<--Controler;
+  LEditControler.Model := AAccess;
+  Result := LEditControler.Edit;
+end;
+
+function T-->nomeVC<--Controler.Get-->nomeVC<--: T-->nomeVC<--;
+begin
+  Result := GetFrame as T-->nomeVC<--;
+end;
+
+function T-->nomeVC<--Controler.Get-->nomeModel<--Service: I-->nomeModel<--Service;
+begin
+  Result := GetService as I-->nomeModel<--Service;
+end;
+
+{procedure T-->nomeVC<--Controler.Load;
+begin
+  SetModels(T-->nomeModelInt<--.CreateFromIterator(-->nomeModel<--Service.FindAll(T-->nomeModel<--.DefaultConnection)));
+end;}
+
+{ T-->nomeVCSimple<--View }
+
+function T-->nomeVCSimple<--View.Get-->nomeVCSimple<--Controler: I-->nomeVCSimple<--Controler;
+begin
+  Result := GetControler as I-->nomeVCSimple<--Controler;
+end;
+
+procedure T-->nomeVCSimple<--View.Set-->nomeVCSimple<--Controler(const Value: I-->nomeVCSimple<--Controler);
+begin
+  SetControler(Value);
+end;
+
+{ T-->nomeVCSimple<--Controler }
+
+function T-->nomeVCSimple<--Controler.Get-->nomeVCSimple<--View: I-->nomeVCSimple<--View;
+begin
+  Result := GetView as I-->nomeVCSimple<--View;
+end;
+
+procedure T-->nomeVCSimple<--Controler.Set-->nomeVCSimple<--View(const Value: I-->nomeVCSimple<--View);
+begin
+  SetView(Value);
+end;
+
+initialization
+
+  SL.Add(I-->nomeVC<--Controler, -->nomeVC<--ControlerFactory);
+  SL.Add(I-->nomeVCSimple<--View, -->nomeVCSimple<--ViewFactory);
+  SL.Add(I-->nomeVCSimple<--Controler, -->nomeVCSimple<--ControlerFactory);
+
+end.

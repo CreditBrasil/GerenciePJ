@@ -1,0 +1,166 @@
+{ Template: VCVazioClass.pas_template }
+unit u-->nomeVC<--VCClass;
+
+interface
+
+uses
+  uActiveRecord, ServiceLocator, u-->nomeVC<--VCInterface, w-->nomeForm<--, u-->nomeModel<--, 
+  -->(isCollection == true)?"uActiveRecordCollectionBind":"uActiveRecordBind"<--;
+
+type
+  T-->nomeVC<--View = class(TInterfacedObject, I-->nomeVC<--View)
+  private
+    F-->nomeForm<--: T-->nomeForm<--;
+    F-->nomeModel<--Metadata: IActiveRecordMetadata;
+    FBind-->nomeModelInt<--: -->(isCollection == true)?"TARCollectionBind":"TARBind"<--;
+  protected
+    { I-->nomeVC<--View }
+    function GetControler: I-->nomeVC<--Controler;==>
+if (isCollection == false) {<==
+    procedure GetData-->nomeModelInt<--(const AAccess: IActiveRecordAccess);==>
+}<==
+    function Get-->nomeModel<--Metadata: IActiveRecordMetadata;
+    procedure SetControler(const Value: I-->nomeVC<--Controler);==>
+if (isCollection == false) {<==
+    procedure SetData-->nomeModelInt<--(const AAccess: IActiveRecordAccess);==>
+} else {<==
+    procedure SetData-->nomeModelInt<--(const ACollection: ICollectionActiveRecord);==>
+}<==
+    procedure Set-->nomeModel<--Metadata(const Value: IActiveRecordMetadata);
+  public
+    constructor Create(A-->nomeForm<--: T-->nomeForm<--);
+    destructor Destroy; override;
+  end;
+
+  T-->nomeVC<--Controler = class(TInterfacedObject, I-->nomeVC<--Controler)
+  private
+    F-->nomeVC<--View: I-->nomeVC<--View;
+    F-->nomeModel<--Service: I-->nomeModel<--Service;
+    //F-->nomeModelInt<--: I-->nomeModelInt<--;
+  protected
+    { I-->nomeVC<--Controler } 
+    function Get-->nomeModel<--Service: I-->nomeModel<--Service; 
+    function GetView: I-->nomeVC<--View;
+    procedure Set-->nomeModel<--Service(const Value: I-->nomeModel<--Service);
+    procedure SetView(const Value: I-->nomeVC<--View);
+  end;
+
+implementation
+
+{ T-->nomeVC<--View }
+
+constructor T-->nomeVC<--View.Create(A-->nomeForm<--: T-->nomeForm<--);
+begin
+  FBind-->nomeModelInt<-- := -->(isCollection == true)?"TARCollectionBind":"TARBind"<--.Create;
+  F-->nomeForm<-- := A-->nomeForm<--;
+end;
+
+destructor T-->nomeVC<--View.Destroy;
+begin
+  FBind-->nomeModelInt<--.Free;
+  F-->nomeForm<--.Free;
+  inherited;
+end;
+
+function T-->nomeVC<--View.GetControler: I-->nomeVC<--Controler;
+begin
+  Result := F-->nomeForm<--.Controler;
+end;==>
+if (isCollection == false) {<==
+
+procedure T-->nomeVC<--View.GetData-->nomeModelInt<--(const AAccess: IActiveRecordAccess);
+begin
+  FBind-->nomeModelInt<--.GetData(AAccess);
+end;==>
+}<==
+
+function T-->nomeVC<--View.Get-->nomeModel<--Metadata: IActiveRecordMetadata;
+begin
+  Result := F-->nomeModel<--Metadata;
+end;
+
+procedure T-->nomeVC<--View.SetControler(const Value: I-->nomeVC<--Controler);
+begin
+  if F-->nomeForm<--.Controler <> Value then
+  begin
+    F-->nomeForm<--.Controler := Value;
+    if Assigned(F-->nomeForm<--.Controler) then
+      F-->nomeForm<--.Controler.View := Self;
+  end;
+end;
+==>
+if (isCollection == false) {<==
+procedure T-->nomeVC<--View.SetData-->nomeModelInt<--(const AAccess: IActiveRecordAccess);
+begin
+  FBind-->nomeModelInt<--.SetData(AAccess);
+end;==>
+} else {<==
+procedure T-->nomeVC<--View.SetData-->nomeModelInt<--(const ACollection: ICollectionActiveRecord);
+begin
+  FBind-->nomeModelInt<--.SetData(ACollection, nil);
+end;==>
+}<==
+
+procedure T-->nomeVC<--View.Set-->nomeModel<--Metadata(const Value: IActiveRecordMetadata);
+begin
+  if F-->nomeModel<--Metadata <> Value then
+  begin
+    F-->nomeModel<--Metadata := Value;
+    FBind-->nomeModelInt<--.DiscoveryBind(F-->nomeModel<--Metadata, F-->nomeForm<--);
+  end;
+end;
+
+{ T-->nomeVC<--Controler }
+
+function T-->nomeVC<--Controler.Get-->nomeModel<--Service: I-->nomeModel<--Service;
+begin
+  Result := F-->nomeModel<--Service;
+end;
+
+function T-->nomeVC<--Controler.GetView: I-->nomeVC<--View;
+begin
+  Result := F-->nomeVC<--View;
+end;
+
+procedure T-->nomeVC<--Controler.Set-->nomeModel<--Service(const Value: I-->nomeModel<--Service);
+begin
+  F-->nomeModel<--Service := Value;
+end;
+
+procedure T-->nomeVC<--Controler.SetView(const Value: I-->nomeVC<--View);
+begin
+  if F-->nomeVC<--View <> Value then
+  begin
+    F-->nomeVC<--View := Value;
+    if Assigned(F-->nomeVC<--View) then
+      F-->nomeVC<--View.Controler := Self;
+  end;
+end;
+
+{ Factories }
+
+function -->nomeVC<--ViewFactory: IUnknown;
+var
+  L-->nomeVC<--View: I-->nomeVC<--View;
+begin
+  L-->nomeVC<--View := T-->nomeVC<--View.Create(T-->nomeForm<--.Create(nil));
+  L-->nomeVC<--View.-->nomeModel<--Metadata := T-->nomeModel<--.ViewMetadata;
+  Result := L-->nomeVC<--View;
+end;
+
+function -->nomeVC<--ControlerFactory: IUnknown;
+var
+  L-->nomeVC<--Controler: I-->nomeVC<--Controler;
+begin
+  L-->nomeVC<--Controler := T-->nomeVC<--Controler.Create;
+  L-->nomeVC<--Controler.View := SL as I-->nomeVC<--View;
+  L-->nomeVC<--Controler.-->nomeModel<--Service := SL as I-->nomeModel<--Service;
+  Result := L-->nomeVC<--Controler;
+end;
+
+initialization
+
+  SL.Add(I-->nomeVC<--View, -->nomeVC<--ViewFactory);
+  SL.Add(I-->nomeVC<--Controler, -->nomeVC<--ControlerFactory);
+
+end.

@@ -1,0 +1,24 @@
+inherited -->nomeForm<--: T-->nomeForm<--==>
+if (usaDrawGrid == true) {<==
+  object grid-->nomeModelInt<--: TDrawGrid
+    Align = alClient
+    PopupMenu = pop-->nomeModelInt<--
+    TabOrder = 1
+  end
+  object pop-->nomeModelInt<--: TPopupMenu
+    Left = 72
+    Top = 40
+  end==>
+} else {<==
+  object lst-->nomeModelInt<--: TListBox
+    Align = alClient
+    BorderStyle = bsNone
+    Ctl3D = False
+    ExtendedSelect = False
+    Items.Strings = (
+      '-->Tabela.Nome<--s_***NOME DO CAMPO***')
+    ParentCtl3D = False
+    TabOrder = 1
+  end==>
+}<==
+end

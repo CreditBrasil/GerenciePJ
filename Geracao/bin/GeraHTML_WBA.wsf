@@ -1,0 +1,15 @@
+<package>
+    <job id="GeraHTML_WBA">
+        <?job error="true" debug="true" ?>
+        <script language="JScript">
+var GravaArquivoDebug = false;
+        </script>
+        <script language="JScript" src="printf.js" />
+        <script language="JScript" src="json.js" />
+        <script language="JScript" src="arquivos.js" />
+        <script language="JScript" src="template.js" />
+        <script language="JScript" src="dominio.js" />
+        <script language="JScript" src="GeraHTML.js" />
+        <script language="JScript" src="GeraHTML_WBA.js" />
+    </job>
+</package>

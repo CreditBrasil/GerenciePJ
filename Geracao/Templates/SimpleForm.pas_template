@@ -1,0 +1,29 @@
+unit w-->nomeForm<--;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, wActiveRecordSimpleForm, StdCtrls, Buttons,
+  ExtCtrls, ComCtrls, CurrEdit, Mask, ToolEdit;
+
+type
+  T-->nomeForm<-- = class(TActiveRecordSimpleForm)==>
+for (var i = 0; i < Tabela.Campos.length; i++) {
+  if (!Tabela.Campos[i].Invisivel && !Tabela.Campos[i].Hidden && getComponent(Tabela.Campos[i]) != "TCheckBox") {<==
+    lbl-->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--: TLabel;==>
+  }
+}
+for (var i = 0; i < Tabela.Campos.length; i++) {
+  if (!Tabela.Campos[i].Invisivel && !Tabela.Campos[i].Hidden) {<==
+    -->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--: -->getComponent(Tabela.Campos[i])<--;==>
+  }
+}<==
+  private
+  public
+  end;
+
+implementation
+
+{$R *.DFM}
+
+end.

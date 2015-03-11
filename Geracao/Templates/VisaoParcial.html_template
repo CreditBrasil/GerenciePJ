@@ -1,0 +1,12 @@
+<#
+  /*
+  Template: VisaoParcial.html_template
+  Esse html irá gerar o arquivo -->nomeProjeto<--.Visao.-->nomeControlador<--.-->nomeVisao<--.pas
+  Controlador: -->nomeControlador<--
+  Visão: -->nomeVisao<--
+  */
+
+  Configuracao.Usa = "MVC_Visao_HTML_ActiveRecord, -->nomeProjeto<--_Visao_Pagina_Parcial, uAR-->Tabela.Nome<--, u-->nomeModel<--";
+  Configuracao.NomeClasseHeranca = "TVisaoPaginaParcial";
+  Configuracao.Modelo = "I-->nomeModel<--";
+#>

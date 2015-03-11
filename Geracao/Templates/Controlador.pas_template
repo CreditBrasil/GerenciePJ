@@ -1,0 +1,185 @@
+{ Template: Controlador.pas_template }
+unit -->nomeProjeto<--_Controlador_-->nomeControlador<--;
+
+interface
+
+uses
+  SysUtils, HTTPApp, ServiceLocator, uActiveRecord, -->nomeProjeto<--_Interfaces, -->nomeProjeto<--_Conexao, 
+  -->nomeProjeto<--_Controlador_Autenticado, uAR-->Tabela.Nome<--, u-->nomeModel<--;
+
+type
+  TControlador-->nomeControlador<-- = class(TControladorAutenticado)
+  private
+    F-->nomeModel<--Service: I-->nomeModel<--Service;
+  protected==>
+if (crud == true) {<==
+    procedure Apagar(ACtrl_ID: Integer);
+    procedure ApagarPost(ACtrl_ID: Integer);
+    procedure Criar; overload;
+    procedure Criar(const A-->nomeModel<--: I-->nomeModel<--); overload;==>
+}<==
+    procedure DespachaAcao(const ANomeAcao: string); override;==>
+if (crud == true) {<==
+    procedure Editar(ACtrl_ID: Integer);
+    procedure EditarPost(ACtrl_ID: Integer);
+    procedure Indice;
+    procedure NaoFoiEncontrado(const AOQue: string);==>
+} else {<==
+    //procedure Indice;==>
+}<==
+  public
+    constructor Create(const AConnection: IActiveRecordConnection; 
+      const A-->nomeModel<--Service: I-->nomeModel<--Service);
+  end;
+
+implementation
+
+{ Fabrica }
+
+function FabricaControlador-->nomeControlador<--: IUnknown;
+begin
+  Result := TControlador-->nomeControlador<--.Create(CriaConexao_-->nomeProjeto<--, SL as I-->nomeModel<--Service);
+end;
+
+{ TControlador-->nomeControlador<-- }==>
+if (crud == true) {<==
+
+procedure TControlador-->nomeControlador<--.Apagar(ACtrl_ID: Integer);
+var
+  L-->nomeModel<--: I-->nomeModel<--;
+begin
+  L-->nomeModel<-- := F-->nomeModel<--Service.FindByCtrl_ID(ACtrl_ID, Connection);
+  if L-->nomeModel<-- <> nil then
+    Visao(L-->nomeModel<--)
+  else
+    NaoFoiEncontrado(IntToStr(ACtrl_ID));
+end;
+
+procedure TControlador-->nomeControlador<--.ApagarPost(ACtrl_ID: Integer);
+var
+  L-->nomeModel<--: I-->nomeModel<--;
+begin
+  L-->nomeModel<-- := F-->nomeModel<--Service.FindByCtrl_ID(ACtrl_ID, Connection);
+  if L-->nomeModel<-- <> nil then
+  begin
+    F-->nomeModel<--Service.Delete(L-->nomeModel<--);
+    Redireciona(NovaRota.Controlador(NomeControlador));
+  end
+  else
+    NaoFoiEncontrado(IntToStr(ACtrl_ID));
+end;==>
+}<==
+
+constructor TControlador-->nomeControlador<--.Create(const AConnection: IActiveRecordConnection;
+  const A-->nomeModel<--Service: I-->nomeModel<--Service);
+begin
+  inherited Create(AConnection);
+  F-->nomeModel<--Service := A-->nomeModel<--Service;
+end;==>
+
+if (crud == true) {<==
+
+procedure TControlador-->nomeControlador<--.Criar;
+begin
+  Visao(T-->nomeModel<--.Create(Connection) as I-->nomeModel<--);
+end;
+
+procedure TControlador-->nomeControlador<--.Criar(const A-->nomeModel<--: I-->nomeModel<--);
+begin
+  if ModeloValido then
+  begin
+    F-->nomeModel<--Service.Save(A-->nomeModel<--);
+    Redireciona(RotaAtual.Acao('Indice'));
+  end
+  else
+    Visao(A-->nomeModel<--);
+end;
+
+procedure TControlador-->nomeControlador<--.DespachaAcao(const ANomeAcao: string);
+begin
+  if SameText('Indice', ANomeAcao) then
+    Indice
+  else if SameText('Criar', ANomeAcao) then
+  begin
+    if MetodoPost then
+      Criar(CriaModeloEBind(T-->nomeModel<--) as I-->nomeModel<--)
+    else
+      Criar;
+  end
+  else if SameText('Editar', ANomeAcao) and (Rota.TerceiroElementoComoInteiro >= 0) then
+  begin
+    if MetodoPost then
+      EditarPost(Rota.TerceiroElementoComoInteiro)
+    else
+      Editar(Rota.TerceiroElementoComoInteiro);
+  end
+  else if SameText('Apagar', ANomeAcao) and (Rota.TerceiroElementoComoInteiro >= 0) then
+  begin
+    if MetodoPost then
+      ApagarPost(Rota.TerceiroElementoComoInteiro)
+    else
+      Apagar(Rota.TerceiroElementoComoInteiro);
+  end
+  else
+    inherited NaoFoiEncontrado;
+end;==>
+} else {<==
+
+procedure TControlador-->nomeControlador<--.DespachaAcao(const ANomeAcao: string);
+begin
+  {if SameText('Indice', ANomeAcao) then
+    Indice
+  else}
+    NaoFoiEncontrado;
+end;==>
+}
+
+if (crud == true) {<==
+
+procedure TControlador-->nomeControlador<--.Editar(ACtrl_ID: Integer);
+var
+  L-->nomeModel<--: I-->nomeModel<--;
+begin
+  L-->nomeModel<-- := F-->nomeModel<--Service.FindByCtrl_ID(ACtrl_ID, Connection);
+  if L-->nomeModel<-- <> nil then
+    Visao(L-->nomeModel<--)
+  else
+    NaoFoiEncontrado(IntToStr(ACtrl_ID));
+end;
+
+procedure TControlador-->nomeControlador<--.EditarPost(ACtrl_ID: Integer);
+var
+  L-->nomeModel<--: I-->nomeModel<--;
+begin
+  L-->nomeModel<-- := F-->nomeModel<--Service.FindByCtrl_ID(ACtrl_ID, Connection);
+  if L-->nomeModel<-- <> nil then
+  begin
+    Bind(L-->nomeModel<--);
+    if ModeloValido then
+    begin
+      F-->nomeModel<--Service.Save(L-->nomeModel<--);
+      Redireciona(NovaRota.Controlador(NomeControlador));
+    end
+    else
+      Visao(L-->nomeModel<--);
+  end
+  else
+    NaoFoiEncontrado(IntToStr(ACtrl_ID));
+end;
+
+procedure TControlador-->nomeControlador<--.Indice;
+begin
+  Visao(F-->nomeModel<--Service.FindAll(Connection));
+end;
+
+procedure TControlador-->nomeControlador<--.NaoFoiEncontrado(const AOQue: string);
+begin
+  inherited NaoFoiEncontrado('Não foi encontrado o código ' + AOQue + '.');
+end;==>
+}<==
+
+initialization
+
+  TControlador-->nomeControlador<--.RegistreSe(FabricaControlador-->nomeControlador<--);
+
+end.

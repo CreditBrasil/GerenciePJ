@@ -1,0 +1,37 @@
+{ Template: VCCollectionFrameInterface.pas_template }
+unit u-->nomeVC<--Interface;
+
+interface
+
+uses
+  uARCollectionFrame, uActiveRecordSimpleViewInterface;
+
+type
+  I-->nomeVC<--Controler = interface(IARCollectionFrameControler)
+    @@@ Substitua isso pelo GUID (CTRL + SHIFT + G) @@@
+    //procedure Load;
+  end;
+
+  I-->nomeVCSimple<--Controler = interface; //forward
+
+  I-->nomeVCSimple<--View = interface(IActiveRecordSimpleView)
+    @@@ Substitua isso pelo GUID (CTRL + SHIFT + G) @@@
+    function Get-->nomeVCSimple<--Controler: I-->nomeVCSimple<--Controler;
+    procedure Set-->nomeVCSimple<--Controler(const Value: I-->nomeVCSimple<--Controler);
+
+    property -->nomeVCSimple<--Controler: I-->nomeVCSimple<--Controler read Get-->nomeVCSimple<--Controler 
+      write Set-->nomeVCSimple<--Controler;
+  end;
+
+  I-->nomeVCSimple<--Controler = interface(IActiveRecordSimpleControler)
+    @@@ Substitua isso pelo GUID (CTRL + SHIFT + G) @@@
+    function Get-->nomeVCSimple<--View: I-->nomeVCSimple<--View;
+    procedure Set-->nomeVCSimple<--View(const Value: I-->nomeVCSimple<--View);
+
+    property -->nomeVCSimple<--View: I-->nomeVCSimple<--View read Get-->nomeVCSimple<--View 
+      write Set-->nomeVCSimple<--View;
+  end;
+
+implementation
+
+end.

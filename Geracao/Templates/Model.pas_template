@@ -1,0 +1,190 @@
+{ template: Model.pas_template }
+unit u-->nomeModel<--;
+
+interface
+
+uses
+  SysUtils, ServiceLocator, uActiveRecord, uAR-->Tabela.Nome<--;
+
+type
+  I-->nomeModel<-- = interface(IAR-->Tabela.Nome<--)
+    @@@ Substitua isso pelo GUID (CTRL + SHIFT + G) @@@
+  end;
+
+  IIterator-->nomeModel<-- = interface(IIteratorActiveRecord)
+    @@@ Substitua isso pelo GUID (CTRL + SHIFT + G) @@@
+    function CurrentItem: I-->nomeModel<--;
+  end;
+
+  ICollection-->nomeModel<-- = interface(ICollectionActiveRecord)
+    @@@ Substitua isso pelo GUID (CTRL + SHIFT + G) @@@
+    function GetItem(Index: Integer): I-->nomeModel<--;
+
+    function Add(const Item: I-->nomeModel<--): Integer;
+    function First: I-->nomeModel<--;
+    procedure Insert(Index: Integer; const Item: I-->nomeModel<--);
+    function Last: I-->nomeModel<--;
+    function New(const AConnection: IActiveRecordConnection): I-->nomeModel<--;
+    property Item[Index: Integer]: I-->nomeModel<-- read GetItem; default;
+  end;
+
+  TCollection-->nomeModel<-- = class(TCollectionAR-->Tabela.Nome<--, ICollection-->nomeModel<--)
+  protected
+    { ICollection-->nomeModel<-- }
+    function GetItem(Index: Integer): I-->nomeModel<--;
+
+    function Add(const Item: I-->nomeModel<--): Integer;
+    function First: I-->nomeModel<--;
+    procedure Insert(Index: Integer; const Item: I-->nomeModel<--);
+    function Last: I-->nomeModel<--;
+    function New(const AConnection: IActiveRecordConnection): I-->nomeModel<--;
+  end;
+
+  TIterator-->nomeModel<--Decorator = class(TIteratorAR-->Tabela.Nome<--Decorator, IIterator-->nomeModel<--)
+  protected
+    { IIterator-->nomeModel<-- }
+    function CurrentItem: I-->nomeModel<--;
+  public
+    class function Decore(const ACollection-->nomeModel<--: ICollection-->nomeModel<--): IIterator-->nomeModel<--;
+  end;
+
+  TIterator-->nomeModel<--QueryDecorator = class(TIteratorActiveRecordQueryDecorator, IIterator-->nomeModel<--)
+  protected
+    { IIterator-->nomeModel<-- }
+    function CurrentItem: I-->nomeModel<--;
+  public
+    class function Decore(const A-->nomeModel<--Query: IActiveRecordQuery): IIterator-->nomeModel<--;
+  end;
+
+  I-->nomeModel<--Service = interface(IActiveRecordService)
+    @@@ Substitua isso pelo GUID (CTRL + SHIFT + G) @@@
+  end;
+
+  T-->nomeModel<-- = class(TAR-->Tabela.Nome<--, I-->nomeModel<--)
+  private
+  protected
+    //procedure AfterLoad; override;
+    //procedure AfterSave; override;
+    //procedure BeforeSave; override;
+    //procedure CopyFrom(AActiveRecord: TActiveRecord); override;
+    //procedure Validate(const AActiveRecordCallBackValidate: IActiveRecordCallBackValidate); override;
+    { IActiveRecordAccess }
+    {procedure Clear(Index: Integer); override;
+    function DisplayText(Index: Integer): string; override;
+    function GetAsString(Index: Integer): string; override;
+    function GetValue(Index: Integer): Variant; override;
+    function IsNull(Index: Integer): Boolean; override;
+    procedure SetAsString(Index: Integer; const Value: string); override;
+    procedure SetValue(Index: Integer; const Value: Variant); override;}
+    { I-->nomeModel<-- }
+  public
+    //constructor Create(const AConnection: IActiveRecordConnection); override;
+    class function GUIDItem: TGUID; override;
+    //class function Metadata: IActiveRecordMetadata; override;
+    //class function ViewMetadata: IActiveRecordMetadata; override;
+  end;
+
+  T-->nomeModel<--Service = class(TActiveRecordService, I-->nomeModel<--Service)
+  protected
+    { I-->nomeModel<--Service }
+  end;
+
+{const
+  Campo_-->Tabela.Nome<--_ = -->Tabela.Nome<--_ReferenciaParaNovosCampos;
+  -->nomeModel<--AdditionalFields: array [0..0] of TFieldMetadata = (
+    (Index: Campo_-->Tabela.Nome<--_; Name: ''; FieldType: arftInteger; Length: 0; Nullable: False;
+      Caption: ''; Visible: True; ReadOnly: True; Commented: False;
+      Title: ''; ColumnCharWidth: ColumnCharWidthFor...)
+    );}
+  
+implementation
+
+//var
+  //G-->nomeModel<--Metadata: IActiveRecordMetadataWritable;
+  //G-->nomeModel<--ViewMetadata: IActiveRecordMetadataWritable;
+
+{ TCollection-->nomeModel<-- }
+
+function TCollection-->nomeModel<--.Add(const Item: I-->nomeModel<--): Integer;
+begin
+  Result := inherited Add(Item as IAR-->Tabela.Nome<--);
+end;
+
+function TCollection-->nomeModel<--.First: I-->nomeModel<--;
+begin
+  Result := (inherited First) as I-->nomeModel<--;
+end;
+
+function TCollection-->nomeModel<--.GetItem(Index: Integer): I-->nomeModel<--;
+begin
+  Result := (inherited GetItem(Index)) as I-->nomeModel<--;
+end;
+
+procedure TCollection-->nomeModel<--.Insert(Index: Integer; const Item: I-->nomeModel<--);
+begin
+  inherited Insert(Index, Item as IAR-->Tabela.Nome<--);
+end;
+
+function TCollection-->nomeModel<--.Last: I-->nomeModel<--;
+begin
+  Result := (inherited Last) as I-->nomeModel<--;
+end;
+
+function TCollection-->nomeModel<--.New(const AConnection: IActiveRecordConnection): I-->nomeModel<--;
+begin
+  Result := ClassActiveRecord.Create(AConnection) as I-->nomeModel<--;
+  Add(Result);
+end;
+
+{ TIterator-->nomeModel<--Decorator }
+
+function TIterator-->nomeModel<--Decorator.CurrentItem: I-->nomeModel<--;
+begin
+  Result := CurrentItemActiveRecord as I-->nomeModel<--;
+end;
+
+class function TIterator-->nomeModel<--Decorator.Decore(const ACollection-->nomeModel<--: ICollection-->nomeModel<--): IIterator-->nomeModel<--;
+begin
+  Result := Create(ACollection-->nomeModel<--);
+end;
+
+{ TIterator-->nomeModel<--QueryDecorator }
+
+function TIterator-->nomeModel<--QueryDecorator.CurrentItem: I-->nomeModel<--;
+begin
+  Result := CurrentItemActiveRecord as I-->nomeModel<--;
+end;
+
+class function TIterator-->nomeModel<--QueryDecorator.Decore(const A-->nomeModel<--Query: IActiveRecordQuery): IIterator-->nomeModel<--;
+begin
+  Result := Create(A-->nomeModel<--Query);
+end;
+
+{ T-->nomeModel<-- }
+
+class function T-->nomeModel<--.GUIDItem: TGUID;
+begin
+  Result := I-->nomeModel<--;
+end;
+
+initialization
+
+  T-->nomeModel<--Service.SelfRegister(I-->nomeModel<--Service);
+
+  { Definições do Metadata, descomente o "class function Metadata" e Coloque no Result a variavel abaixo }
+  //G-->nomeModel<--Metadata := TActiveRecordMetadataWritable.Create;
+  //G-->nomeModel<--Metadata.CopyFrom(TAR-->Tabela.Nome<--.Metadata);
+  //Incluir aqui alterações em relação ao Metadata original
+
+  { Definições do ViewMetadata, descomente o "class function ViewMetadata" e Coloque no Result a variavel abaixo }
+  //G-->nomeModel<--ViewMetadata := TActiveRecordMetadataWritable.Create;
+  //G-->nomeModel<--ViewMetadata.CopyFrom(T-->nomeModel<--.Metadata);
+  //Incluir aqui informações que apenas aparecem para o usuário (não são gravadas no banco)
+  //G-->nomeModel<--ViewMetadata.AddFieldsMetadata(-->nomeModel<--AdditionalFields);
+
+finalization
+
+  //G-->nomeModel<--Metadata := nil;
+  //G-->nomeModel<--ViewMetadata := nil;
+
+end.

@@ -1,0 +1,123 @@
+==>
+function determinaTipoCSharp () {
+  for(var i = 0; i < Tabela.Campos.length; i++) {
+    Tabela.Campos[i].AtributosCSharp = [];
+    if(Tabela.Campos[i].Nullable) {
+      switch (Tabela.Campos[i].Tipo) {
+        case "datetime": 
+          Tabela.Campos[i].TipoCSharp = "DateTime?";
+          break;
+        case "float":
+          if(Tabela.Campos[i].Dominio == "Dinheiro") {
+            Tabela.Campos[i].TipoCSharp = "decimal?";
+          } else {
+            Tabela.Campos[i].TipoCSharp = "double?";
+          }
+          break;
+        case "int": 
+          if(Tabela.Campos[i].Dominio == "B01") {
+            Tabela.Campos[i].TipoCSharp = "int?";
+            break;
+          } else {
+            Tabela.Campos[i].TipoCSharp = "int?";
+            break;
+          }
+        case "varchar":
+          if(Tabela.Campos[i].Dominio == "NS") {
+            Tabela.Campos[i].TipoCSharp = "string";
+            Tabela.Campos[i].AtributosCSharp.push("StringLength(1)");
+          } else {
+            Tabela.Campos[i].TipoCSharp = "string";
+            Tabela.Campos[i].AtributosCSharp.push("StringLength(" + Tabela.Campos[i].Tamanho + ")");
+          }
+          break;
+		case "text":
+          Tabela.Campos[i].TipoCSharp = "string";
+          break;
+        default:
+          WScript.Echo("Tipo " + Tabela.Campos[i].Tipo + " não definido");
+      }	    
+    } else {
+      switch (Tabela.Campos[i].Tipo) {
+        case "datetime": 
+          Tabela.Campos[i].TipoCSharp = "DateTime";
+          break;
+        case "float":
+          if(Tabela.Campos[i].Dominio == "Dinheiro") {
+            Tabela.Campos[i].TipoCSharp = "decimal";
+          } else {
+            Tabela.Campos[i].TipoCSharp = "double";
+          }
+          break;
+        case "int": 
+          if(Tabela.Campos[i].Dominio == "B01") {
+            Tabela.Campos[i].TipoCSharp = "int";
+			break;
+          } else {
+            Tabela.Campos[i].TipoCSharp = "int";
+            break;
+          }
+        case "varchar":
+          if(Tabela.Campos[i].Dominio == "NS") {
+            Tabela.Campos[i].TipoCSharp = "string";
+            Tabela.Campos[i].AtributosCSharp.push("Required");
+            Tabela.Campos[i].AtributosCSharp.push("StringLength(1, MinimumLength = 1)");
+          } else {
+            Tabela.Campos[i].TipoCSharp = "string";
+            Tabela.Campos[i].AtributosCSharp.push("Required");
+            Tabela.Campos[i].AtributosCSharp.push("StringLength(" + Tabela.Campos[i].Tamanho + ")");
+          }
+          break;
+        case "text":
+          Tabela.Campos[i].TipoCSharp = "string";
+          break;
+        default:
+          WScript.Echo("Tipo " + Tabela.Campos[i].Tipo + " não definido");
+      }
+    }
+    if(Tabela.Campos[i].Dominio == "ApagadoEm") {
+      Tabela.CampoApagadoEm = Tabela.Campos[i].Nome;
+    }
+  }
+}
+
+function isKey(campo) {
+  for(var i = 0; i < Tabela.ChavePrimaria.Campos.length; i++) {
+    if(Tabela.ChavePrimaria.Campos[i] == campo) {
+      return true;
+    }
+  }
+  return false;
+}
+
+determinaTipoCSharp();
+
+<==using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.ComponentModel.DataAnnotations;
+
+namespace iWBA.Models
+{
+    [Table("-->Tabela.Nome<--")]
+    public class -->Tabela.Nome<--
+    {==>
+for(var i = 0; i < Tabela.Campos.length; i++) {<==
+        /// <summary>
+        /// -->Tabela.Campos[i].Descricao<--
+        /// </summary> ==>
+  if (isKey(Tabela.Campos[i].Nome)) {<==
+        [Key]==>
+  }
+  for (var j = 0; j < Tabela.Campos[i].AtributosCSharp.length; j++) {<==
+        [-->Tabela.Campos[i].AtributosCSharp[j]<--]==>
+  }
+  if (Tabela.Campos[i].Caption) {<==
+        [Display(Name = "-->Tabela.Campos[i].Caption<--")]==>
+  }<==
+        public -->Tabela.Campos[i].TipoCSharp<-- -->Tabela.Campos[i].Nome<-- { get; set; }
+==>
+}<==
+    }
+}

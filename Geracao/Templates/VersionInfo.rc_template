@@ -1,0 +1,46 @@
+1 VERSIONINFO
+FILEVERSION    	-->Configuracao.Versao.Maior<--,-->Configuracao.Versao.Menor<--,-->Configuracao.Versao.Release<--,-->Configuracao.Versao.Build<--
+PRODUCTVERSION 	-->Configuracao.Versao.Maior<--,-->Configuracao.Versao.Menor<--,0,0
+FILEFLAGSMASK  	VS_FFI_FILEFLAGSMASK==>
+if (Configuracao.FileFlags.length > 0) {<==
+FILEFLAGS      	(-->Configuracao.FileFlags.join("|")<--)==>
+}<==
+FILEOS         	VOS__WINDOWS32
+FILETYPE       	VFT_APP
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "041604E4"
+        BEGIN
+            VALUE "CompanyName",      "-->Configuracao.CompanyName<--\0"
+            VALUE "FileDescription",  "-->Configuracao.Produto.FileDescription<--\0"
+            VALUE "FileVersion",      "-->Configuracao.Versao.FileVersion<--\0"
+            VALUE "InternalName",     "-->Configuracao.Produto.OriginalFilename<--\0"
+            VALUE "LegalCopyright",   "-->Configuracao.LegalCopyright<--\0"
+            VALUE "LegalTrademarks",  "-->Configuracao.LegalTrademarks<--\0"
+            VALUE "OriginalFilename", "-->Configuracao.Produto.OriginalFilename<--\0"==>
+if (Configuracao.PrivateBuild && Configuracao.PrivateBuild != "") {<==
+            VALUE "PrivateBuild",     "-->Configuracao.PrivateBuild<--\0"==>
+}<==
+            VALUE "ProductName",      "-->Configuracao.Produto.ProductName<--\0"
+            VALUE "ProductVersion",   "-->Configuracao.Versao.ProductVersion<--\0"==>
+if (Configuracao.SpecialBuild && Configuracao.SpecialBuild != "") {<==
+            VALUE "SpecialBuild",     "-->Configuracao.SpecialBuild<--\0"==>
+}<==
+            VALUE "GitRevision",      "-->Configuracao.GitRevision<--\0"
+        END
+    END
+
+    BLOCK "VarFileInfo"
+    BEGIN
+        /* The following line should only be modified for localized versions.     */
+        /* It consists of any number of WORD,WORD pairs, with each pair           */
+        /* describing a language,codepage combination supported by the file.      */
+        /*                                                                        */
+        /* For example, a file might have values "0x409,1252" indicating that it  */
+        /* supports English language (0x409) in the Windows ANSI codepage (1252). */
+
+        VALUE "Translation", 0x0416, 1252
+
+    END
+END

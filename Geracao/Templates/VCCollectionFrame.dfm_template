@@ -1,0 +1,9 @@
+inherited -->nomeVC<--: T-->nomeVC<--
+  object grid-->nomeVC<--: TDrawGrid [1]
+    Align = alClient
+    Ctl3D = False
+    ParentCtl3D = False
+    TabOrder = 1
+    OnDblClick = grid-->nomeVC<--DblClick
+  end
+end

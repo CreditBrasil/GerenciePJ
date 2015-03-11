@@ -1,0 +1,59 @@
+/*
+css_estilo CSS estilo.css
+*/
+/*
+   Twitter Bootstrap
+   http://twitter.github.com/bootstrap/index.html
+css_bootstrap CSS "..\..\ComponentesJS\bootstrap\css\bootstrap.min.css" //use bootstrap.css para versão não minified
+fonts_glyphiconshalflingsregular EOT "..\..\ComponentesJS\bootstrap\fonts\glyphicons-halflings-regular.eot"
+fonts_glyphiconshalflingsregular SVG "..\..\ComponentesJS\bootstrap\fonts\glyphicons-halflings-regular.svg"
+fonts_glyphiconshalflingsregular TTF "..\..\ComponentesJS\bootstrap\fonts\glyphicons-halflings-regular.ttf"
+fonts_glyphiconshalflingsregular WOFF "..\..\ComponentesJS\bootstrap\fonts\glyphicons-halflings-regular.woff"
+*/
+/*
+   font-awesome
+css_fontawesome CSS "..\..\ComponentesJS\FontAwesome\css\font-awesome.min.css" //se font-awesome.css para versão não minified
+fonts_fontawesomewebfont EOT "..\..\ComponentesJS\FontAwesome\fonts\fontawesome-webfont.eot"
+fonts_fontawesomewebfont SVG "..\..\ComponentesJS\FontAwesome\fonts\fontawesome-webfont.svg"
+fonts_fontawesomewebfont TTF "..\..\ComponentesJS\FontAwesome\fonts\fontawesome-webfont.ttf"
+fonts_fontawesomewebfont WOFF "..\..\ComponentesJS\FontAwesome\fonts\fontawesome-webfont.woff"
+*/
+/*
+   Template Color Admin
+css_animate CSS "..\..\ComponentesJS\TemplateColorAdmin\animate.min.css"
+css_style CSS "..\..\ComponentesJS\TemplateColorAdmin\style.min.css"
+css_styleresponsive CSS "..\..\ComponentesJS\TemplateColorAdmin\style-responsive.min.css"
+css_funcionario CSS "..\..\ComponentesJS\TemplateColorAdmin\default.css"
+css_gerente CSS "..\..\ComponentesJS\TemplateColorAdmin\orange.css"
+css_cliente CSS "..\..\ComponentesJS\TemplateColorAdmin\red.css"
+img_bg6 JPG "..\..\ComponentesJS\TemplateColorAdmin\bg-6.jpg"
+img_transparent_black02 PNG "..\..\ComponentesJS\TemplateColorAdmin\tranparent\black-0.2.png"
+img_transparent_black04 PNG "..\..\ComponentesJS\TemplateColorAdmin\tranparent\black-0.4.png"
+img_transparent_black06 PNG "..\..\ComponentesJS\TemplateColorAdmin\tranparent\black-0.6.png"
+img_transparent_black08 PNG "..\..\ComponentesJS\TemplateColorAdmin\tranparent\black-0.8.png"
+img_transparent_white098 PNG "..\..\ComponentesJS\TemplateColorAdmin\tranparent\white-0.98.png"
+*/
+/*
+   JQuery-UI
+css_jqueryui CSS "..\..\ComponentesJS\jquery-ui\themes\base\minified\jquery-ui.min.css"
+css_images_animatedoverlay GIF "..\..\ComponentesJS\jquery-ui\themes\base\minified\images\animated-overlay.gif"
+css_images_uibg_flat_0_aaaaaa_40x100 PNG "..\..\ComponentesJS\jquery-ui\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png"
+css_images_uibg_flat_75_ffffff_40x100 PNG "..\..\ComponentesJS\jquery-ui\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png"
+css_images_uibg_glass_55_fbf9ee_1x400 PNG "..\..\ComponentesJS\jquery-ui\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png"
+css_images_uibg_glass_65_ffffff_1x400 PNG "..\..\ComponentesJS\jquery-ui\themes\base\minified\images\ui-bg_glass_65_ffffff_1x400.png"
+css_images_uibg_glass_75_dadada_1x400 PNG "..\..\ComponentesJS\jquery-ui\themes\base\minified\images\ui-bg_glass_75_dadada_1x400.png"
+css_images_uibg_glass_75_e6e6e6_1x400 PNG "..\..\ComponentesJS\jquery-ui\themes\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png"
+css_images_uibg_glass_95_fef1ec_1x400 PNG "..\..\ComponentesJS\jquery-ui\themes\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png"
+css_images_uibg_highlightsoft_75_cccccc_1x100 PNG "..\..\ComponentesJS\jquery-ui\themes\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png"
+css_images_uiicons_222222_256x240 PNG "..\..\ComponentesJS\jquery-ui\themes\base\minified\images\ui-icons_222222_256x240.png"
+css_images_uiicons_2e83ff_256x240 PNG "..\..\ComponentesJS\jquery-ui\themes\base\minified\images\ui-icons_2e83ff_256x240.png"
+css_images_uiicons_454545_256x240 PNG "..\..\ComponentesJS\jquery-ui\themes\base\minified\images\ui-icons_454545_256x240.png"
+css_images_uiicons_888888_256x240 PNG "..\..\ComponentesJS\jquery-ui\themes\base\minified\images\ui-icons_888888_256x240.png"
+css_images_uiicons_cd0a0a_256x240 PNG "..\..\ComponentesJS\jquery-ui\themes\base\minified\images\ui-icons_cd0a0a_256x240.png"
+*/
+/*
+   Twitter Bootstrap Datepicker
+   http://www.eyecon.ro/bootstrap-datepicker/
+   melhorador em https://github.com/eternicode/bootstrap-datepicker
+css_datepicker CSS "..\..\ComponentesJS\datepicker\css\datepicker.css"
+*/

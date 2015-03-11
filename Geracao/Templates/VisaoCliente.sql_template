@@ -1,0 +1,162 @@
+/* script gerado automaticamente, não editar
+   Serve como apoio para a criação dos arquivos de update e completo 
+   
+   Template: VisaoCliente.sql_template
+   Descrição: Serve como apoio para a criação dos arquivos de update e completo da VisaoCliente */
+   
+/* Visao Cliente */
+  
+alter view VisaoCliente (
+  CARTEIRA,==>
+for (var laco = 0; laco < carteira.Campos.length; laco++) {<==
+  -->carteira.Campos[laco].Nome<---->(laco < carteira.Campos.length - 1)?",":""<--==>
+}<==
+) AS
+Select
+  0,==>
+for (var laco = 0; laco < carteira.Campos.length; laco++) {
+  if (carteira.Campos[laco].Nome == 'Estado') {<==
+  coalesce(nullif(-->carteira.Campos[laco].Nome<--, 403), 0)-->(laco < carteira.Campos.length - 1)?",":""<--==>
+  } else {<==
+  -->carteira.Campos[laco].Nome<---->(laco < carteira.Campos.length - 1)?",":""<--==>
+  }
+}<==
+from
+  sigflu
+where
+  estado is null or
+  estado <> 453
+union all
+select
+  3,==>
+for (var laco = 0; laco < carteira.Campos.length; laco++) {
+  if (carteira.Campos[laco].Nome == 'Estado') {<==
+  coalesce(nullif(-->carteira.Campos[laco].Nome<--, 453), 0)-->(laco < carteira.Campos.length - 1)?",":""<--==>
+  } else {<==
+  -->carteira.Campos[laco].Nome<---->(laco < carteira.Campos.length - 1)?",":""<--==>
+  }
+}<==
+from
+  sigdes
+where 
+  estado is null or 
+  estado not in (11, 13, 30, 46)
+GO
+==>
+var carteirasFIDC = [
+  {
+    "Nome": "FIDC",
+    "NumeroCarteira": "2",
+    "Tabela": "sigfidc"
+  },
+  {
+    "Nome": "FIDC2",
+    "NumeroCarteira": "4",
+    "Tabela": "sigfidc2"
+  }];
+for (var i = 0; i < carteirasFIDC.length; i++) {<==
+/* Visao Cliente -->carteirasFIDC[i].Nome<-- */
+
+alter view VisaoCliente-->carteirasFIDC[i].Nome<-- (
+  CARTEIRA,==>
+  for (var laco = 0; laco < carteira.Campos.length; laco++) {<==
+  -->carteira.Campos[laco].Nome<---->(laco < carteira.Campos.length - 1)?",":""<--==>
+  }<==
+) AS
+Select
+  -->carteirasFIDC[i].NumeroCarteira<--,==>
+  for (var laco = 0; laco < carteira.Campos.length; laco++) {
+    if (carteira.Campos[laco].Nome == 'Estado') {<==
+  coalesce(nullif(-->carteira.Campos[laco].Nome<--, 400), 0)-->(laco < carteira.Campos.length - 1)?",":""<--==>
+    } else {<==
+  -->carteira.Campos[laco].Nome<---->(laco < carteira.Campos.length - 1)?",":""<--==>
+    }
+  }<==
+from
+  -->carteirasFIDC[i].Tabela<--
+where
+  estado is null or
+  estado <> 450
+union all
+select
+  0,==>
+  for (var laco = 0; laco < carteira.Campos.length; laco++) {
+    if (carteira.Campos[laco].Nome == 'Estado') {<==
+  coalesce(nullif(sigflu.-->carteira.Campos[laco].Nome<--, 450), 0)-->(laco < carteira.Campos.length - 1)?",":""<--==>
+    } else {<==
+  sigflu.-->carteira.Campos[laco].Nome<---->(laco < carteira.Campos.length - 1)?",":""<--==>
+    }
+  }<==
+from
+  sigflu inner join -->carteirasFIDC[i].Tabela<-- on sigflu.ctrl_id = -->carteirasFIDC[i].Tabela<--.ctrl_id
+GO
+
+/* Visao Cliente -->carteirasFIDC[i].Nome<--  Sem títulos que foram transferidos */
+
+alter view VisaoCliente-->carteirasFIDC[i].Nome<--Sem-->carteirasFIDC[i].Nome<-- (
+  CARTEIRA,==>
+  for (var laco = 0; laco < carteira.Campos.length; laco++) {<==
+  -->carteira.Campos[laco].Nome<---->(laco < carteira.Campos.length - 1)?",":""<--==>
+  }<==
+) AS
+Select
+  -->carteirasFIDC[i].NumeroCarteira<--,==>
+  for (var laco = 0; laco < carteira.Campos.length; laco++) {
+    if (carteira.Campos[laco].Nome == 'Estado') {<==
+  coalesce(nullif(-->carteirasFIDC[i].Tabela<--.-->carteira.Campos[laco].Nome<--, 400), 0)-->(laco < carteira.Campos.length - 1)?",":""<--==>
+    } else {<==
+  -->carteirasFIDC[i].Tabela<--.-->carteira.Campos[laco].Nome<---->(laco < carteira.Campos.length - 1)?",":""<--==>
+    }
+  }<==
+from    
+  -->carteirasFIDC[i].Tabela<--
+  left join sigflu on
+    sigflu.ctrl_id = -->carteirasFIDC[i].Tabela<--.ctrl_id    
+where    
+  (-->carteirasFIDC[i].Tabela<--.estado <> 450 or    
+  -->carteirasFIDC[i].Tabela<--.estado is null)
+  and sigflu.ctrl_id is null
+GO
+==>
+}<==
+/* Visao Cliente Sem FIDC */
+
+alter view VisaoClienteSemFIDC (
+  CARTEIRA,==>
+for (var laco = 0; laco < carteira.Campos.length; laco++) {<==
+  -->carteira.Campos[laco].Nome<---->(laco < carteira.Campos.length - 1)?",":""<--==>
+}<==
+) AS
+Select
+  0,==>
+for (var laco = 0; laco < carteira.Campos.length; laco++) {
+  if (carteira.Campos[laco].Nome == 'Estado') {<==
+  coalesce(nullif(sigflu.-->carteira.Campos[laco].Nome<--, 403), 0)-->(laco < carteira.Campos.length - 1)?",":""<--==>
+  } else {<==
+  sigflu.-->carteira.Campos[laco].Nome<---->(laco < carteira.Campos.length - 1)?",":""<--==>
+  }
+}<==
+from
+  sigflu 
+  left join sigfidc on sigfidc.ctrl_id = sigflu.ctrl_id
+  left join sigfidc2 on sigfidc2.ctrl_id = sigflu.ctrl_id
+where  
+  (sigflu.estado <> 453 or sigflu.estado is null) and
+  sigfidc.ctrl_id is null and 
+  sigfidc2.ctrl_id is null
+union all
+select
+  3,==>
+for (var laco = 0; laco < carteira.Campos.length; laco++) {
+  if (carteira.Campos[laco].Nome == 'Estado') {<==
+  coalesce(nullif(-->carteira.Campos[laco].Nome<--, 453), 0)-->(laco < carteira.Campos.length - 1)?",":""<--==>
+  } else {<==
+  -->carteira.Campos[laco].Nome<---->(laco < carteira.Campos.length - 1)?",":""<--==>
+  }
+}<==
+from  
+  sigdes  
+where 
+  estado <> 46 or  
+  estado is null
+GO

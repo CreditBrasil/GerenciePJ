@@ -1,0 +1,152 @@
+{ Template: VCCollectionClass.pas_template }
+unit u-->nomeVC<--VCClass;
+
+interface
+
+uses
+  Forms, ServiceLocator, uActiveRecord, uActiveRecordCollectionMVCInterface, uActiveRecordCollectionView,
+  uActiveRecordCollectionControler, uActiveRecordSimpleViewInterface, uActiveRecordSimpleView,
+  uActiveRecordSimpleControler, u-->nomeVC<--VCInterface, u-->nomeModel<--, 
+  w-->nomeForm<--, w-->nomeFormSimple<--;
+  
+type
+  T-->nomeVC<--View = class(TActiveRecordCollectionView, I-->nomeVC<--View)
+  protected
+    { I-->nomeVC<--View }
+    function Get-->nomeVC<--Controler: I-->nomeVC<--Controler;
+    procedure Set-->nomeVC<--Controler(const Value: I-->nomeVC<--Controler);
+  end;
+
+  T-->nomeVC<--Controler = class(TActiveRecordCollectionControler, I-->nomeVC<--Controler)
+  protected
+    function DoEditItem(const AAccess: IActiveRecordAccess): TModalResult; override;
+    { I-->nomeVC<--Controler }
+    function Get-->nomeVC<--View: I-->nomeVC<--View;
+    procedure Set-->nomeVC<--View(const Value: I-->nomeVC<--View);
+  end;
+
+  T-->nomeVCSimple<--View = class(TActiveRecordSimpleView, I-->nomeVCSimple<--View)
+  protected
+    { I-->nomeVCSimple<--View }
+    function Get-->nomeVCSimple<--Controler: I-->nomeVCSimple<--Controler;
+    procedure Set-->nomeVCSimple<--Controler(const Value: I-->nomeVCSimple<--Controler);
+  end;
+
+  T-->nomeVCSimple<--Controler = class(TActiveRecordSimpleControler, I-->nomeVCSimple<--Controler)
+  protected
+    { I-->nomeVCSimple<--Controler }
+    function Get-->nomeVCSimple<--View: I-->nomeVCSimple<--View;
+    procedure Set-->nomeVCSimple<--View(const Value: I-->nomeVCSimple<--View);
+  end;
+
+implementation
+
+{ T-->nomeVC<--View }
+
+function T-->nomeVC<--View.Get-->nomeVC<--Controler: I-->nomeVC<--Controler;
+begin
+  Result := GetControler as I-->nomeVC<--Controler;
+end;
+
+procedure T-->nomeVC<--View.Set-->nomeVC<--Controler(const Value: I-->nomeVC<--Controler);
+begin
+  SetControler(Value);
+end;
+
+{ T-->nomeVC<--Controler }
+
+function T-->nomeVC<--Controler.DoEditItem(const AAccess: IActiveRecordAccess): TModalResult;
+var
+  LEditControler: I-->nomeVCSimple<--Controler;
+begin
+  LEditControler := SL as I-->nomeVCSimple<--Controler;
+  GetView.AjustaSimpleView(LEditControler.View);
+  LEditControler.Model := AAccess;
+  Result := LEditControler.Edit;
+end;
+
+function T-->nomeVC<--Controler.Get-->nomeVC<--View: I-->nomeVC<--View;
+begin
+  Result := GetView as I-->nomeVC<--View;
+end;
+
+procedure T-->nomeVC<--Controler.Set-->nomeVC<--View(const Value: I-->nomeVC<--View);
+begin
+  SetView(Value);
+end;
+
+{ T-->nomeVCSimple<--View }
+
+function T-->nomeVCSimple<--View.Get-->nomeVCSimple<--Controler: I-->nomeVCSimple<--Controler;
+begin
+  Result := GetControler as I-->nomeVCSimple<--Controler;
+end;
+
+procedure T-->nomeVCSimple<--View.Set-->nomeVCSimple<--Controler(const Value: I-->nomeVCSimple<--Controler);
+begin
+  SetControler(Value);
+end;
+
+{ T-->nomeVCSimple<--Controler }
+
+function T-->nomeVCSimple<--Controler.Get-->nomeVCSimple<--View: I-->nomeVCSimple<--View;
+begin
+  Result := GetView as I-->nomeVCSimple<--View;
+end;
+
+procedure T-->nomeVCSimple<--Controler.Set-->nomeVCSimple<--View(const Value: I-->nomeVCSimple<--View);
+begin
+  SetView(Value);
+end;
+
+{ Factories }
+
+function -->nomeVC<--ViewFactory: IUnknown;
+var
+  L-->nomeVC<--View: I-->nomeVC<--View;
+begin
+  L-->nomeVC<--View := T-->nomeVC<--View.Create(T-->nomeForm<--);
+  L-->nomeVC<--View.Metadata := T-->nomeModel<--.ViewMetadata;
+  Result := L-->nomeVC<--View;
+end;
+
+function -->nomeVC<--ControlerFactory: IUnknown;
+var
+  L-->nomeVC<--Controler: I-->nomeVC<--Controler;
+  L-->nomeModel<--Service: I-->nomeModel<--Service;
+begin
+  L-->nomeVC<--Controler := T-->nomeVC<--Controler.Create;
+  L-->nomeVC<--Controler.View := SL as I-->nomeVC<--View;
+  L-->nomeModel<--Service := SL as I-->nomeModel<--Service;
+  L-->nomeVC<--Controler.Service := L-->nomeModel<--Service;
+  {L-->nomeVC<--Controler.Models := TCollection-->nomeModel<--.CreateFromIterator(
+    L-->nomeModel<--Service.FindAll(T-->nomeModel<--.DefaultConnection));}
+  Result := L-->nomeVC<--Controler;
+end;
+
+function -->nomeVCSimple<--ViewFactory: IUnknown;
+var
+  L-->nomeVCSimple<--View: I-->nomeVCSimple<--View;
+begin
+  L-->nomeVCSimple<--View := T-->nomeVCSimple<--View.Create(T-->nomeFormSimple<--);
+  L-->nomeVCSimple<--View.Metadata := T-->nomeVCSimple<--Model.ViewMetadata;
+  Result := L-->nomeVCSimple<--View;
+end;
+
+function -->nomeVCSimple<--ControlerFactory: IUnknown;
+var
+  L-->nomeVCSimple<--Controler: I-->nomeVCSimple<--Controler;
+begin
+  L-->nomeVCSimple<--Controler := T-->nomeVCSimple<--Controler.Create;
+  L-->nomeVCSimple<--Controler.-->nomeVCSimple<--View := SL as I-->nomeVCSimple<--View;
+  Result := L-->nomeVCSimple<--Controler;
+end;
+
+initialization
+
+  SL.Add(I-->nomeVC<--View, -->nomeVC<--ViewFactory);
+  SL.Add(I-->nomeVC<--Controler, -->nomeVC<--ControlerFactory);
+  SL.Add(I-->nomeVCSimple<--View, -->nomeVCSimple<--ViewFactory);
+  SL.Add(I-->nomeVCSimple<--Controler, -->nomeVCSimple<--ControlerFactory);
+
+end.

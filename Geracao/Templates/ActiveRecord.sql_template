@@ -1,0 +1,53 @@
+/* script gerado automaticamente, não editar
+   Serve como apoio para a criação dos arquivos de update e completo 
+   
+   Template: ActiveRecord.sql_template
+   Descrição: Serve como apoio para a criação dos arquivos de update e completo para a tabela -->Tabela.Nome<-- */
+==>
+function retornaChavePrimaria() {
+  var saida = "";
+  for(var i = 0; i < Tabela.ChavePrimaria.Campos.length; i++) {
+    if(i != 0) saida += ", ";
+	saida += "[" + Tabela.ChavePrimaria.Campos[i] + "]";
+  }
+  return saida;
+}
+
+if(Tabela.Descricao) {<==
+/* -->Tabela.Descricao<-- */==>
+}<==
+create table [dbo].[-->Tabela.Nome<--] (==>
+for(var i = 0; i < Tabela.Campos.length; i++) {
+  if(Tabela.Campos[i].Descricao) {<==
+	/* -->Tabela.Campos[i].Descricao<-- */==>
+  }<==
+	[-->Tabela.Campos[i].Nome<--] [-->Tabela.Campos[i].Tipo<--]-->Tabela.Campos[i].Tamanho?" ("+Tabela.Campos[i].Tamanho+")":""<-- -->Tabela.Campos[i].Nullable?"NULL":"NOT NULL"<---->(Tabela.Campos[i].Dominio == "CriadoEm" || Tabela.Campos[i].Dominio == "AtualizadoEm")?" CONSTRAINT [DF_" + Tabela.Nome + "_" + Tabela.Campos[i].Nome + "] DEFAULT (getdate())":""<---->(i+1)<Tabela.Campos.length?",":""<--==>
+}<==
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[-->Tabela.Nome<--] WITH NOCHECK ADD 
+        CONSTRAINT [PK_-->Tabela.Nome<--] PRIMARY KEY  NONCLUSTERED 
+        (
+                -->retornaChavePrimaria()<--
+        )  ON [PRIMARY]
+GO
+
+GRANT  REFERENCES ,  SELECT ,  INSERT ,  DELETE ,  UPDATE  ON [dbo].[-->Tabela.Nome<--]  TO [public]
+GO
+==>
+if(Tabela.Descricao) {<==
+DECLARE @v sql_variant 
+SET @v = N'-->Tabela.Descricao.replace(/'/g, "''")<--'
+EXECUTE sp_addextendedproperty N'MS_Description', @v, N'SCHEMA', N'dbo', N'TABLE', N'-->Tabela.Nome<--', NULL, NULL
+GO==>
+}
+for(var i = 0; i < Tabela.Campos.length; i++) {
+  if(Tabela.Campos[i].Descricao) {<==
+
+DECLARE @v sql_variant 
+SET @v = N'-->Tabela.Campos[i].Descricao.replace(/'/g, "''")<--'
+EXECUTE sp_addextendedproperty N'MS_Description', @v, N'SCHEMA', N'dbo', N'TABLE', N'-->Tabela.Nome<--', N'COLUMN', N'-->Tabela.Campos[i].Nome<--'
+GO==>
+  }
+}<==

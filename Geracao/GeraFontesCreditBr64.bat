@@ -1,0 +1,1 @@
+c:\windows\syswow64\wscript bin\tabelas.wsf

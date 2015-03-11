@@ -1,0 +1,44 @@
+{ Template: VCVazioInterface.pas_template }
+unit u-->nomeVC<--VCInterface;
+
+interface
+
+uses
+  uActiveRecord, u-->nomeModel<--;
+
+type
+  I-->nomeVC<--Controler = interface; //foward
+
+  I-->nomeVC<--View = interface
+    @@@ Substitua isso pelo GUID (CTRL + SHIFT + G) @@@
+    function GetControler: I-->nomeVC<--Controler;==>
+if (isCollection == false) {<==
+    procedure GetData-->nomeModelInt<--(const AAccess: IActiveRecordAccess);==>
+}<==
+    function Get-->nomeModel<--Metadata: IActiveRecordMetadata;
+    procedure SetControler(const Value: I-->nomeVC<--Controler);==>
+if (isCollection == false) {<==
+    procedure SetData-->nomeModelInt<--(const AAccess: IActiveRecordAccess);==>
+} else {<==
+    procedure SetData-->nomeModelInt<--(const ACollection: ICollectionActiveRecord);==>
+}<==
+    procedure Set-->nomeModel<--Metadata(const Value: IActiveRecordMetadata);
+
+    property Controler: I-->nomeVC<--Controler read GetControler write SetControler;
+    property -->nomeModel<--Metadata: IActiveRecordMetadata read Get-->nomeModel<--Metadata write Set-->nomeModel<--Metadata;
+  end;
+
+  I-->nomeVC<--Controler = interface
+    @@@ Substitua isso pelo GUID (CTRL + SHIFT + G) @@@
+    function Get-->nomeModel<--Service: I-->nomeModel<--Service; 
+    function GetView: I-->nomeVC<--View;
+    procedure Set-->nomeModel<--Service(const Value: I-->nomeModel<--Service);
+    procedure SetView(const Value: I-->nomeVC<--View);
+
+    property -->nomeModel<--Service: I-->nomeModel<--Service read Get-->nomeModel<--Service write Set-->nomeModel<--Service;
+    property View: I-->nomeVC<--View read GetView write SetView;
+  end;
+
+implementation
+
+end.

@@ -1,0 +1,48 @@
+{
+    "VersaoPrograma": "15.2.0",
+    "CompanyName": "WBA Informática",
+    "PreRelease": true,
+    "LegalCopyright": "Copyright 2015",
+    "LegalTrademarks": "WBA é marca registrada",
+    "PrivateBuild": "",
+    "SpecialBuild": "Para Homologação",
+    "Produtos": 
+    [
+        {
+            "FileDescription": "WBA Factoring - Administração de Factorings",
+            "OriginalFilename": "factor.exe",
+            "ProductName": "WBA Factoring",
+            "Sufixo": "Factor"
+        },
+        {
+            "FileDescription": "WBA Securitização - Administração de Securitizadoras",
+            "OriginalFilename": "securitizacao.exe",
+            "ProductName": "WBA Securitização",
+            "Sufixo": "Securitizacao"
+        },
+		{
+            "FileDescription": "WBA Securitização FIDC - Administração de Securitizadoras e FIDCs",
+            "OriginalFilename": "securitizacaofidc.exe",
+            "ProductName": "WBA Securitização FIDC",
+            "Sufixo": "SecuritizacaoFIDC"
+        },
+        {
+            "FileDescription": "WBA Consultoria FIDC - Administração de Consultorias de FIDCs",
+            "OriginalFilename": "consultoriafidc.exe",
+            "ProductName": "WBA Consultoria FIDC",
+            "Sufixo": "ConsultoriaFIDC"
+        },
+        {
+            "FileDescription": "WBA FIDC - Administração de FIDCs",
+            "OriginalFilename": "fidc.exe",
+            "ProductName": "WBA FIDC",
+            "Sufixo": "FIDC"
+        },
+        {
+            "FileDescription": "WBA Recebíveis - Administração de Empresas de Recebíveis",
+            "OriginalFilename": "recebiveis.exe",
+            "ProductName": "WBA Recebíveis",
+            "Sufixo": "Recebiveis"
+        }
+    ]
+}

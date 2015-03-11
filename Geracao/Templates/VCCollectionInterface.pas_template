@@ -1,0 +1,48 @@
+{ Template: VCCollectionInterface.pas_template }
+unit u-->nomeVC<--VCInterface;
+
+interface
+
+uses
+  uActiveRecordCollectionMVCInterface, uActiveRecordSimpleViewInterface;
+
+type
+  I-->nomeVC<--Controler = interface; //foward
+
+  I-->nomeVC<--View = interface(IActiveRecordCollectionView)
+    @@@ Substitua isso pelo GUID (CTRL + SHIFT + G) @@@
+    function Get-->nomeVC<--Controler: I-->nomeVC<--Controler;
+    procedure Set-->nomeVC<--Controler(const Value: I-->nomeVC<--Controler);
+
+    property -->nomeVC<--Controler: I-->nomeVC<--Controler read Get-->nomeVC<--Controler write Set-->nomeVC<--Controler;
+  end;
+
+  I-->nomeVC<--Controler = interface(IActiveRecordCollectionControler)
+    @@@ Substitua isso pelo GUID (CTRL + SHIFT + G) @@@
+    function Get-->nomeVC<--View: I-->nomeVC<--View;
+    procedure Set-->nomeVC<--View(const Value: I-->nomeVC<--View);
+
+    property -->nomeVC<--View: I-->nomeVC<--View read Get-->nomeVC<--View write Set-->nomeVC<--View;
+  end;
+  
+  I-->nomeVCSimple<--Controler = interface; //foward
+
+  I-->nomeVCSimple<--View = interface(IActiveRecordSimpleView)
+    @@@ Substitua isso pelo GUID (CTRL + SHIFT + G) @@@
+    function Get-->nomeVCSimple<--Controler: I-->nomeVCSimple<--Controler;
+    procedure Set-->nomeVCSimple<--Controler(const Value: I-->nomeVCSimple<--Controler);
+
+    property -->nomeVCSimple<--Controler: I-->nomeVCSimple<--Controler read Get-->nomeVCSimple<--Controler write Set-->nomeVCSimple<--Controler;
+  end;
+
+  I-->nomeVCSimple<--Controler = interface(IActiveRecordSimpleControler)
+    @@@ Substitua isso pelo GUID (CTRL + SHIFT + G) @@@
+    function Get-->nomeVCSimple<--View: I-->nomeVCSimple<--View;
+    procedure Set-->nomeVCSimple<--View(const Value: I-->nomeVCSimple<--View);
+
+    property -->nomeVCSimple<--View: I-->nomeVCSimple<--View read Get-->nomeVCSimple<--View write Set-->nomeVCSimple<--View;
+  end;
+
+implementation
+
+end.

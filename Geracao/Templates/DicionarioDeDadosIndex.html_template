@@ -1,0 +1,15 @@
+<html>
+<head>
+	<link href="../Instalacao/wba_help.css" rel="stylesheet" type="text/css">
+	<title>Dicionário de dados do WBA Factoring</title>
+</head>
+<body>
+	<h1>Dicionário de dados do WBA Factoring</h1>
+	Tabelas:
+	<ul>==>
+for(var i = 0; i < tabelas.length; i++) {<==
+		<li><a href="tabela_-->tabelas[i].Nome<--.html">-->tabelas[i].Nome<--</a>: -->tabelas[i].Descricao<--</li>==>
+}<==
+	</ul>
+</body>
+</html>

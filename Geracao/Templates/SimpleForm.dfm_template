@@ -1,0 +1,118 @@
+==>
+function tamanhoEdit(campo) {
+  switch (campo.Tipo) {
+    case "int":
+      if (campo.Dominio == "B01")
+        return 27;
+      else
+        return 72;
+    case "float":
+      if (campo.Dominio == "Taxa")
+        return 60;
+      else
+        return 108;
+    case "datetime":
+      return 76;
+    case "text":
+      return 225;
+    default:
+      if (campo.Dominio == "NS")
+        return 27
+      else
+        return Math.min(campo.Tamanho * 8 + 6, 225);
+  }
+}
+
+function propriedadesComponent(component, posicao, campo) {
+  switch (component) {
+    case "TCheckBox":<==
+    Left = -->177 + Math.floor(posicao / 21) * 404<--
+    Top = -->5 + (posicao % 21 * 24)<--
+    Width = 225
+    Height = 17
+    Caption = '-->campo.Caption?campo.Caption:campo.Nome<--'==>
+      if (campo.Nullable) {<==
+    AllowGrayed = True
+    State = cbGrayed==>
+      }<==
+    TabOrder = -->2 + posicao<--==>
+      break;
+    case "TDateTimePicker":<==
+    Left = -->177 + Math.floor(posicao / 21) * 404<--
+    Top = -->3 + (posicao % 21 * 24)<--
+    Width = 108
+    Height = 21
+    CalAlignment = dtaLeft
+    Date = 1
+    Time = 1
+    ShowCheckbox = True
+    Checked = False
+    DateFormat = dfShort
+    DateMode = dmComboBox
+    Kind = dtkDate
+    ParseInput = False
+    TabOrder = -->2 + posicao<--==>
+      break;
+    case "TCurrencyEdit":<==
+    Left = -->177 + Math.floor(posicao / 21) * 404<--
+    Top = -->3 + (posicao % 21 * 24)<--
+    Width = 108
+    Height = 21
+    AutoSize = False
+    TabOrder = -->2 + posicao<--
+    ZeroEmpty = True==>
+      break;
+    case "TRxCalcEdit":<==
+    Left = -->177 + Math.floor(posicao / 21) * 404<--
+    Top = -->3 + (posicao % 21 * 24)<--
+    Width = 108
+    Height = 21
+    AutoSize = False==>
+      if (campo.Dominio == "Taxa") {<==
+    DecimalPlaces = 4
+    DisplayFormat = ',0.0000%'==>
+      }<==
+    NumGlyphs = 2
+    TabOrder = -->2 + posicao<--
+    ZeroEmpty = True==>
+      break;
+    default:<==
+    Left = -->177 + Math.floor(posicao / 21) * 404<--
+    Top = -->3 + (posicao % 21 * 24)<--
+    Width = -->tamanhoEdit(campo)<--
+    Height = 21
+    TabOrder = -->2 + posicao<--==>
+  }
+}
+<==inherited -->nomeForm<--: T-->nomeForm<--
+  Caption = '-->nomeForm<--'
+  OldCreateOrder = True
+  PixelsPerInch = 96
+  TextHeight = 13==>
+var posicao = 0;
+for (var i = 0; i < Tabela.Campos.length; i++) {
+  if (!Tabela.Campos[i].Invisivel && !Tabela.Campos[i].Hidden) {
+    if (getComponent(Tabela.Campos[i]) != "TCheckBox") {<==
+  object lbl-->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--: TLabel
+    Left = -->5 + Math.floor(posicao / 21) * 404<--
+    Top = -->6 + (posicao % 21 * 24)<--
+    Width = 169
+    Height = 13
+    Alignment = taRightJustify
+    Caption = '-->Tabela.Campos[i].Caption?Tabela.Campos[i].Caption:Tabela.Campos[i].Nome<--:'
+    FocusControl = -->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--
+  end==>
+    }
+    posicao++;
+  }
+}
+posicao = 0;
+for (var i = 0; i < Tabela.Campos.length; i++) {
+  if (!Tabela.Campos[i].Invisivel && !Tabela.Campos[i].Hidden) {<==
+  object -->Tabela.Nome<--_-->Tabela.Campos[i].Nome<--: -->getComponent(Tabela.Campos[i])<--==>
+    propriedadesComponent(getComponent(Tabela.Campos[i]), posicao, Tabela.Campos[i]);<==
+  end==>
+    posicao++;
+  }
+}<==
+end
