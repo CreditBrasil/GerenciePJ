@@ -1,6 +1,9 @@
 program GerenciePJ;
 
 uses
+  FastMM4 in '..\Core\FastMM4.pas',
+  FastMM4Messages in '..\Core\FastMM4Messages.pas',
+  Fastcode in '..\FastCode\FastCode.pas',
   Forms,
   uArrayIntf in '..\Core\uArrayIntf.pas',
   uArrayClass in '..\Core\uArrayClass.pas',

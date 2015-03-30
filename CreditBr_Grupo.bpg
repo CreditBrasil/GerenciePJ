@@ -9,7 +9,7 @@ MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
 DCC = $(ROOT)\bin\dcc32.exe $**
 BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
-PROJECTS = CompilaRecursos.bat TemaPadrao.tem CreditBrDebug.exe CreditBr.dll
+PROJECTS = CompilaRecursos.bat TemaPadrao.tem CreditBrDebug.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -17,13 +17,10 @@ default: $(PROJECTS)
 CreditBrDebug.exe: CreditBrDebug.dpr
   $(DCC)
 
-TemaPadrao.tem: Temas\Padrao\TemaPadrao.dpr
-  $(DCC)
-
-CreditBr.dll: CreditBr.dpr
-  $(DCC)
-
 CompilaRecursos.bat: CompilaRecursos.bat
   call $**
+
+TemaPadrao.tem: Temas\Padrao\TemaPadrao.dpr
+  $(DCC)
 
 

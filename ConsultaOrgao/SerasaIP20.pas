@@ -3800,15 +3800,15 @@ begin
   FAnoMesFinal.Mes := StrToIntDef(Copy(Value, 53, 2), -1);
   FAnoMesFinal.Ano := StrToIntDef(Copy(Value, 55, 2), -1);
   FMoeda := Copy(Value, 57, 3);
-  FValor := StrToFloat(Copy(Value, 59, 13));
-  FOrigem := Copy(Value, 72, 20);
-  FAgencia := Copy(Value, 92, 4);
+  FValor := StrToFloat(Copy(Value, 60, 13));
+  FOrigem := Copy(Value, 73, 20);
+  FAgencia := Copy(Value, 93, 4);
   try
-    FTotalProtesto := StrToFloat(Copy(Value, 96, 13));
+    FTotalProtesto := StrToFloat(Copy(Value, 97, 13));
   except
     FTotalProtesto := 0;
   end;
-  FCodigoNatureza := Copy(Value, 109, 3);
+  FCodigoNatureza := Copy(Value, 110, 3);
 end;
 
 class function TSeIP20_04_02_02.Tipo: string;

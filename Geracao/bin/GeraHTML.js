@@ -125,6 +125,6 @@ function ExecutaGeraHTML (GeraHTML) {
     if (GravaArquivoDebug)
       gravaArquivo("Debug\\" + Configuracao.NomeUnit + "_pas.js", debug);
     eval(debug);
-    gravaArquivo(GeraHTML.CaminhoProjeto + Configuracao.NomeUnit + ".pas", saida);
+    gravaArquivo(GeraHTML.CaminhoProjeto + "Visoes\\" + Configuracao.NomeUnit + ".pas", saida);
   }
 };

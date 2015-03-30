@@ -1,0 +1,2 @@
+SET NDD5=C:\ARQUIV~1\Borland\Delphi5
+SET NDWINSYS=C:\WINNT\System32

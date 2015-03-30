@@ -82,6 +82,10 @@ function dominio2Tipo(tab) {
       case "Binario":
 	    tab.Campos[i].Tipo = "image";
         break;
+	  case "UsuLogin":
+	    tab.Campos[i].Tipo = "varchar";
+        tab.Campos[i].Tamanho = 10;
+		break;
 	}
     if (!tab.Campos[i].Tipo) 
       WScript.Echo("Tipo para o domínio " + tab.Campos[i].Dominio + " não foi definido, tabela " + tab.Nome);

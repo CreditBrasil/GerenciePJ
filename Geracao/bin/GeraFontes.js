@@ -206,7 +206,7 @@ var
 function geraWEBControlador(arquivo) {
   var Tabela = getTabela(arquivo);
   var propModel = WScript.CreateObject("Helper.Properties");
-  propModel.NewProperty("NomeProjeto", "WBA", typeString);
+  propModel.NewProperty("NomeProjeto", "CreditBr", typeString);
   propModel.NewProperty("NomeModel", Tabela.Nome + "Model", typeString);
   propModel.NewProperty("NomeControlador", Tabela.Nome, typeString);
   propModel.NewProperty("CRUD", false, typeNaoSim);
@@ -220,7 +220,7 @@ function geraWEBControlador(arquivo) {
     if (GravaArquivoDebug)
       gravaArquivo("Debug\\" + nomeProjeto + "_Controlador_" + nomeControlador + "_pas.js", debug);
     eval(debug);
-    gravaArquivo(pastaOutputDelphi7 + nomeProjeto + "_Controlador_" + nomeControlador + ".pas", saida);
+    gravaArquivo(pastaOutputDelphi7 + "Controladores\\" + nomeProjeto + "_Controlador_" + nomeControlador + ".pas", saida);
   }
 }
 
@@ -232,7 +232,7 @@ var
 function geraWEBPagina(arquivo) {
   var Tabela = getTabela(arquivo);
   var propModel = WScript.CreateObject("Helper.Properties");
-  propModel.NewProperty("NomeProjeto", "WBA", typeString);
+  propModel.NewProperty("NomeProjeto", "CreditBr", typeString);
   propModel.NewProperty("NomeModel", Tabela.Nome + "Model", typeString);
   propModel.NewProperty("NomeControlador", Tabela.Nome, typeString);
   propModel.NewProperty("NomeVisao", "Indice", typeString);
@@ -248,14 +248,14 @@ function geraWEBPagina(arquivo) {
     if (GravaArquivoDebug)
       gravaArquivo("Debug\\" + nomeProjeto + "_" + nomeControlador + "_" + nomeVisao + "_html.js", debug);
     eval(debug);
-    gravaArquivo(pastaOutputDelphi7 + "HTML\\" + nomeProjeto + "_Visao_" + nomeControlador + "_" + nomeVisao + ".html", saida);
+    gravaArquivo(pastaOutputDelphi7 + "Visoes\\HTML\\" + nomeProjeto + "_Visao_" + nomeControlador + "_" + nomeVisao + ".html", saida);
   }
 }
 
 function geraWEBParcial(arquivo) {
   var Tabela = getTabela(arquivo);
   var propModel = WScript.CreateObject("Helper.Properties");
-  propModel.NewProperty("NomeProjeto", "iWBA", typeString);
+  propModel.NewProperty("NomeProjeto", "CreditBr", typeString);
   propModel.NewProperty("NomeModel", Tabela.Nome + "Model", typeString);
   propModel.NewProperty("NomeControlador", Tabela.Nome, typeString);
   propModel.NewProperty("NomeVisao", "Parcial", typeString);
@@ -269,7 +269,7 @@ function geraWEBParcial(arquivo) {
     if (GravaArquivoDebug)
       gravaArquivo("Debug\\" + nomeProjeto + "." + nomeControlador + "." + nomeVisao + "_html.js", debug);
     eval(debug);
-    gravaArquivo(pastaOutputDelphi7 + "HTML\\" + nomeProjeto + "." + nomeControlador + "." + nomeVisao + ".html", saida);
+    gravaArquivo(pastaOutputDelphi7 + "Visoes\\HTML\\" + nomeProjeto + "." + nomeControlador + "." + nomeVisao + ".html", saida);
   }
 }
 
@@ -293,7 +293,7 @@ function geraCSharpModel(arquivo) {
 var properties = WScript.CreateObject("Helper.Properties");
 properties.NewProperty("Tabela", "", typeListaRestrita).PickList = getArquivosPickList(PastaConfiguracao, "tabela_", "json");
 properties.NewProperty("PastaOutput", "..\\", typePasta);
-properties.NewProperty("PastaOutputDelphi7", "..\\..\\iWBA_Delphi7\\", typePasta);
+properties.NewProperty("PastaOutputDelphi7", "..\\", typePasta);
 properties.NewProperty("GeraSimpleForm", false, typeNaoSim);
 properties.NewProperty("GeraModel", false, typeNaoSim);
 properties.NewProperty("GeraVCVazio", false, typeNaoSim);

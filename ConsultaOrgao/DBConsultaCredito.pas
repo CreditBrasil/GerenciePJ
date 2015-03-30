@@ -1215,7 +1215,7 @@ begin
   try
     for laco := 0 to Cadastro.RelatoSegmento.FormatadoLinhasQuantidade - 1 do
       LArquivo.Append(Cadastro.RelatoSegmento.FormatadoLinhas[laco].LinhaEditada);
-    LArquivo.SaveToFile('c:\Lixo\' + 'SERASA-P' + IntToStr(LNFConsultaSerasa.ID) + FormatDateTime('YYYy-MM-DD', LNFConsultaSerasa.SConsData.Value) + '.TXT');
+    LArquivo.SaveToFile('c:\Lixo\' + 'SERASA-P' + IntToStr(LNFConsultaSerasa.ID) + FormatDateTime('YYYY-MM-DD', LNFConsultaSerasa.SConsData.Value) + '.TXT');
   finally
     LArquivo.Free;
   end;

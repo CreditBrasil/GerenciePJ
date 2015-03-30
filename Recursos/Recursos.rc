@@ -1,41 +1,22 @@
-/* js_wba JS "ComponentesJS\wba.js"
-js_html5shiv JS "ComponentesJS\Html5Shiv\html5shiv.js"
-js_respond JS "ComponentesJS\Respond\respond.min.js"
-js_jquery JS "ComponentesJS\jQuery\jquery-1.9.1.min.js" //use query-1.9.1.js para versão não minified
-js_excanvas JS "ComponentesJS\excanvas\excanvas.min.js"
-*/
 /*
-   Twitter Bootstrap
-   http://twitter.github.com/bootstrap/index.html
+  Bootstrap
+  http://getbootstrap.com/
+*/
+js_bootstrap JS "ComponentesJS\bootstrap\js\bootstrap.min.js"
+js_ie10viewportbugworkaround JS "ComponentesJS\ie10-viewport-bug-workaround\ie10-viewport-bug-workaround.js"
+/*
+  JQuery
+  http://jquery.com/
+*/
+js_jquery JS "ComponentesJS\jquery\jquery.min.js"
+/*
+  metisMenu
+  https://github.com/onokumus/metisMenu
+*/
+js_metisMenu JS "ComponentesJS\metisMenu\metisMenu.min.js"
+/*
+  sb-admin-2
+  http://startbootstrap.com/template-overviews/sb-admin-2/
+*/
+js_sbadmin2 JS "ComponentesJS\sb-admin-2\js\sb-admin-2.js"
 
-js_bootstrap JS "ComponentesJS\bootstrap\js\bootstrap.min.js" //use bootstrap.js para versão não minified
-*/
-/*
-   jquery-ui
-js_jqueryui JS "ComponentesJS\jquery-ui\ui\minified\jquery-ui.min.js"
-*/
-/*
-   slimscroll
-js_jqueryslimscroll JS "ComponentesJS\slimscroll\jquery.slimscroll.min.js"
-*/
-/*
-   jquery.cookie
-js_jquerycookie JS "ComponentesJS\jquery-cookie\jquery.cookie.js"
-*/
-/*
-   Template Color Admin
-js_app JS "ComponentesJS\TemplateColorAdmin\apps.js"
-*/
-/*
-   Twitter Bootstrap Datepicker
-   http://www.eyecon.ro/bootstrap-datepicker/
-   melhorador em https://github.com/eternicode/bootstrap-datepicker
-js_bootstrapdatepicker JS "ComponentesJS\datepicker\js\bootstrap-datepicker.js"
-js_bootstrapdatepickerbr JS "ComponentesJS\datepicker\js\bootstrap-datepicker-br.js"
-*/
-/*
-    Hicharts
-    http://www.highcharts.com/
-js_highcharts JS "ComponentesJS\Highcharts\js\highcharts.js"
-js_modules_exporting JS "ComponentesJS\Highcharts\js\modules\exporting.js"
-*/
