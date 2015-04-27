@@ -4,11 +4,12 @@ unit uNFConsultaSerasaModel;
 interface
 
 uses
-  SysUtils, ServiceLocator, uActiveRecord, uARNFConsultaSerasa;
+  SysUtils, Classes, ServiceLocator, uActiveRecord, uARNFConsultaSerasa;
 
 type
   INFConsultaSerasaModel = interface(IARNFConsultaSerasa)
     ['{9BE9DA0B-4608-49A8-B35B-B4EFEDFB4A76}']
+    procedure CarregaRelatoFormatado(ALinhas: TStrings);
   end;
 
   IIteratorNFConsultaSerasaModel = interface(IIteratorActiveRecord)
@@ -58,6 +59,8 @@ type
 
   INFConsultaSerasaModelService = interface(IActiveRecordService)
     ['{41E7DC64-0072-4A9D-8E6A-16B08B4D5A94}']
+    function FindBySConsCnpjCpfAndAntesDeSConsData(ASConsCnpjCpf: string; AAntesDeSConsData: TDateTime;
+      const AConnection: IActiveRecordConnection): INFConsultaSerasaModel;
   end;
 
   TNFConsultaSerasaModel = class(TARNFConsultaSerasa, INFConsultaSerasaModel)
@@ -77,6 +80,7 @@ type
     procedure SetAsString(Index: Integer; const Value: string); override;
     procedure SetValue(Index: Integer; const Value: Variant); override;}
     { INFConsultaSerasaModel }
+    procedure CarregaRelatoFormatado(ALinhas: TStrings);
   public
     //constructor Create(const AConnection: IActiveRecordConnection); override;
     class function GUIDItem: TGUID; override;
@@ -85,8 +89,13 @@ type
   end;
 
   TNFConsultaSerasaModelService = class(TActiveRecordService, INFConsultaSerasaModelService)
+  private
+    function QueryBySConsCnpjCpfAndAntesDeSConsData(ASConsCnpjCpf: string; AAntesDeSConsData: TDateTime;
+      const AConnection: IActiveRecordConnection): IActiveRecordQuery;
   protected
     { INFConsultaSerasaModelService }
+    function FindBySConsCnpjCpfAndAntesDeSConsData(ASConsCnpjCpf: string; AAntesDeSConsData: TDateTime;
+      const AConnection: IActiveRecordConnection): INFConsultaSerasaModel;
   end;
 
 {const
@@ -99,9 +108,10 @@ type
   
 implementation
 
-//var
+var
   //GNFConsultaSerasaModelMetadata: IActiveRecordMetadataWritable;
   //GNFConsultaSerasaModelViewMetadata: IActiveRecordMetadataWritable;
+  GQueryFactoryBySConsCnpjCpfAndAntesDeSConsData: IActiveRecordQueryFactory;
 
 { TCollectionNFConsultaSerasaModel }
 
@@ -168,9 +178,52 @@ begin
   SetSConsCodigo(Nullable((SummaryMaiorSConsCodigo(GetConnection).Value + 1)));
 end;
 
+procedure TNFConsultaSerasaModel.CarregaRelatoFormatado(ALinhas: TStrings);
+var
+  LLinhaSerasa: string;
+begin
+  ALinhas.BeginUpdate;
+  try
+    ALinhas.Clear;
+    LLinhaSerasa := GetRetLinhaSerasa.Value;
+    if Copy(LLinhaSerasa, 1, 4) = 'B49C' then
+    begin
+      Delete(LLinhaSerasa, 1, 400);
+      while LLinhaSerasa <> '' do
+      begin
+        if Copy(LLinhaSerasa, 1, 4) = 'R451' then
+          ALinhas.Append(Copy(LLinhaSerasa, 5, 86));
+        if Copy(LLinhaSerasa, 1, 4) = 'B49C' then
+          Delete(LLinhaSerasa, 1, 400)
+        else
+          Delete(LLinhaSerasa, 1, 115);
+      end;
+    end;
+  finally
+    ALinhas.EndUpdate;
+  end;
+end;
+
 class function TNFConsultaSerasaModel.GUIDItem: TGUID;
 begin
   Result := INFConsultaSerasaModel;
+end;
+
+{ TNFConsultaSerasaModelService }
+
+function TNFConsultaSerasaModelService.FindBySConsCnpjCpfAndAntesDeSConsData(ASConsCnpjCpf: string;
+  AAntesDeSConsData: TDateTime; const AConnection: IActiveRecordConnection): INFConsultaSerasaModel;
+begin
+  Result := QueryBySConsCnpjCpfAndAntesDeSConsData(ASConsCnpjCpf, AAntesDeSConsData, AConnection)
+    .FirstActiveRecord as INFConsultaSerasaModel;
+end;
+
+function TNFConsultaSerasaModelService.QueryBySConsCnpjCpfAndAntesDeSConsData(ASConsCnpjCpf: string;
+  AAntesDeSConsData: TDateTime; const AConnection: IActiveRecordConnection): IActiveRecordQuery;
+begin
+  Result := GQueryFactoryBySConsCnpjCpfAndAntesDeSConsData.CreateQuery(AConnection);
+  Result.SetNextParameter(ASConsCnpjCpf);
+  Result.SetNextParameterDateTime(AAntesDeSConsData);
 end;
 
 initialization
@@ -188,9 +241,15 @@ initialization
   //Incluir aqui informações que apenas aparecem para o usuário (não são gravadas no banco)
   //GNFConsultaSerasaModelViewMetadata.AddFieldsMetadata(NFConsultaSerasaModelAdditionalFields);
 
+  GQueryFactoryBySConsCnpjCpfAndAntesDeSConsData := TNFConsultaSerasaModel.From
+    .Top(1)
+    .Where('SConsCnpjCpf = ? and SConsData < ?')
+    .OrderBy('SConsData desc, SConsHora desc');
+
 finalization
 
   //GNFConsultaSerasaModelMetadata := nil;
   //GNFConsultaSerasaModelViewMetadata := nil;
+  GQueryFactoryBySConsCnpjCpfAndAntesDeSConsData := nil;
 
 end.

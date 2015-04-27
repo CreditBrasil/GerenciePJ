@@ -1,0 +1,36 @@
+{
+  "Nome": "NFParametroConfiguracaoEmail", 
+  "GUID": "['{B5AAB59F-0525-4BFB-95B3-73E8321C1692}']",
+  "Descricao": "Contém apenas 1 registro que contém a configuração para envio de e-mail",
+  "ChavePrimaria": {"Tipo": "AutoInc", "Campos": ["ID"]},
+  "Campos": [
+    {"Nome": "ID", "Dominio": "Identificador", "ReadOnly": true, "Descricao": "???"},
+    {"Nome": "CEmSMTP", "Dominio": "V150", "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmAutenticacao", "Dominio": "B01", "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmUsuario", "Dominio": "V150", "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmSenha", "Dominio": "V150", "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmEmailFactoring", "Dominio": "V150", "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmEmailMonitoramento", "Dominio": "V150", "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmEmailTeste", "Dominio": "V150", "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmTextoCorpoEmail", "Tipo": "varchar", "Tamanho": 600, "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmEnvioDiarioAgentePosCed", "Dominio": "B01", "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmEnvioDiarioConsultaTitulosCedente", "Dominio": "B01", "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmQtdDiasTitulosVencer", "Dominio": "Quantidade", "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmEnvioDiarioAgenteEmailCopia", "Tipo": "nvarchar", "Tamanho": 4000, "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmApresentaLogoEmpresa", "Dominio": "B01", "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmFonteCorpoEmail", "Tipo": "varchar", "Tamanho": 20, "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmFonteTamCorpoEmail", "Dominio": "Quantidade", "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmTextoInicialOpe", "Tipo": "varchar", "Tamanho": 60, "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmTextoAposDadosOpe", "Tipo": "varchar", "Tamanho": 60, "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmTituloEmail", "Tipo": "varchar", "Tamanho": 200, "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmEnvioTotalPendenciaAberto", "Dominio": "B01", "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmEnvioDocumentoPendenteOperacao", "Dominio": "B01", "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmEnvioSolicitacaoInstrucaoCancelada", "Dominio": "B01", "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmNroDiasInstCanceladas", "Dominio": "Quantidade", "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmPorta", "Dominio": "Identificador", "Nullable": true, "Descricao": "???"},
+    {"Nome": "CEmSuprimirLimiteCredito", "Dominio": "B01", "Nullable": true, "Descricao": "???"}
+  ],
+  "Acesso": [
+    {"Campos": [], "RetornaVarios": false, "OrderBy": "ID"}
+  ]
+}

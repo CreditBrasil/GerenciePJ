@@ -50,7 +50,18 @@ uses
   uObserverModelFactory in '..\Log\uObserverModelFactory.pas',
   uObserverModelClasses in '..\Log\uObserverModelClasses.pas',
   uLogModelFactory in '..\Log\uLogModelFactory.pas',
-  uLogModelClasses in '..\Log\uLogModelClasses.pas';
+  uLogModelClasses in '..\Log\uLogModelClasses.pas',
+  uARNFParametroConfiguracaoEmail in '..\Model\uARNFParametroConfiguracaoEmail.pas',
+  uNFParametroConfiguracaoEmailModel in '..\Model\uNFParametroConfiguracaoEmailModel.pas',
+  uARNFCedente in '..\Model\uARNFCedente.pas',
+  uNFCedenteModel in '..\Model\uNFCedenteModel.pas',
+  uDescobreEmailAgente in '..\Model\uDescobreEmailAgente.pas',
+  progrssInterface in 'progrssInterface.pas',
+  progrss in 'progrss.pas' {frmProgresso},
+  uRelatoFormatadoModel in '..\ConsultaOrgao\uRelatoFormatadoModel.pas',
+  uRelatoFormatadoParse in '..\ConsultaOrgao\uRelatoFormatadoParse.pas',
+  uRelatoFormatadoRelatorio in '..\ConsultaOrgao\uRelatoFormatadoRelatorio.pas',
+  StringBuilder in '..\Core\StringBuilder.pas';
 
 {$R *.res}
 

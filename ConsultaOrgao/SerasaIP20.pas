@@ -4404,7 +4404,7 @@ end;
 procedure TSeIP20_99_01_01.SetText(const Value: string);
 begin
   inherited;
-  FLinhaEditada := Copy(Value, 7, 79);
+  FLinhaEditada := Copy(Value, 7, 86{79});
   FTipoRegistro := Value[97];
   FTipoLinha := Value[98];
   FAtributo := Value[99];

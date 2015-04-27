@@ -120,17 +120,17 @@ begin
   begin
     Texto := TStringList.Create;
     try
-      Texto.Text := StringReplace(Value, '#L', #13#10, [rfReplaceAll]);
+      Texto.Text := StringReplace(Copy(Value, 6, MaxInt), '#L', #13#10, [rfReplaceAll]);
 
       Texto.Delete(Texto.Count - 1);
       S := Cabecalho;
-      CNPJAnterior := Copy(Texto.Strings[1], 19, 9);
+      CNPJAnterior := Copy(Texto.Strings[0], 11, 8);
 
-      for laco := 1 to Texto.Count - 1 do
+      for laco := 0 to Texto.Count - 1 do
       begin
         Linha := Texto.Strings[laco];
-        CNPJ := Copy(Linha, 19, 9);
-        Delete(Linha, 1, 28);
+        CNPJ := Copy(Linha, 11, 8);
+        Delete(Linha, 1, 18);
 
         if (CNPJ <> CNPJAnterior) or (laco >= Texto.Count - 1)  then
         begin

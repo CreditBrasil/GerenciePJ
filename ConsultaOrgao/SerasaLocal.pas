@@ -30,7 +30,7 @@ begin
       S := TStringList.Create;
       try
         S.LoadFromFile(FileName);
-        Result := {S.Text;} StringReplace(S.Text, #10, '#L', [rfReplaceAll]);
+        Result := StringReplace(S.Text, #13#10, '#L', [rfReplaceAll]);
       finally
         S.Free;
       end;

@@ -82,7 +82,9 @@ uses
   uRelatoSegmento20_89_02_09Model,
   uRelatoSegmento20_89_02_10Model,
   uRelatoSegmento20_89_02_11Model},
-  uNFConsultaSerasaModel;
+  uNFConsultaSerasaModel,
+  uRelatoFormatadoModel,
+  uRelatoFormatadoParse;
 
 type
   TRelatorioSerasa = class(TObject)
@@ -1191,32 +1193,60 @@ var
   LRelatoSegmento20_89_02_11: IRelatoSegmento20_89_02_11Model;}
   LService: INFConsultaSerasaModelService;
   LNFConsultaSerasa: INFConsultaSerasaModel;
-  LTeste: string;
   LArquivo: TStringList;
+  LStringB49C: string;
+  LRelatoFormatado: TRelatoFormatadoModel;
+  LParser: TRelatoFormatadoParser;
 begin
   inherited;
   LService := SL as INFConsultaSerasaModelService;
-  LNFConsultaSerasa := TNFConsultaSerasaModel.Create(Connection);
-  LNFConsultaSerasa.SConsData := TNFConsultaSerasaModel.NullableDateTime(Date);
-  LNFConsultaSerasa.SConsHora := TNFConsultaSerasaModel.Nullable(FormatDateTime('HH:NN', Now));
-  LNFConsultaSerasa.SConsCnpjCpf := TNFConsultaSerasaModel.Nullable(Codigo);
-  LNFConsultaSerasa.RetLinhaSerasa := TNFConsultaSerasaModel.Nullable(Cadastro.StringSerasa);
-  LNFConsultaSerasa.SConsEmpTipo := TNFConsultaSerasaModel.Nullable('R');
-  LNFConsultaSerasa.UsuLogin := TNFConsultaSerasaModel.Nullable('master');
-  LNFConsultaSerasa.UserConsulta := TNFConsultaSerasaModel.Nullable('35008104');
-  LNFConsultaSerasa.SConsAcaoGerencie := TNFConsultaSerasaModel.Nullable(False);
-  LNFConsultaSerasa.SConsPrazoGerencie := TNFConsultaSerasaModel.Nullable(0);
-  LNFConsultaSerasa.Gru_ID := TNFConsultaSerasaModel.Nullable(0);
-  LNFConsultaSerasa.Per_ID := TNFConsultaSerasaModel.Nullable(0);
-  LService.Save(LNFConsultaSerasa);
-  LTeste := IntToStr(LNFConsultaSerasa.ID);
-
   LArquivo := TStringList.Create;
+  LRelatoFormatado := TRelatoFormatadoModel.Create;
+  LParser := TRelatoFormatadoParser.Create;
   try
+    LStringB49C :=
+      TFacMetodos.PoeLetra('B49C', 400) +
+      TFacMetodos.PoeLetra('P002IP20DQPN', 115) +
+      TFacMetodos.PoeLetra('R450' + TFacMetodos.PoeLetraEsq(Cadastro.RelatoSegmento.FormatadoControle.CNPJ, 9, '0') +
+      TFacMetodos.PoeLetra(Cadastro.RelatoSegmento.FormatadoControle.Nome, 70), 115);
     for laco := 0 to Cadastro.RelatoSegmento.FormatadoLinhasQuantidade - 1 do
+    begin
       LArquivo.Append(Cadastro.RelatoSegmento.FormatadoLinhas[laco].LinhaEditada);
-    LArquivo.SaveToFile('c:\Lixo\' + 'SERASA-P' + IntToStr(LNFConsultaSerasa.ID) + FormatDateTime('YYYY-MM-DD', LNFConsultaSerasa.SConsData.Value) + '.TXT');
+      LStringB49C := LStringB49C +
+        TFacMetodos.PoeLetra('R451' +
+        TFacMetodos.PoeLetra(Cadastro.RelatoSegmento.FormatadoLinhas[laco].LinhaEditada, 86) +
+        TFacMetodos.PoeLetra(IntToStr(laco + 1), 4, '0')
+        , 115) +
+        TFacMetodos.PoeLetra('R452' +
+        TFacMetodos.PoeLetra(Cadastro.RelatoSegmento.FormatadoLinhas[laco].TipoRegistro, 1) +
+        TFacMetodos.PoeLetra(Cadastro.RelatoSegmento.FormatadoLinhas[laco].TipoLinha, 1) +
+        TFacMetodos.PoeLetra(Cadastro.RelatoSegmento.FormatadoLinhas[laco].Atributo, 1) +
+        TFacMetodos.PoeLetra(IntToStr(Cadastro.RelatoSegmento.FormatadoLinhas[laco].Conjunto), 2) + ' 00  ' +
+        TFacMetodos.PoeLetra(Cadastro.RelatoSegmento.FormatadoLinhas[laco].NomeBloco, 30)
+        , 115);
+    end;
+    LStringB49C := LStringB49C +
+      'T999000PROCESSO ENCERRADO NORMALMENTE                                                                             '#$03{ETX};
+    LParser.TextoParaRelatoFormatadoModel(LArquivo, LRelatoFormatado);
+    LNFConsultaSerasa := TNFConsultaSerasaModel.Create(Connection);
+    LNFConsultaSerasa.SConsData := TNFConsultaSerasaModel.NullableDateTime(Int(LRelatoFormatado.EmitidoEm));
+    LNFConsultaSerasa.SConsHora := TNFConsultaSerasaModel.Nullable(FormatDateTime('HH:NN', LRelatoFormatado.EmitidoEm));
+    LNFConsultaSerasa.SConsCnpjCpf := TNFConsultaSerasaModel.Nullable(Codigo);
+    LNFConsultaSerasa.RetLinhaSerasa := TNFConsultaSerasaModel.Nullable(LStringB49C{Cadastro.StringSerasa});
+    LNFConsultaSerasa.SConsEmpTipo := TNFConsultaSerasaModel.Nullable('R');
+    LNFConsultaSerasa.UsuLogin := TNFConsultaSerasaModel.Nullable('MONITORE');
+    LNFConsultaSerasa.UserConsulta := TNFConsultaSerasaModel.Nullable('35008104');
+    LNFConsultaSerasa.SConsAcaoGerencie := TNFConsultaSerasaModel.Nullable(False);
+    LNFConsultaSerasa.SConsPrazoGerencie := TNFConsultaSerasaModel.Nullable(0);
+    LNFConsultaSerasa.Gru_ID := TNFConsultaSerasaModel.Nullable(0);
+    LNFConsultaSerasa.Per_ID := TNFConsultaSerasaModel.Nullable(0);
+    LService.Save(LNFConsultaSerasa);
+    Cadastro.NomeArquivoGerado := 'SERASA-R' + IntToStr(LNFConsultaSerasa.ID) + FormatDateTime('YYYY-MM-DD',
+      LNFConsultaSerasa.SConsData.Value) + '.txt';
+    LArquivo.SaveToFile('\\orderbyapp3\serasaemail\' + Cadastro.NomeArquivoGerado);
   finally
+    LParser.Free;
+    LRelatoFormatado.Free;
     LArquivo.Free;
   end;
 

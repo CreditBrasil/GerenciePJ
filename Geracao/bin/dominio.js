@@ -86,6 +86,14 @@ function dominio2Tipo(tab) {
 	    tab.Campos[i].Tipo = "varchar";
         tab.Campos[i].Tamanho = 10;
 		break;
+	  case "V150":
+	    tab.Campos[i].Tipo = "varchar";
+        tab.Campos[i].Tamanho = 150;
+		break;
+	  case "IDG":
+	    tab.Campos[i].Tipo = "varchar";
+        tab.Campos[i].Tamanho = 8;
+		break;
 	}
     if (!tab.Campos[i].Tipo) 
       WScript.Echo("Tipo para o domínio " + tab.Campos[i].Dominio + " não foi definido, tabela " + tab.Nome);

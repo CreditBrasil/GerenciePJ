@@ -51,7 +51,7 @@ type
     //FCreditBureau: TCreditBureau;
     FRelatoSegmento: TRelatoSegmento;
     FTitulos: TTitulos;
-    FStringSerasa: string;
+    FNomeArquivoGerado: string;
     //function GetCreditBureau: TCreditBureau;
     function GetRelatoSegmento: TRelatoSegmento;
     function GetTemTitutlos: Boolean;
@@ -63,7 +63,7 @@ type
     property RelatoSegmento: TRelatoSegmento read GetRelatoSegmento;
     property TemTitulos: Boolean read GetTemTitutlos;
     property Titulos: TTitulos read GetTitulos;
-    property StringSerasa: string read FStringSerasa write FStringSerasa;
+    property NomeArquivoGerado: string read FNomeArquivoGerado write FNomeArquivoGerado;
   end;
 
   TClasseConsulta = class of TConsulta;
@@ -864,14 +864,14 @@ begin
   //LSigcadModelService := SL as ISigcadModelService;
   for laco := 0 to (FRetorno as TSeNR054).QuantidadeSeIP20 - 1 do
   begin
-    CNPJ := (FRetorno as TSeNR054).SeIP20[laco].CNPJ + '0001';
+    CNPJ := TFacMetodos.SoNumero((FRetorno as TSeNR054).SeIP20[laco].CNPJ) + '0001';
     CNPJ := CNPJ + TFacMetodos.CalculaDigitoVerificadorCnpjCpf(CNPJ, False);
+    (FRetorno as TSeNR054).SeIP20[laco].CNPJ := CNPJ;
     {LCollectionSigcad := LSigcadModelService.CollectionByInicioCnpjCpfAndGerente(CNPJ, NullString, tfCedenteOrSacado,
       FCadastros.Connection);
     if LCollectionSigcad.Count > 0 then
     begin}
-      FCadastros.Codigo := TFacMetodos.SoNumero(CNPJ);{LCollectionSigcad[0].Codigo;}
-      FCadastros.Cadastro.StringSerasa := (FRetorno as TSeNR054).SeIP20[laco].TextOut;
+      FCadastros.Codigo := CNPJ; //TFacMetodos.SoNumero(CNPJ);{LCollectionSigcad[0].Codigo;}
       SerasaIP20.TClassificacao.SeIP20ParaRelatoSegmento((FRetorno as TSeNR054).SeIP20[laco],
         FCadastros.Cadastro.RelatoSegmento);
       FCadastros.PersisteRelatoSegmento;

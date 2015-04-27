@@ -1,0 +1,864 @@
+<html>
+<head>
+	<link href="../Instalacao/wba_help.css" rel="stylesheet" type="text/css">
+	<title>NFCedente - Dicionário de dados do WBA Factoring</title>
+</head>
+<body>
+	<h1>NFCedente - Dicionário de dados do WBA Factoring</h1>
+	<p><a href="index.html">Tabelas</a></p>
+	<table border="1">
+	  <tr>
+		<th colspan="7">NFCedente</th>
+	  </tr>
+	  <tr>
+		<td colspan="7">Informações da pessoa como cedente</td>
+	  </tr>
+	  <tr>
+		<th>Campo</th>
+		<th>Tipo</th>
+		<th>Tam</th>
+		<th>Null?</th>
+		<th>Descrição</th>
+		<th>Rótulo</th>
+		<th>&#8592;&#8594;</th>
+	  </tr>
+	  <tr>
+		<td><a name="ID"></a>ID</td>
+		<td>int</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>???</td>
+		<td>ID</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedCodigo"></a>CedCodigo</td>
+		<td>int</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>???</td>
+		<td>CedCodigo</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="PesCNPJCPF"></a>PesCNPJCPF</td>
+		<td>varchar</td>
+		<td>20</td>
+		<td>&nbsp;</td>
+		<td>???</td>
+		<td>PesCNPJCPF</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="IDGCodigo"></a>IDGCodigo</td>
+		<td>varchar</td>
+		<td>8</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>IDGCodigo</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedContratoNumero"></a>CedContratoNumero</td>
+		<td>int</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedContratoNumero</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedContratoData"></a>CedContratoData</td>
+		<td>datetime</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedContratoData</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedFomentoSaldoDevedor"></a>CedFomentoSaldoDevedor</td>
+		<td>float</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedFomentoSaldoDevedor</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="EmpCodigo"></a>EmpCodigo</td>
+		<td>int</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>???</td>
+		<td>EmpCodigo</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedObservacao"></a>CedObservacao</td>
+		<td>varchar</td>
+		<td>5000</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedObservacao</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="FilFiltro"></a>FilFiltro</td>
+		<td>varchar</td>
+		<td>30</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>FilFiltro</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedSimples"></a>CedSimples</td>
+		<td>bit</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedSimples</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="HisCodigo"></a>HisCodigo</td>
+		<td>int</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>HisCodigo</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedRubricaOperacaoAtivo"></a>CedRubricaOperacaoAtivo</td>
+		<td>varchar</td>
+		<td>30</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedRubricaOperacaoAtivo</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedRubricaOperacaoCobranca"></a>CedRubricaOperacaoCobranca</td>
+		<td>varchar</td>
+		<td>30</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedRubricaOperacaoCobranca</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedRubricaOperacaoCaucao"></a>CedRubricaOperacaoCaucao</td>
+		<td>varchar</td>
+		<td>30</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedRubricaOperacaoCaucao</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedRubricaPassivo"></a>CedRubricaPassivo</td>
+		<td>varchar</td>
+		<td>30</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedRubricaPassivo</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedRubricaDespesa"></a>CedRubricaDespesa</td>
+		<td>varchar</td>
+		<td>30</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedRubricaDespesa</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedAbaterIRRF"></a>CedAbaterIRRF</td>
+		<td>bit</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedAbaterIRRF</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedIRRFAcumulado"></a>CedIRRFAcumulado</td>
+		<td>float</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedIRRFAcumulado</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedAbaterRetidos"></a>CedAbaterRetidos</td>
+		<td>bit</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedAbaterRetidos</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="AgeCodigo"></a>AgeCodigo</td>
+		<td>int</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>AgeCodigo</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedMsgDocControle"></a>CedMsgDocControle</td>
+		<td>varchar</td>
+		<td>5000</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedMsgDocControle</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedValorLimiteCreditoCheque"></a>CedValorLimiteCreditoCheque</td>
+		<td>float</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedValorLimiteCreditoCheque</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedValorLimiteCreditoDuplicata"></a>CedValorLimiteCreditoDuplicata</td>
+		<td>float</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedValorLimiteCreditoDuplicata</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedValorLimiteCreditoSacadoCheque"></a>CedValorLimiteCreditoSacadoCheque</td>
+		<td>float</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedValorLimiteCreditoSacadoCheque</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedValorLimiteCreditoSacadoDuplicata"></a>CedValorLimiteCreditoSacadoDuplicata</td>
+		<td>float</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedValorLimiteCreditoSacadoDuplicata</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedSacadorPadrao"></a>CedSacadorPadrao</td>
+		<td>varchar</td>
+		<td>100</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedSacadorPadrao</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CCCCodigo"></a>CCCCodigo</td>
+		<td>int</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CCCCodigo</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedTotalPendencias"></a>CedTotalPendencias</td>
+		<td>float</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedTotalPendencias</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedInstrucaoCobranca"></a>CedInstrucaoCobranca</td>
+		<td>varchar</td>
+		<td>80</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedInstrucaoCobranca</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedEmiteBoleto"></a>CedEmiteBoleto</td>
+		<td>bit</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedEmiteBoleto</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedDataConnstEmpresa"></a>CedDataConnstEmpresa</td>
+		<td>datetime</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedDataConnstEmpresa</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedValorDoc"></a>CedValorDoc</td>
+		<td>float</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedValorDoc</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedValorTed"></a>CedValorTed</td>
+		<td>float</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedValorTed</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedIncentIssqn"></a>CedIncentIssqn</td>
+		<td>bit</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedIncentIssqn</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedNaoCobraCpmf"></a>CedNaoCobraCpmf</td>
+		<td>bit</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedNaoCobraCpmf</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedGerarTarifaAuto"></a>CedGerarTarifaAuto</td>
+		<td>bit</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedGerarTarifaAuto</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="SCoCodigo"></a>SCoCodigo</td>
+		<td>int</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>SCoCodigo</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedprazoAtrasoPonderado"></a>CedprazoAtrasoPonderado</td>
+		<td>float</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedprazoAtrasoPonderado</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedRubricaContaGrafica"></a>CedRubricaContaGrafica</td>
+		<td>varchar</td>
+		<td>30</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedRubricaContaGrafica</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CGLHisCodigo"></a>CGLHisCodigo</td>
+		<td>int</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CGLHisCodigo</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedEmailEnvioDocumento"></a>CedEmailEnvioDocumento</td>
+		<td>varchar</td>
+		<td>150</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedEmailEnvioDocumento</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedContadorNome"></a>CedContadorNome</td>
+		<td>varchar</td>
+		<td>150</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedContadorNome</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedContadorCRC"></a>CedContadorCRC</td>
+		<td>varchar</td>
+		<td>20</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedContadorCRC</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedContadorCPF"></a>CedContadorCPF</td>
+		<td>varchar</td>
+		<td>14</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedContadorCPF</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedSacadorPadraoCNPJCPF"></a>CedSacadorPadraoCNPJCPF</td>
+		<td>varchar</td>
+		<td>14</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedSacadorPadraoCNPJCPF</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedEmailEnvioEfetivacao"></a>CedEmailEnvioEfetivacao</td>
+		<td>varchar</td>
+		<td>300</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedEmailEnvioEfetivacao</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedEnviarConsultaTitulosIntegracao"></a>CedEnviarConsultaTitulosIntegracao</td>
+		<td>bit</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedEnviarConsultaTitulosIntegracao</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="DesconsideraCedOuvidoria"></a>DesconsideraCedOuvidoria</td>
+		<td>bit</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>DesconsideraCedOuvidoria</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedContato"></a>CedContato</td>
+		<td>varchar</td>
+		<td>50</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedContato</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedPercComissao"></a>CedPercComissao</td>
+		<td>float</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedPercComissao</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedClassificacao"></a>CedClassificacao</td>
+		<td>varchar</td>
+		<td>30</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedClassificacao</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedDataInclusao"></a>CedDataInclusao</td>
+		<td>datetime</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedDataInclusao</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedUsuarioInclusao"></a>CedUsuarioInclusao</td>
+		<td>varchar</td>
+		<td>250</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedUsuarioInclusao</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedCodime"></a>CedCodime</td>
+		<td>bit</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedCodime</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedLimiteControleSecuritizacaoValor"></a>CedLimiteControleSecuritizacaoValor</td>
+		<td>float</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedLimiteControleSecuritizacaoValor</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedLimiteControleSecuritizacaoPeriodo"></a>CedLimiteControleSecuritizacaoPeriodo</td>
+		<td>varchar</td>
+		<td>5</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedLimiteControleSecuritizacaoPeriodo</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedRecompraTaxaMulta"></a>CedRecompraTaxaMulta</td>
+		<td>float</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedRecompraTaxaMulta</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedContabilidadeContaTransferencia"></a>CedContabilidadeContaTransferencia</td>
+		<td>varchar</td>
+		<td>20</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedContabilidadeContaTransferencia</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="UsuarioUltimaAlteracao"></a>UsuarioUltimaAlteracao</td>
+		<td>varchar</td>
+		<td>50</td>
+		<td>&nbsp;</td>
+		<td>???</td>
+		<td>UsuarioUltimaAlteracao</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="AlteracaoViaCadastro"></a>AlteracaoViaCadastro</td>
+		<td>bit</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>AlteracaoViaCadastro</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedSerasaMonitoreValorSaldoDevedorGerenciamento"></a>CedSerasaMonitoreValorSaldoDevedorGerenciamento</td>
+		<td>float</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedSerasaMonitoreValorSaldoDevedorGerenciamento</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedSerasaMonitorePrazo"></a>CedSerasaMonitorePrazo</td>
+		<td>int</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedSerasaMonitorePrazo</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedSerasaGru_ID"></a>CedSerasaGru_ID</td>
+		<td>int</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedSerasaGru_ID</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedSerasaPer_ID"></a>CedSerasaPer_ID</td>
+		<td>int</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedSerasaPer_ID</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedSerasaMonitoreValorSaldoDevedorSacadoCNPJ"></a>CedSerasaMonitoreValorSaldoDevedorSacadoCNPJ</td>
+		<td>float</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedSerasaMonitoreValorSaldoDevedorSacadoCNPJ</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedSerasaMonitoreValorSaldoDevedorSacadoCPF"></a>CedSerasaMonitoreValorSaldoDevedorSacadoCPF</td>
+		<td>float</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedSerasaMonitoreValorSaldoDevedorSacadoCPF</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedPercentualMulta"></a>CedPercentualMulta</td>
+		<td>float</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedPercentualMulta</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedConsideraInstrucaoSegundaVia"></a>CedConsideraInstrucaoSegundaVia</td>
+		<td>bit</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedConsideraInstrucaoSegundaVia</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedNaoProtetar"></a>CedNaoProtetar</td>
+		<td>bit</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedNaoProtetar</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="UsuLogin1"></a>UsuLogin1</td>
+		<td>varchar</td>
+		<td>100</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>UsuLogin1</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="UsuLogin2"></a>UsuLogin2</td>
+		<td>varchar</td>
+		<td>100</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>UsuLogin2</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="UsuLogin3"></a>UsuLogin3</td>
+		<td>varchar</td>
+		<td>100</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>UsuLogin3</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="UsuLogin4"></a>UsuLogin4</td>
+		<td>varchar</td>
+		<td>100</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>UsuLogin4</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="UsuLogin5"></a>UsuLogin5</td>
+		<td>varchar</td>
+		<td>500</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>UsuLogin5</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="UsuAgenteChecagem"></a>UsuAgenteChecagem</td>
+		<td>varchar</td>
+		<td>300</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>UsuAgenteChecagem</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedPriorizarPainelChecagem"></a>CedPriorizarPainelChecagem</td>
+		<td>bit</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedPriorizarPainelChecagem</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="ConCodigo"></a>ConCodigo</td>
+		<td>int</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>ConCodigo</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedContabilidadeContaClientes"></a>CedContabilidadeContaClientes</td>
+		<td>varchar</td>
+		<td>20</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedContabilidadeContaClientes</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedContabilidadeContaFomento"></a>CedContabilidadeContaFomento</td>
+		<td>varchar</td>
+		<td>20</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedContabilidadeContaFomento</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedContabilidadeContaCtaGrafica"></a>CedContabilidadeContaCtaGrafica</td>
+		<td>varchar</td>
+		<td>20</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedContabilidadeContaCtaGrafica</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedContabilidadeContaConfissao"></a>CedContabilidadeContaConfissao</td>
+		<td>varchar</td>
+		<td>20</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedContabilidadeContaConfissao</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="Incluido"></a>Incluido</td>
+		<td>int</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>Incluido</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedNaoEnviaPefin"></a>CedNaoEnviaPefin</td>
+		<td>bit</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedNaoEnviaPefin</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="Cedgru_id"></a>Cedgru_id</td>
+		<td>int</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>Cedgru_id</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="POCCan"></a>POCCan</td>
+		<td>bit</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>POCCan</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CnaeCodigo"></a>CnaeCodigo</td>
+		<td>varchar</td>
+		<td>10</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CnaeCodigo</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedMensagemBoleto1"></a>CedMensagemBoleto1</td>
+		<td>varchar</td>
+		<td>200</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedMensagemBoleto1</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedMensagemBoleto2"></a>CedMensagemBoleto2</td>
+		<td>varchar</td>
+		<td>200</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedMensagemBoleto2</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedMensagemBoleto3"></a>CedMensagemBoleto3</td>
+		<td>varchar</td>
+		<td>200</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedMensagemBoleto3</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedMensagemBoleto4"></a>CedMensagemBoleto4</td>
+		<td>varchar</td>
+		<td>200</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedMensagemBoleto4</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedMensagemBoleto5"></a>CedMensagemBoleto5</td>
+		<td>varchar</td>
+		<td>200</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedMensagemBoleto5</td>
+		<td></td>
+	  </tr>
+	  <tr>
+		<td><a name="CedEmiteBoletoComoCedenteBoleto"></a>CedEmiteBoletoComoCedenteBoleto</td>
+		<td>bit</td>
+		<td>&nbsp;</td>
+		<td>Sim</td>
+		<td>???</td>
+		<td>CedEmiteBoletoComoCedenteBoleto</td>
+		<td></td>
+	  </tr>
+	</table>
+</body>
+</html>

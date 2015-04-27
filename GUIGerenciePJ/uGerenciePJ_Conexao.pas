@@ -37,7 +37,7 @@ type
 
 function CriaConexao_GerenciePJ: IActiveRecordConnection;
 begin
-  Result := TActiveRecordConnectionADO.Create('Driver={SQL Server};Server=(local);DataBase=Teste;UID=sa;PWD=chica;Library=dbmssocn;');
+  Result := TActiveRecordConnectionADO.Create('Driver={SQL Server};Server=orderbysql\orderbysql;DataBase=netFactor;UID=sa;PWD=chica;Library=dbmssocn;');
 end;
 
 { TActiveRecordDependenciaProjetoGenerico }
@@ -74,7 +74,7 @@ end;
 
 destructor TActiveRecordDependenciaProjetoGenerico.Destroy;
 begin
-  FSecaoCritica.Free;
+  FreeAndNil(FSecaoCritica);
   inherited;
 end;
 

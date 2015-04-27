@@ -3,15 +3,38 @@ unit SerasaMonitore;
 interface
 
 uses
+  Classes,
   Serasa,
   //DB,
   cachecod,
   ServiceLocator,
   uLogViewIntf,
   uLogControlIntf,
-  uDialogos{, Funcoes, uSigcadModel, uSigcreModel}, SerasaLocal, uActiveRecord;
+  uDialogos{, Funcoes, uSigcadModel, uSigcreModel}, SerasaLocal, uActiveRecord, IdSMTP, IdMessage, IdEMailAddress,
+  uDescobreEmailAgente, uNFParametroConfiguracaoEmailModel, progrssInterface, uRelatoFormatadoRelatorio,
+  uRelatoFormatadoModel, uRelatoFormatadoParse, uNFConsultaSerasaModel, Math;
 
 type
+  TPlataforma = class(TString)
+  private
+    FMensagem: TStringList;
+    FResumo: TStringList;
+  public
+    constructor Create; override;
+    destructor Destroy; override;
+    property Mensagem: TStringList read FMensagem;
+    property Resumo: TStringList read FResumo;
+  end;
+
+  TPlataformas = class(TCacheString)
+  private
+    function GetPlataforma: TPlataforma;
+  public
+    constructor Create;
+    procedure SetEmails(AEmails, ANome: string);
+    property Plataforma: TPlataforma read GetPlataforma;
+  end;          
+
   TMonitore = class(TObject)
   private
     FConsultados: TCacheString;
@@ -26,10 +49,56 @@ type
 implementation
 
 uses
-  Classes, SysUtils, Windows, Dialogs{, DBTables, Progrss, Funcoes_fac,
+  SysUtils, Windows, Dialogs{, DBTables, Progrss, Funcoes_fac,
   compatib}, SerasaComunicacao, SerasaMonitoreDefinicoes{, CacheCad,
   FacParametros, QST_FINANCEIRO}, DBConsultaCredito, ConsultaCreditoDefinicoes{,
-  qrddlgs, PreProcessamento, wFacDataModule, uQuickReport};
+  qrddlgs, PreProcessamento, wFacDataModule, uQuickReport},
+  uARNFParametroConfiguracaoEmail;
+
+{ TPlataforma }
+
+constructor TPlataforma.Create;
+begin
+  inherited;
+  FMensagem := TStringList.Create;
+  FResumo := TStringList.Create;
+end;
+
+destructor TPlataforma.Destroy;
+begin
+  FResumo.Free;
+  FMensagem.Free;
+  inherited;
+end;
+
+{ TPlataformas }
+
+constructor TPlataformas.Create;
+begin
+  inherited;
+  FClasse := TPlataforma;
+end;
+
+function TPlataformas.GetPlataforma: TPlataforma;
+begin
+  Result := FObjeto as TPlataforma;
+end;
+
+procedure TPlataformas.SetEmails(AEmails, ANome: string);
+var
+  LEmails: TStringList;
+begin
+  LEmails := TStringList.Create;
+  try
+    LEmails.CommaText := Trim(AEmails);
+    if LEmails.Count > 0 then
+      Codigo := Trim(LEmails[LEmails.Count - 1])
+    else
+      Codigo := ANome;
+  finally
+    LEmails.Free;
+  end;
+end;
 
 {procedure TMonitore.Imprime;
 var
@@ -320,18 +389,121 @@ end;*)
 
 procedure TMonitore.RetornoMonitore(const AConnection: IActiveRecordConnection);
 var
+  LNFParametroConfiguracaoEmail: INFParametroConfiguracaoEmailModel;
+
+  procedure EnviarEmail(AEmails, AConteudo, AComplementoAssunto: string);
+  var
+    LSMTP: TIdSMTP;
+    LMsg: TIdMessage;
+    LText: TIdText;
+    LEmails: TStringList;
+    laco: Integer;
+  begin
+    LEmails := TStringList.Create;
+    LSMTP := TIdSMTP.Create(nil);
+    try
+      LSMTP.Host := LNFParametroConfiguracaoEmail.CEmSMTP.Value;
+      LSMTP.Port := LNFParametroConfiguracaoEmail.CEmPorta.Value;
+      LSMTP.Username := LNFParametroConfiguracaoEmail.CEmEmailFactoring.Value;
+      LSMTP.Password := LNFParametroConfiguracaoEmail.CEmSenha.Value;
+      LSMTP.AuthenticationType := atLogin;
+      LSMTP.UseEhlo := False;
+      LSMTP.MailAgent := 'CreditBR';
+      LMsg := TIdMessage.Create(LSMTP);
+      try
+        LMsg.Priority := mpNormal;
+        LMsg.Subject := 'Serasa - Gerencie Carteira - ' + AComplementoAssunto + ' - ' + FormatDateTime('DD/MM/YYYY', Date);
+        LMsg.From.Address := LNFParametroConfiguracaoEmail.CEmEmailFactoring.Value;
+        LMsg.From.Name := 'Sistema Credit Brasil';
+        LMsg.ExtraHeaders.Values['Return-Path'] := LNFParametroConfiguracaoEmail.CEmEmailFactoring.Value;
+        LEmails.CommaText := Trim(AEmails);
+        for laco := 0 to LEmails.Count - 1 do
+          with LMsg.Recipients.Add do
+          begin
+            Name := AComplementoAssunto;
+            Address := Trim(LEmails[laco]);
+          end;
+        with LMsg.CCList.Add do
+        begin
+          Name := 'Alex Dundes';
+          Address := 'alex.dundes@creditbr.com.br';
+        end;
+        {with LMsg.CCList.Add do
+        begin
+          Name := 'Ricardo Maeda';
+          Address := 'ricardo.maeda@creditbr.com.br';
+        end;}
+        with LMsg.CCList.Add do
+        begin
+          Name := 'Tamara Bellintani Rosa';
+          Address := 'tamara@creditbr.com.br';
+        end;
+        {ith LMsg.CCList.Add do
+        begin
+          Name := 'Michel Varon';
+          Address := 'michel@creditbr.com.br';
+        end;}
+        LText := TIdText.Create(LMsg.MessageParts);
+        LText.Body.Text := 'Este e-mail esta no formato HTML,'#13#10 +
+          'altere a visualizacao do seu programa de e-mail.';
+        LText := TIdText.Create(LMsg.MessageParts);
+        LText.ContentType := 'text/html';
+        LText.ContentTransfer := '8BIT';
+        LText.Body.Text := AConteudo;
+        LSMTP.Connect(15000); //15 segundos de timeout;
+        try;
+          LSMTP.Send(LMsg);
+        finally
+          LSMTP.Disconnect;
+        end;
+      finally
+        LMsg.Free;
+      end;
+    finally
+      LSMTP.Free;
+      LEmails.Free;
+    end;
+  end;  
+
+var
   Serasa: TSerasa;
   LLogViewMode: ILogViewMode;
   LLogView: ILogView;
   LLogControl: ILogControl;
+  LCollectionResultadoDescobreEmailAgente: ICollectionResultadoDescobreEmailAgente;
+  laco: Integer;
+  LAgenteAnterior, LAgenteEmail: string;
+  LEmail, LResumos: TStringList;
+  LProgresso: IProgresso;
+  LRelatorio: TRelatoFormatadoRelatorio;
+  LArquivo, LArquivoAntigo: TStringList;
+  LRelato, LRelatoAnterior: TRelatoFormatadoModel;
+  LParser: TRelatoFormatadoParser;
+  LNFConsultaSerasaModelService: INFConsultaSerasaModelService;
+  LConsultaAnterior: INFConsultaSerasaModel;
+  LPlataformas: TPlataformas;
 begin
+  LProgresso := SL as IProgresso;
+  LProgresso.Mostrar('Gerecie Carteira');
+  LProgresso.Posicao('Lendo arquivo e gravando no banco...', 0, 0);
+  LNFParametroConfiguracaoEmail := (SL as INFParametroConfiguracaoEmailModelService).Find(AConnection);
   Serasa := CreateSerasa(AConnection);
   FConsultados := TCacheString.Create;
+  LArquivo := TStringList.Create;
+  LArquivoAntigo := TStringList.Create;
+  LRelato := TRelatoFormatadoModel.Create;
+  LRelatoAnterior := TRelatoFormatadoModel.Create;
+  LParser := TRelatoFormatadoParser.Create;
+  LRelatorio := TRelatoFormatadoRelatorio.Create;
+  LNFConsultaSerasaModelService := SL as INFConsultaSerasaModelService;
+  LPlataformas := TPlataformas.Create;
   try
     if Serasa.MonitoreRetorno = mrEmail then
       //RetornoMonitoreEmail(Serasa)
     else
     begin
+      LEmail := TStringList.Create;
+      LResumos :=  TStringList.Create;
       with TDBCadastros.Create(AConnection) do
       try
         LLogViewMode := (SL as ILogViewFactory).CreateDefaultViewMode;
@@ -345,14 +517,77 @@ begin
         begin
           FConsultados.Assign(CNPJsConsultados[tcMonitore]);
           //Imprime;
+          LCollectionResultadoDescobreEmailAgente := TCollectionResultadoDescobreEmailAgente.CreateFromIterator(
+            (SL as IResultadoDescobreEmailAgenteService).FindByCnpjs(FConsultados, AConnection));
+          LAgenteAnterior := '@@@@@';
+          LProgresso.Posicao('Enviando e-mails', 0, LCollectionResultadoDescobreEmailAgente.Count);
+          for laco := 0 to LCollectionResultadoDescobreEmailAgente.Count - 1 do
+          begin
+            LProgresso.MaisUm('Enviando e-mails');
+            if LAgenteAnterior <> LCollectionResultadoDescobreEmailAgente[laco].PesNomeAgente.Value then
+            begin
+              if LAgenteAnterior <> '@@@@@' then
+                EnviarEmail(LAgenteEmail, LEmail.Text + LResumos.Text,
+                  LAgenteAnterior);
+              LAgenteAnterior := LCollectionResultadoDescobreEmailAgente[laco].PesNomeAgente.Value;
+              LAgenteEmail := LCollectionResultadoDescobreEmailAgente[laco].PesEmail.Value;
+              LEmail.Clear;
+              LEmail.Add('<h2>' + LCollectionResultadoDescobreEmailAgente[laco].PesNomeAgente.Value + '</h2>');
+              LEmail.Add('<h3">Informamos que as seguintes empresas monitoradas tiveram alterações em suas informações comportamentais e/ou cadastrais.</h3>');
+              LResumos.Clear;
+            end;
+            Codigo := LCollectionResultadoDescobreEmailAgente[laco].PesCNPJCPF;
+            LPlataformas.SetEmails(LCollectionResultadoDescobreEmailAgente[laco].PesEmail.Value,
+              LCollectionResultadoDescobreEmailAgente[laco].PesNomeAgente.Value);
+            LEmail.Add('<p>' + LCollectionResultadoDescobreEmailAgente[laco].PesCNPJCPF + ' - ' +
+              LCollectionResultadoDescobreEmailAgente[laco].PesNomeCedente.Value + '</p>');
+            LPlataformas.Plataforma.Mensagem.Add(LEmail[LEmail.Count - 1]);
+            LArquivo.LoadFromFile('\\orderbyapp3\serasaemail\' + Cadastro.NomeArquivoGerado);
+            LParser.TextoParaRelatoFormatadoModel(LArquivo, LRelato);
+            LConsultaAnterior := LNFConsultaSerasaModelService
+              .FindBySConsCnpjCpfAndAntesDeSConsData(LCollectionResultadoDescobreEmailAgente[laco].PesCNPJCPF,
+              Int(LRelato.EmitidoEm), Connection);
+            LArquivoAntigo.Clear;
+            if LConsultaAnterior <> nil then
+              LConsultaAnterior.CarregaRelatoFormatado(LArquivoAntigo);
+            LParser.TextoParaRelatoFormatadoModel(LArquivoAntigo, LRelatoAnterior);
+            LResumos.Add(LRelatorio.RelatorioDasDiferencas(LRelatoAnterior, LRelato,
+              '<a href="http://sistema.creditbr.com.br:8080/netFactor/serasaemail/' + Cadastro.NomeArquivoGerado + '">' +
+              Cadastro.NomeArquivoGerado + '</a>'));
+            LPlataformas.Plataforma.Resumo.Add(LResumos[LResumos.Count - 1]);
+          end;
+          if LAgenteAnterior <> '@@@@@' then
+            EnviarEmail(LAgenteEmail, LEmail.Text + LResumos.Text, LAgenteAnterior);
+          LEmail.Clear;
+          LResumos.Clear;
+          LEmail.Add('<h3">Informamos que as seguintes empresas monitoradas tiveram alterações em suas informações comportamentais e/ou cadastrais.</h3>');
+          for laco := 0 to LPlataformas.Count - 1 do
+          begin
+            LPlataformas.Posicao := laco;
+            LEmail.Add('<h2>' + LPlataformas.Codigo + '</h2>');
+            LEmail.AddStrings(LPlataformas.Plataforma.Mensagem);
+            LResumos.Add('<hr><h2>' + LPlataformas.Codigo + '</h2>');
+            LResumos.AddStrings(LPlataformas.Plataforma.Resumo);
+          end;
+          EnviarEmail('catenacci@creditbr.com.br,gustavo@creditbr.com.br,felipe.avelar@creditbr.com.br,walter@creditbr.com.br,assistentes@creditbr.com.br,risco@creditbr.com.br', LEmail.Text + LResumos.Text, 'Plataformas');
         end;
       finally
         Comunicacao.Free;
         Free;
+        LResumos.Free;
+        LEmail.Free;
       end;
     end;
   finally
+    LPlataformas.Free;
+    LRelatorio.Free;
+    LParser.Free;
+    LRelatoAnterior.Free;
+    LRelato.Free;
+    LArquivoAntigo.Free;
+    LArquivo.Free;
     Serasa.Free;
+    FConsultados.Free;
   end;
 end;
 

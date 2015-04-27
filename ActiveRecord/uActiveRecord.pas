@@ -38,7 +38,7 @@ type
   end;
 
   TFieldTypeMetadata = (arftDateTime, arftFloat, arftInteger, arftMoney, arftNS, arftVarchar, arftMemo, arftB01,
-    arftColor, arftBinary);
+    arftColor, arftBinary, arftNVarchar);
 
   TTableMetadata = record
     Name: string;
@@ -143,6 +143,11 @@ type
 
   TNullableBinary = record
     Value: TBinary;
+    Null: Boolean;
+  end;
+
+  TNullableWideString = record
+    Value: WideString;
     Null: Boolean;
   end;
 
@@ -347,6 +352,7 @@ type
     procedure AfterSave; virtual;
     function AjustaVarchar(const Value: string; ATamanho: Integer): string; overload;
     function AjustaVarchar(const Value: TNullableString; ATamanho: Integer): TNullableString; overload;
+    function AjustaVarchar(const Value: TNullableWideString; ATamanho: Integer): TNullableWideString; overload;
     procedure BeforeSave; virtual;
     procedure CopyFrom(AActiveRecord: TActiveRecord); overload; virtual;
     function CreateItemRelationship(Index: Integer): TActiveRecord; virtual; abstract;
@@ -409,6 +415,7 @@ type
     class function NullableDateTime(const AValue: TDateTime; ANull: Boolean = False): TNullableDateTime;
     class function NullableExtended(const AValue: Extended; ANull: Boolean = False): TNullableExtended;
     class function NullableNS(const AValue: string; ANull: Boolean = False): TNullableBoolean;
+    class function NullableWideString(const AValue: string; ANull: Boolean = False): TNullableWideString; overload;
     class function NullOrString(ANull: Boolean; const AString: string): string;
     class procedure SetFieldNullable(AField: TField; const AValue: TNullableColor); overload;
     class procedure SetFieldNullable(AField: TField; const AValue: TNullableCurrency); overload;
@@ -430,6 +437,7 @@ type
     class function ToString(const AValue: TNullableExtended): string; overload;
     class function ToString(const AValue: TNullableInteger): string; overload;
     class function ToString(const AValue: TNullableString): string; overload;
+    class function ToString(const AValue: TNullableWideString): string; overload;
     class function ToStringNS(const AValue: TNullableBoolean): string; overload;
     class function ToVariant(const AValue: TNullableBoolean): Variant; overload;
     class function ToVariant(const AValue: TNullableColor): Variant; overload;
@@ -438,6 +446,7 @@ type
     class function ToVariant(const AValue: TNullableExtended): Variant; overload;
     class function ToVariant(const AValue: TNullableInteger): Variant; overload;
     class function ToVariant(const AValue: TNullableString): Variant; overload;
+    class function ToVariant(const AValue: TNullableWideString): Variant; overload;
     class function ToVariantB01(const AValue: TNullableBoolean): Variant;
     class function ToVariantNS(const AValue: TNullableBoolean): Variant;
     class function ValidateString(const AValue: string; const AFieldMetadata: TFieldMetadata; out AMensagem: string): Boolean;
@@ -451,6 +460,7 @@ type
     class function VariantToNullableInteger(const AValue: Variant): TNullableInteger;
     class function VariantToNullableNS(const AValue: Variant): TNullableBoolean;
     class function VariantToNullableString(const AValue: Variant): TNullableString;
+    class function VariantToNullableWideString(const AValue: Variant): TNullableWideString;
     class function ViewMetadata: IActiveRecordMetadata; virtual; abstract;
   end;
 
@@ -956,6 +966,7 @@ const
   NullString: TNullableString = (Value: ''; Null: True);
   NullColor: TNullableColor = (Value: clBtnFace; Null: True);
   NullBinary: TNullableBinary = (Value: nil; Null: True);
+  NullWideString: TNullableWideString = (Value: ''; Null: True);
   NS: array [Boolean] of Char = 'NS';
   NaoSim: array [Boolean] of string = ('Não', 'Sim');
   ColumnCharWidthForDateTime = 10;
@@ -977,7 +988,8 @@ const
     varOleStr, //arftMemo
     varBoolean, //arftB01
     varInteger, //arftColor
-    varArray + varByte //arftBinary
+    varArray + varByte, //arftBinary
+    varOleStr //arftNVarchar
     );
     
 resourcestring
@@ -1360,6 +1372,11 @@ begin
   Result := Copy(Value, 1, ATamanho);
 end;
 
+function TActiveRecord.AjustaVarchar(const Value: TNullableWideString; ATamanho: Integer): TNullableWideString;
+begin
+  Result := NullableWideString(Copy(Value.Value, 1, ATamanho), Value.Null);
+end;
+
 procedure TActiveRecord.BeforeSave;
 var
   LCallBack: IActiveRecordCallBackValidate;
@@ -1631,6 +1648,18 @@ begin
   Result := Nullable(UpperCase(Copy(AValue, 1, 1)) = 'S', ANull);
 end;
 
+class function TActiveRecord.NullableWideString(const AValue: string; ANull: Boolean): TNullableWideString;
+begin
+  with Result do
+  begin
+    if ANull then
+      Value := ''
+    else
+      Value := AValue;
+    Null := ANull;
+  end;
+end;
+
 class function TActiveRecord.NullOrString(ANull: Boolean; const AString: string): string;
 begin
   if ANull then
@@ -1769,6 +1798,14 @@ begin
     Result := AValue.Value;
 end;
 
+class function TActiveRecord.ToString(const AValue: TNullableWideString): string;
+begin
+  if AValue.Null then
+    Result := ''
+  else
+    Result := AValue.Value;
+end;
+
 class function TActiveRecord.ToStringNS(const AValue: TNullableBoolean): string;
 begin
   if AValue.Null then
@@ -1826,6 +1863,14 @@ begin
 end;
 
 class function TActiveRecord.ToVariant(const AValue: TNullableString): Variant;
+begin
+  if AValue.Null then
+    Result := Null
+  else
+    Result := AValue.Value;
+end;
+
+class function TActiveRecord.ToVariant(const AValue: TNullableWideString): Variant;
 begin
   if AValue.Null then
     Result := Null
@@ -2067,6 +2112,19 @@ begin
   begin
     LValue := AValue;
     Result := Nullable(LValue);
+  end;
+end;
+
+class function TActiveRecord.VariantToNullableWideString(const AValue: Variant): TNullableWideString;
+var
+  LValue: WideString;
+begin
+  if VarIsNull(AValue) then
+    Result := NullWideString
+  else
+  begin
+    LValue := AValue;
+    Result := NullableWideString(LValue);
   end;
 end;
 
