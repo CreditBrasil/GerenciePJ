@@ -12,7 +12,7 @@ uses
   uLogControlIntf,
   uDialogos{, Funcoes, uSigcadModel, uSigcreModel}, SerasaLocal, uActiveRecord, IdSMTP, IdMessage, IdEMailAddress,
   uDescobreEmailAgente, uNFParametroConfiguracaoEmailModel, progrssInterface, uRelatoFormatadoRelatorio,
-  uRelatoFormatadoModel, uRelatoFormatadoParse, uNFConsultaSerasaModel, Math;
+  uRelatoFormatadoModel, uRelatoFormatadoParse, uNFConsultaSerasaModel, Math, FacMetodos;
 
 type
   TPlataforma = class(TString)
@@ -418,31 +418,24 @@ var
         LMsg.ExtraHeaders.Values['Return-Path'] := LNFParametroConfiguracaoEmail.CEmEmailFactoring.Value;
         LEmails.CommaText := Trim(AEmails);
         for laco := 0 to LEmails.Count - 1 do
-          with LMsg.Recipients.Add do
+        begin
+          if TFacMetodos.IsEMailValido(Trim(LEmails[laco])) then
+            with LMsg.Recipients.Add do
+            begin
+              Name := AComplementoAssunto;
+              Address := Trim(LEmails[laco]);
+            end
+          else
           begin
-            Name := AComplementoAssunto;
-            Address := Trim(LEmails[laco]);
+            TDialogo.Fatal('E-mail inválido', [LEmails[laco] + ' não é um e-mail válido.',
+              'Pertence a ' + AComplementoAssunto + '.']);
           end;
+        end;
         with LMsg.CCList.Add do
         begin
           Name := 'Alex Dundes';
           Address := 'alex.dundes@creditbr.com.br';
         end;
-        {with LMsg.CCList.Add do
-        begin
-          Name := 'Ricardo Maeda';
-          Address := 'ricardo.maeda@creditbr.com.br';
-        end;}
-        with LMsg.CCList.Add do
-        begin
-          Name := 'Tamara Bellintani Rosa';
-          Address := 'tamara@creditbr.com.br';
-        end;
-        {ith LMsg.CCList.Add do
-        begin
-          Name := 'Michel Varon';
-          Address := 'michel@creditbr.com.br';
-        end;}
         LText := TIdText.Create(LMsg.MessageParts);
         LText.Body.Text := 'Este e-mail esta no formato HTML,'#13#10 +
           'altere a visualizacao do seu programa de e-mail.';
@@ -526,9 +519,8 @@ begin
             LProgresso.MaisUm('Enviando e-mails');
             if LAgenteAnterior <> LCollectionResultadoDescobreEmailAgente[laco].PesNomeAgente.Value then
             begin
-              if LAgenteAnterior <> '@@@@@' then
-                EnviarEmail(LAgenteEmail, LEmail.Text + LResumos.Text,
-                  LAgenteAnterior);
+              if (LAgenteAnterior <> '@@@@@') then
+                EnviarEmail(LAgenteEmail, LEmail.Text + LResumos.Text, LAgenteAnterior);
               LAgenteAnterior := LCollectionResultadoDescobreEmailAgente[laco].PesNomeAgente.Value;
               LAgenteEmail := LCollectionResultadoDescobreEmailAgente[laco].PesEmail.Value;
               LEmail.Clear;
@@ -556,7 +548,7 @@ begin
               Cadastro.NomeArquivoGerado + '</a>'));
             LPlataformas.Plataforma.Resumo.Add(LResumos[LResumos.Count - 1]);
           end;
-          if LAgenteAnterior <> '@@@@@' then
+          if (LAgenteAnterior <> '@@@@@') then
             EnviarEmail(LAgenteEmail, LEmail.Text + LResumos.Text, LAgenteAnterior);
           LEmail.Clear;
           LResumos.Clear;
