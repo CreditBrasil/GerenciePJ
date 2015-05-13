@@ -390,6 +390,7 @@ end;*)
 procedure TMonitore.RetornoMonitore(const AConnection: IActiveRecordConnection);
 var
   LNFParametroConfiguracaoEmail: INFParametroConfiguracaoEmailModel;
+  contaEmail: Integer;
 
   procedure EnviarEmail(AEmails, AConteudo, AComplementoAssunto: string);
   var
@@ -443,6 +444,10 @@ var
         LText.ContentType := 'text/html';
         LText.ContentTransfer := '8BIT';
         LText.Body.Text := AConteudo;
+        Inc(contaEmail);
+        ForceDirectories(GetCurrentDir + '\emails\' + FormatDateTime('YYYY-MM', Date));
+        LMsg.SaveToFile(GetCurrentDir + '\emails\' + FormatDateTime('YYYY-MM\DD', Date) + '_' +
+          TFacMetodos.PoeLetraEsq(IntToStr(contaEmail), 5, '0') + '.eml');
         LSMTP.Connect(15000); //15 segundos de timeout;
         try;
           LSMTP.Send(LMsg);
@@ -456,7 +461,7 @@ var
       LSMTP.Free;
       LEmails.Free;
     end;
-  end;  
+  end;
 
 var
   Serasa: TSerasa;
@@ -476,6 +481,7 @@ var
   LConsultaAnterior: INFConsultaSerasaModel;
   LPlataformas: TPlataformas;
 begin
+  contaEmail := 0;
   LProgresso := SL as IProgresso;
   LProgresso.Mostrar('Gerecie Carteira');
   LProgresso.Posicao('Lendo arquivo e gravando no banco...', 0, 0);
