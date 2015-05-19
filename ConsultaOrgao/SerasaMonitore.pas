@@ -94,7 +94,7 @@ begin
     if LEmails.Count > 0 then
       Codigo := Trim(LEmails[LEmails.Count - 1])
     else
-      Codigo := ANome;
+      Codigo := ANome + ' (e-mail não informado no Net Factor)';
   finally
     LEmails.Free;
   end;
@@ -418,18 +418,31 @@ var
         LMsg.From.Name := 'Sistema Credit Brasil';
         LMsg.ExtraHeaders.Values['Return-Path'] := LNFParametroConfiguracaoEmail.CEmEmailFactoring.Value;
         LEmails.CommaText := Trim(AEmails);
-        for laco := 0 to LEmails.Count - 1 do
+        if LEmails.Count = 0 then
         begin
-          if TFacMetodos.IsEMailValido(Trim(LEmails[laco])) then
-            with LMsg.Recipients.Add do
-            begin
-              Name := AComplementoAssunto;
-              Address := Trim(LEmails[laco]);
-            end
-          else
+          with LMsg.Recipients.Add do
           begin
-            TDialogo.Fatal('E-mail inválido', [LEmails[laco] + ' não é um e-mail válido.',
-              'Pertence a ' + AComplementoAssunto + '.']);
+            Name := 'Tamara Bellintani Rosa';
+            Address := 'tamara@creditbr.com.br';
+          end;
+          AConteudo := '<h2 style="color:red">ATENÇÃO, gerente não tem o e-mail cadastrado no Net Factor</h2>' +
+            AConteudo;
+        end
+        else
+        begin
+          for laco := 0 to LEmails.Count - 1 do
+          begin
+            if TFacMetodos.IsEMailValido(Trim(LEmails[laco])) then
+              with LMsg.Recipients.Add do
+              begin
+                Name := AComplementoAssunto;
+                Address := Trim(LEmails[laco]);
+              end
+            else
+            begin
+              TDialogo.Fatal('E-mail inválido', [LEmails[laco] + ' não é um e-mail válido.',
+                'Pertence a ' + AComplementoAssunto + '.']);
+            end;
           end;
         end;
         with LMsg.CCList.Add do
@@ -526,7 +539,8 @@ begin
             if LAgenteAnterior <> LCollectionResultadoDescobreEmailAgente[laco].PesNomeAgente.Value then
             begin
               if (LAgenteAnterior <> '@@@@@') then
-                EnviarEmail(LAgenteEmail, LEmail.Text + LResumos.Text, LAgenteAnterior);
+                EnviarEmail(LAgenteEmail, LEmail.Text + LResumos.Text +
+                '<h2 style="color:red">* Por favor, envie uma resposta para o e-mail sistema@creditbr.com.br com a confirmação que leu este e-mail.</h2>', LAgenteAnterior);
               LAgenteAnterior := LCollectionResultadoDescobreEmailAgente[laco].PesNomeAgente.Value;
               LAgenteEmail := LCollectionResultadoDescobreEmailAgente[laco].PesEmail.Value;
               LEmail.Clear;
@@ -555,7 +569,8 @@ begin
             LPlataformas.Plataforma.Resumo.Add(LResumos[LResumos.Count - 1]);
           end;
           if (LAgenteAnterior <> '@@@@@') then
-            EnviarEmail(LAgenteEmail, LEmail.Text + LResumos.Text, LAgenteAnterior);
+            EnviarEmail(LAgenteEmail, LEmail.Text + LResumos.Text +
+              '<h2 style="color:red">* Por favor, envie uma resposta para o e-mail sistema@creditbr.com.br com a confirmação que leu este e-mail.</h2>', LAgenteAnterior);
           LEmail.Clear;
           LResumos.Clear;
           LEmail.Add('<h3">Informamos que as seguintes empresas monitoradas tiveram alterações em suas informações comportamentais e/ou cadastrais.</h3>');
