@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, Dialogs, ServiceLocator, uActiveRecord,
   uGerenciePJ_Conexao, uNFConsultaSerasaModel, StdCtrls, Buttons, SerasaMonitore,
   //
-  uRelatoFormatadoModel, uRelatoFormatadoParse;
+  uRelatoFormatadoModel, uRelatoFormatadoParse, uRelatoFormatadoRelatorio;
 
 type
   TPrincipal = class(TForm)
@@ -52,18 +52,27 @@ end;
 procedure TPrincipal.Button1Click(Sender: TObject);
 var
   LArquivo: TStringList;
-  LRelato: TRelatoFormatadoModel;
+  LRelatoAnterior, LRelatoAtual: TRelatoFormatadoModel;
   LParser: TRelatoFormatadoParser;
+  LRelatorio: TRelatoFormatadoRelatorio;
 begin
   LArquivo := TStringList.Create;
-  LRelato := TRelatoFormatadoModel.Create;
+  LRelatoAnterior := TRelatoFormatadoModel.Create;
+  LRelatoAtual := TRelatoFormatadoModel.Create;
   LParser := TRelatoFormatadoParser.Create;
+  LRelatorio := TRelatoFormatadoRelatorio.Create;
   try
-    LArquivo.LoadFromFile('C:\GerenciePJ\GUIGerenciePJ\SERASA.txt');
-    LParser.TextoParaRelatoFormatadoModel(LArquivo, LRelato);
+    LArquivo.LoadFromFile('C:\GerenciePJ\GUIGerenciePJ\SerasaAnterior.txt');
+    LParser.TextoParaRelatoFormatadoModel(LArquivo, LRelatoAnterior);
+    LArquivo.LoadFromFile('C:\GerenciePJ\GUIGerenciePJ\SerasaAtual.txt');
+    LParser.TextoParaRelatoFormatadoModel(LArquivo, LRelatoAtual);
+    LArquivo.Text := LRelatorio.RelatorioDasDiferencas(LRelatoAnterior, LRelatoAtual, '');
+    LArquivo.SaveToFile('C:\GerenciePJ\GUIGerenciePJ\Comparacao.html');
   finally
+    LRelatorio.Free;
     LParser.Free;
-    LRelato.Free;
+    LRelatoAtual.Free;
+    LRelatoAnterior.Free;
     LArquivo.Free;
   end;
 end;
