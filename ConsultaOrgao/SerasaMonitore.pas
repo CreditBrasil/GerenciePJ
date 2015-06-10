@@ -420,17 +420,17 @@ var
         LEmails.CommaText := Trim(AEmails);
         if LEmails.Count = 0 then
         begin
-          with LMsg.Recipients.Add do
+          {with LMsg.Recipients.Add do
           begin
             Name := 'Tamara Bellintani Rosa';
             Address := 'tamara@creditbr.com.br';
-          end;
+          end;}
           with LMsg.Recipients.Add do
           begin
             Name := 'Natalino Barros Amaral';
             Address := 'natalino.amaral@creditbr.com.br';
           end;
-          AConteudo := '<h2 style="color:red">ATENÇÃO, gerente não tem o e-mail cadastrado no Net Factor</h2>' +
+          AConteudo := '<h2 style="color:red">ATENÇÃO, gerente não tem o e-mail cadastrado no Net Factor. Natalino verifique se é erro no cadastro do e-mail. Se não for encaminhe este e-mail para a Tamara para ver se o cliente ainda deve ser monitorado.</h2>' +
             AConteudo;
         end
         else
@@ -451,7 +451,7 @@ var
                 Address := 'natalino.amaral@creditbr.com.br';
               end;
               AConteudo := '<h2 style="color:red">Natalino, o ' + AComplementoAssunto + ' tem um e-mail inválido: ' +
-                AEmails + '</h2>' + AConteudo;
+                AEmails + ', por favor corrija no cadastro.</h2>' + AConteudo;
             end;
           end;
         end;
