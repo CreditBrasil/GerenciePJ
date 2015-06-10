@@ -85,7 +85,7 @@ const
     ),
     (//rfsRecheque
       Cabecalho: 'INFORMACOES DO RECHEQUE (CHEQUES EXTRAVIADOS/SUSTADOS)                                ';
-      TemQuantidade: False;
+      TemQuantidade: True;
       Processos: TRelatoFormatadoTipoSecaoProcessos
     )
     );
@@ -173,6 +173,8 @@ begin
           ARelatoFormatadoModel[LSecaoAtual].TotalOcorrencias := ParseInteger(Copy(ALinhas[laco], 23, 64));
         if Pos('VALOR TOTAL =', ALinhas[laco]) = 1 then
           ARelatoFormatadoModel[LSecaoAtual].ValorTotal := ParseCurrency(Copy(ALinhas[laco], 14, 73));
+        if (LSecaoAtual = rfsRecheque) and (Pos('TOTAL DE ', ALinhas[laco]) = 1) then
+          ARelatoFormatadoModel[LSecaoAtual].TotalOcorrencias := ParseInteger(Copy(ALinhas[laco], 10, 3));
       end;
       if RelatoFormatadoTipoSecaoConfiguracoes[LSecaoAtual].Processos.EDetalhe(ALinhas[laco]) then
         ARelatoFormatadoModel[LSecaoAtual].Ultimas.Add(ALinhas[laco]);

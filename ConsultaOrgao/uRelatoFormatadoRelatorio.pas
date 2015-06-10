@@ -62,6 +62,21 @@ const
     Result := AStringBuilder;
   end;
 
+  function OcorrenciaRecheque(AOcorrenciasAnterior, AOcorrenciasAtual, AQuantidade: Integer;
+    AStringBuilder: TStringBuilder): TStringBuilder;
+  begin
+    AStringBuilder
+      .AppendFormat(Cor(LCor[AOcorrenciasAnterior <> AOcorrenciasAtual, AOcorrenciasAnterior > AOcorrenciasAtual],
+        'TOTAL DE %3d OCORRENCIAS DE SUSTACAO DE CHEQUES NOS ULTIMOS SEIS MESES %2d ULT.:'), [AOcorrenciasAtual, AQuantidade]);
+    if AOcorrenciasAnterior <> AOcorrenciasAtual then
+      AStringBuilder.AppendFormat(' anterior %d %s (%s%d)', [AOcorrenciasAnterior,
+        LDirecao[AOcorrenciasAtual > AOcorrenciasAnterior], LSinal[AOcorrenciasAtual > AOcorrenciasAnterior],
+        AOcorrenciasAtual - AOcorrenciasAnterior]);
+    AStringBuilder
+      .AppendLine;
+    Result := AStringBuilder;
+  end;
+
 var
   LStringBuilder: TStringBuilder;
   laco: Integer;
@@ -186,10 +201,13 @@ begin
     if AAtual.Secoes[rfsCheque].Ultimas.Count > 0 then
     begin
       LStringBuilder
-        .AppendLine(Cor('blue', 'INFORMACOES DO RECHEQUE (CHEQUES EXTRAVIADOS/SUSTADOS)'))
+        .AppendLine(Cor('blue', 'INFORMACOES DO RECHEQUE (CHEQUES EXTRAVIADOS/SUSTADOS)'));
+      OcorrenciaRecheque(AAnterior.Secoes[rfsRecheque].TotalOcorrencias, AAtual.Secoes[rfsRecheque].TotalOcorrencias,
+        AAtual.Secoes[rfsCheque].Ultimas.Count, LStringBuilder);
+      LStringBuilder
         .AppendLine(Cor('navy', 'DATA        BANCO         AG         CONTA  CH INICIAL   CH FINAL    MOTIVO'));
       for laco := 0 to AAtual.Secoes[rfsRecheque].Ultimas.Count - 1 do
-        LStringBuilder.AppendLine(Cor(LCor[AAnterior.Secoes[rfsRecheque].Ultimas.IndexOf(AAtual.Secoes[rfsRecheque].Ultimas[laco]) = -1, False{*}], AAtual.Secoes[rfsRecheque].Ultimas[laco]));
+        LStringBuilder.AppendLine(Cor(LCor[AAnterior.Secoes[rfsRecheque].Ultimas.IndexOf(AAtual.Secoes[rfsRecheque].Ultimas[laco]) = -1, AAnterior.Secoes[rfsRecheque].TotalOcorrencias > AAtual.Secoes[rfsRecheque].TotalOcorrencias], AAtual.Secoes[rfsRecheque].Ultimas[laco]));
     end;
     LStringBuilder
       .AppendLine('</pre>');
