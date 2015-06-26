@@ -1,6 +1,6 @@
 object Principal: TPrincipal
-  Left = 192
-  Top = 117
+  Left = 194
+  Top = 119
   Width = 928
   Height = 480
   Caption = 'Retorno Gerencie PJ'

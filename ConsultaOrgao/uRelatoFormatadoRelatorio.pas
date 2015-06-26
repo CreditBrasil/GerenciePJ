@@ -198,12 +198,13 @@ begin
       Total(AAnterior.Secoes[rfsCheque].ValorTotal, AAtual.Secoes[rfsCheque].ValorTotal, LStringBuilder)
         .AppendLine('');
     end;
-    if AAtual.Secoes[rfsCheque].Ultimas.Count > 0 then
+    if AAtual.Secoes[rfsRecheque].Ultimas.Count > 0 then
     begin
       LStringBuilder
         .AppendLine(Cor('blue', 'INFORMACOES DO RECHEQUE (CHEQUES EXTRAVIADOS/SUSTADOS)'));
-      OcorrenciaRecheque(AAnterior.Secoes[rfsRecheque].TotalOcorrencias, AAtual.Secoes[rfsRecheque].TotalOcorrencias,
-        AAtual.Secoes[rfsCheque].Ultimas.Count, LStringBuilder);
+      if (AAtual.Secoes[rfsRecheque].TotalOcorrencias <> 0) or (AAnterior.Secoes[rfsRecheque].TotalOcorrencias <> 0) then
+        OcorrenciaRecheque(AAnterior.Secoes[rfsRecheque].TotalOcorrencias, AAtual.Secoes[rfsRecheque].TotalOcorrencias,
+          AAtual.Secoes[rfsRecheque].Ultimas.Count, LStringBuilder);
       LStringBuilder
         .AppendLine(Cor('navy', 'DATA        BANCO         AG         CONTA  CH INICIAL   CH FINAL    MOTIVO'));
       for laco := 0 to AAtual.Secoes[rfsRecheque].Ultimas.Count - 1 do
