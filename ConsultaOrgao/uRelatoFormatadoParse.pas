@@ -38,6 +38,11 @@ type
 const
   SemTipoDeSecaoDefinida = TRelatoFormatadoTipoSecao(-1);
   RelatoFormatadoTipoSecaoConfiguracoes: array [TRelatoFormatadoTipoSecao] of TRelatoFormatadoTipoSecaoConfiguracao = (
+    (//rfsPendenciasFinanceiras
+      Cabecalho: 'PENDENCIAS FINANCEIRAS                                                                ';
+      TemQuantidade: False;
+      Processos: TRelatoFormatadoTipoSecaoProcessos
+    ),
     (//rfsPefin
       Cabecalho: 'PENDENCIA:PEFIN                                                                       ';
       TemQuantidade: True;

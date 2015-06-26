@@ -88,13 +88,21 @@ begin
       .AppendLine('<strong>RAZÃO SOCIAL na Serasa:</strong> ' + AAtual.RazaoSocial + '<br>')
       .AppendLine('<strong>Relato completo:</strong> ' + ALink + '</p>')
       .AppendLine('<pre>');
-    if (AAtual.Secoes[rfsPefin].Ultimas.Count > 0) or (AAtual.Secoes[rfsRefin].Ultimas.Count > 0) then
+    if (AAtual.Secoes[rfsPefin].Ultimas.Count > 0) or (AAtual.Secoes[rfsRefin].Ultimas.Count > 0) or
+      (AAtual.Secoes[rfsPendenciasFinanceiras].Ultimas.Count > 0) then
     begin
       LStringBuilder
         .AppendLine(Cor('blue', 'PENDENCIAS FINANCEIRAS'));
-      Ocorrencia('TOTAL DE %5d OCORRENCIAS.', AAnterior.Secoes[rfsPefin].TotalOcorrencias +
-        AAnterior.Secoes[rfsRefin].TotalOcorrencias, AAtual.Secoes[rfsPefin].TotalOcorrencias +
-        AAtual.Secoes[rfsRefin].TotalOcorrencias, LStringBuilder);
+      if AAtual.Secoes[rfsPendenciasFinanceiras].Ultimas.Count = 0 then
+        Ocorrencia('TOTAL DE %5d OCORRENCIAS.', AAnterior.Secoes[rfsPefin].TotalOcorrencias +
+          AAnterior.Secoes[rfsRefin].TotalOcorrencias, AAtual.Secoes[rfsPefin].TotalOcorrencias +
+          AAtual.Secoes[rfsRefin].TotalOcorrencias, LStringBuilder)
+      else
+      begin
+        for laco := 0 to AAtual.Secoes[rfsPendenciasFinanceiras].Ultimas.Count - 1 do
+          LStringBuilder.AppendLine(Cor(LCor[AAnterior.Secoes[rfsPendenciasFinanceiras].Ultimas.IndexOf(AAtual.Secoes[rfsPendenciasFinanceiras].Ultimas[laco]) = -1, False], AAtual.Secoes[rfsPendenciasFinanceiras].Ultimas[laco]));
+        LStringBuilder.AppendLine('');
+      end;
     end;
     if AAtual.Secoes[rfsPefin].Ultimas.Count > 0 then
     begin
@@ -126,7 +134,7 @@ begin
       LStringBuilder
         .AppendLine('')
     end;
-    if AAtual.Secoes[rfsResumo].Ultimas.Count > 0 then
+    if (AAtual.Secoes[rfsResumo].Ultimas.Count > 0) or (AAnterior.Secoes[rfsResumo].Ultimas.Count > 0) then
     begin
       LStringBuilder
         .AppendLine(Cor('blue', 'RESUMO'))
@@ -134,10 +142,14 @@ begin
         .AppendLine(Cor('navy', '                                             VALOR          ORIGEM     AG/PRACA'));
       for laco := 0 to AAtual.Secoes[rfsResumo].Ultimas.Count - 1 do
         LStringBuilder.AppendLine(Cor(LCor[AAnterior.Secoes[rfsResumo].Ultimas.IndexOf(AAtual.Secoes[rfsResumo].Ultimas[laco]) = -1, False{*}], AAtual.Secoes[rfsResumo].Ultimas[laco]));
-      LStringBuilder
-        .AppendLine('')
-        .AppendLine(Cor('blue', 'OCORRENCIAS MAIS RECENTES (ATE 05)'))
-        .AppendLine('');
+      for laco := 0 to AAnterior.Secoes[rfsResumo].Ultimas.Count - 1 do
+        if AAtual.Secoes[rfsResumo].Ultimas.IndexOf(AAnterior.Secoes[rfsResumo].Ultimas[laco]) = -1 then
+          LStringBuilder.AppendLine(Format('<span style="color:rgb(0, 203, 57);text-decoration:line-through">%s</span>', [AAnterior.Secoes[rfsResumo].Ultimas[laco]])  );
+      if AAtual.Secoes[rfsResumo].Ultimas.Count > 0 then
+        LStringBuilder
+          .AppendLine('')
+          .AppendLine(Cor('blue', 'OCORRENCIAS MAIS RECENTES (ATE 05)'))
+          .AppendLine('');
     end;
     if AAtual.Secoes[rfsFalenRecupConc].Ultimas.Count > 0 then
     begin

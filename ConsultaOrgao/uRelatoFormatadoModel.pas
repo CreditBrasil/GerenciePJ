@@ -6,8 +6,8 @@ uses
   SysUtils, Classes;
 
 type
-  TRelatoFormatadoTipoSecao = (rfsPefin, rfsRefin, rfsResumo, rfsFalenRecupConc, rfsDividaVencida, rfsAcaoJudicial,
-    rfsProtesto, rfsCheque, rfsConcentre, rfsRecheque);
+  TRelatoFormatadoTipoSecao = (rfsPendenciasFinanceiras, rfsPefin, rfsRefin, rfsResumo, rfsFalenRecupConc,
+    rfsDividaVencida, rfsAcaoJudicial, rfsProtesto, rfsCheque, rfsConcentre, rfsRecheque);
 
   TRelatoFormatadoSecao = class(TObject)
   private
