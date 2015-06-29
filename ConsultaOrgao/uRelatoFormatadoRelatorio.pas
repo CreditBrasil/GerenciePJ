@@ -3,7 +3,7 @@ unit uRelatoFormatadoRelatorio;
 interface
 
 uses
-  SysUtils, StringBuilder, uRelatoFormatadoModel;
+  Classes, SysUtils, StringBuilder, uRelatoFormatadoModel;
 
 type
   TRelatoFormatadoRelatorio = class(TObject)
@@ -77,6 +77,19 @@ const
     Result := AStringBuilder;
   end;
 
+  function TemResumo(AUltima: string; AUltimas: TStrings): Boolean;
+  var
+    laco: Integer;
+  begin
+    Result := False;
+    for laco := 0 to AUltimas.Count - 1 do
+      if SameText(Copy(AUltima, 7, 26), Copy(AUltimas[laco], 7, 26)) then
+      begin
+        Result := True;
+        Break;
+      end;
+  end;
+
 var
   LStringBuilder: TStringBuilder;
   laco: Integer;
@@ -143,13 +156,14 @@ begin
       for laco := 0 to AAtual.Secoes[rfsResumo].Ultimas.Count - 1 do
         LStringBuilder.AppendLine(Cor(LCor[AAnterior.Secoes[rfsResumo].Ultimas.IndexOf(AAtual.Secoes[rfsResumo].Ultimas[laco]) = -1, False{*}], AAtual.Secoes[rfsResumo].Ultimas[laco]));
       for laco := 0 to AAnterior.Secoes[rfsResumo].Ultimas.Count - 1 do
-        if AAtual.Secoes[rfsResumo].Ultimas.IndexOf(AAnterior.Secoes[rfsResumo].Ultimas[laco]) = -1 then
-          LStringBuilder.AppendLine(Format('<span style="color:rgb(0, 203, 57);text-decoration:line-through">%s</span>', [AAnterior.Secoes[rfsResumo].Ultimas[laco]])  );
+        if not TemResumo(AAnterior.Secoes[rfsResumo].Ultimas[laco], AAtual.Secoes[rfsResumo].Ultimas) then
+          LStringBuilder.AppendLine(Format('<span style="color:rgb(0, 203, 57);text-decoration:line-through">%s</span>', [AAnterior.Secoes[rfsResumo].Ultimas[laco]]));
       if AAtual.Secoes[rfsResumo].Ultimas.Count > 0 then
         LStringBuilder
           .AppendLine('')
-          .AppendLine(Cor('blue', 'OCORRENCIAS MAIS RECENTES (ATE 05)'))
-          .AppendLine('');
+          .AppendLine(Cor('blue', 'OCORRENCIAS MAIS RECENTES (ATE 05)'));
+      LStringBuilder
+        .AppendLine('');
     end;
     if AAtual.Secoes[rfsFalenRecupConc].Ultimas.Count > 0 then
     begin
