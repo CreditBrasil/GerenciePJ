@@ -11,7 +11,23 @@ type
     function Cor(ACor, AEntrada: string): string;
   public
     function RelatorioDasDiferencas(AAnterior, AAtual: TRelatoFormatadoModel; ALink: string): string;
+    class function ResumoParaTipoSecao(AResumo: string): TRelatoFormatadoTipoSecao;
   end;
+
+const
+  RelatoFormatadoTipoSecaoTextoResumo: array [TRelatoFormatadoTipoSecao] of string = (
+    '', //rfsPendenciasFinanceiras
+    '', //rfsPefin
+    '', //rfsRefin
+    '', //rfsResumo
+    'FALEN/RECUP/CONC          ', //rfsFalenRecupConc
+    'DIVIDA VENCIDA            ', //rfsDividaVencida
+    'ACAO JUDICIAL             ', //rfsAcaoJudicial
+    'PROTESTO                  ', //rfsProtesto
+    'CHEQUE                    ', //rfsCheque
+    '', //rfsConcentre
+    '' //rfsRecheque
+    );
 
 implementation
 
@@ -93,6 +109,8 @@ const
 var
   LStringBuilder: TStringBuilder;
   laco: Integer;
+  LSecaoDoResumo: TRelatoFormatadoTipoSecao;
+  LVerde: Boolean;
 begin
   LStringBuilder := TStringBuilder.Create;
   try
@@ -154,7 +172,11 @@ begin
         .AppendLine(Cor('navy', 'QTDE  DISCRIMINACAO              PERIODO     OCORRENCIA MAIS RECENTE'))
         .AppendLine(Cor('navy', '                                             VALOR          ORIGEM     AG/PRACA'));
       for laco := 0 to AAtual.Secoes[rfsResumo].Ultimas.Count - 1 do
-        LStringBuilder.AppendLine(Cor(LCor[AAnterior.Secoes[rfsResumo].Ultimas.IndexOf(AAtual.Secoes[rfsResumo].Ultimas[laco]) = -1, False{*}], AAtual.Secoes[rfsResumo].Ultimas[laco]));
+      begin
+        LSecaoDoResumo := ResumoParaTipoSecao(AAtual.Secoes[rfsResumo].Ultimas[laco]);
+        LVerde := (LSecaoDoResumo <> TRelatoFormatadoTipoSecao(-1)) and (AAnterior.Secoes[LSecaoDoResumo].ValorTotal >= AAtual.Secoes[LSecaoDoResumo].ValorTotal);
+        LStringBuilder.AppendLine(Cor(LCor[AAnterior.Secoes[rfsResumo].Ultimas.IndexOf(AAtual.Secoes[rfsResumo].Ultimas[laco]) = -1, LVerde], AAtual.Secoes[rfsResumo].Ultimas[laco]));
+      end;
       for laco := 0 to AAnterior.Secoes[rfsResumo].Ultimas.Count - 1 do
         if not TemResumo(AAnterior.Secoes[rfsResumo].Ultimas[laco], AAtual.Secoes[rfsResumo].Ultimas) then
           LStringBuilder.AppendLine(Format('<span style="color:rgb(0, 203, 57);text-decoration:line-through">%s</span>', [AAnterior.Secoes[rfsResumo].Ultimas[laco]]));
@@ -242,6 +264,19 @@ begin
   finally
     LStringBuilder.Free;
   end;
+end;
+
+class function TRelatoFormatadoRelatorio.ResumoParaTipoSecao(AResumo: string): TRelatoFormatadoTipoSecao;
+var
+  laco: TRelatoFormatadoTipoSecao;
+begin
+  Result := TRelatoFormatadoTipoSecao(-1);
+  for laco := Low(TRelatoFormatadoTipoSecao) to High(TRelatoFormatadoTipoSecao) do
+    if SameText(Copy(AResumo, 7, 26), RelatoFormatadoTipoSecaoTextoResumo[laco]) then
+    begin
+      Result := laco;
+      Break;
+    end;
 end;
 
 end.
