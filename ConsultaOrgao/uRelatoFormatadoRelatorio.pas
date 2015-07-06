@@ -174,7 +174,7 @@ begin
       for laco := 0 to AAtual.Secoes[rfsResumo].Ultimas.Count - 1 do
       begin
         LSecaoDoResumo := ResumoParaTipoSecao(AAtual.Secoes[rfsResumo].Ultimas[laco]);
-        LVerde := (LSecaoDoResumo <> TRelatoFormatadoTipoSecao(-1)) and (AAnterior.Secoes[LSecaoDoResumo].ValorTotal >= AAtual.Secoes[LSecaoDoResumo].ValorTotal);
+        LVerde := (LSecaoDoResumo <> TRelatoFormatadoTipoSecao(-1)) and (AAnterior.Secoes[LSecaoDoResumo].TotalOcorrencias > AAtual.Secoes[LSecaoDoResumo].TotalOcorrencias);
         LStringBuilder.AppendLine(Cor(LCor[AAnterior.Secoes[rfsResumo].Ultimas.IndexOf(AAtual.Secoes[rfsResumo].Ultimas[laco]) = -1, LVerde], AAtual.Secoes[rfsResumo].Ultimas[laco]));
       end;
       for laco := 0 to AAnterior.Secoes[rfsResumo].Ultimas.Count - 1 do
