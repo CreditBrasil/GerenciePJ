@@ -1,0 +1,72 @@
+<#
+	Configuracao.Usa = "MVC_Visao_HTML_ActiveRecord";
+	Configuracao.NomeClasseHeranca = "TVisaoHTMLActiveRecord";
+	Configuracao.Modelo = "TErroModelo";
+	Configuracao.TipoModelo = "Object";
+	Configuracao.TituloPagina = "IntToStr(Modelo.Codigo) + ' - ' + Modelo.Descricao";
+#><%	Response.SetCustomHeader('X-UA-Compatible', 'IE=edge,chrome=1');
+%><!DOCTYPE html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="Windows-1252">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<meta name="description" content="Sistema de apoio da Credit Brasil">
+		<meta name="author" content="Credit Brasil">
+		<link rel="apple-touch-icon" sizes="76x76" href="[[NovaRota.Nome('Padrao').Controlador('Tema').Acao('icones').Outros(['apple-icon-76x76.png'])]]">
+		<link rel="apple-touch-icon" sizes="72x72" href="[[NovaRota.Nome('Padrao').Controlador('Tema').Acao('icones').Outros(['apple-icon-72x72.png'])]]">
+		<link rel="apple-touch-icon" sizes="60x60" href="[[NovaRota.Nome('Padrao').Controlador('Tema').Acao('icones').Outros(['apple-icon-60x60.png'])]]">
+		<link rel="apple-touch-icon" sizes="57x57" href="[[NovaRota.Nome('Padrao').Controlador('Tema').Acao('icones').Outros(['apple-icon-57x57.png'])]]">
+		<link rel="icon" type="image/png" sizes="72x72" href="[[NovaRota.Nome('Padrao').Controlador('Tema').Acao('icones').Outros(['android-icon-72x72.png'])]]">
+		<link rel="icon" type="image/png" sizes="48x48" href="[[NovaRota.Nome('Padrao').Controlador('Tema').Acao('icones').Outros(['android-icon-48x48.png'])]]">
+		<link rel="icon" type="image/png" sizes="36x36" href="[[NovaRota.Nome('Padrao').Controlador('Tema').Acao('icones').Outros(['android-icon-36x36.png'])]]">
+		<link rel="icon" type="image/png" sizes="32x32" href="[[NovaRota.Nome('Padrao').Controlador('Tema').Acao('icones').Outros(['favicon-32x32.png'])]]">
+		<link rel="icon" type="image/png" sizes="96x96" href="[[NovaRota.Nome('Padrao').Controlador('Tema').Acao('icones').Outros(['favicon-96x96.png'])]]">
+		<link rel="icon" type="image/png" sizes="16x16" href="[[NovaRota.Nome('Padrao').Controlador('Tema').Acao('icones').Outros(['favicon-16x16.png'])]]">
+		<link rel="icon" href="[[NovaRota.Nome('Padrao').Controlador('Tema').Acao('icones').Outros(['favicon.ico'])]]">
+		<title>[[GetTitulo]]</title>
+
+		[[TemaCSS('bootstrap')]]
+		[[TemaCSS('metisMenu')]]
+		[[TemaCSS('sb-admin-2')]]
+		[[TemaCSS('font-awesome')]]
+		[[TemaCSS('CreditBr')]]
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<div id="bg-overlay" class="bg-img"></div>
+
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 col-md-offset-4">
+					<div class="login-panel panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title"><img src="[[NovaRota.Nome('Padrao').Controlador('Tema').Acao('imagens').Outros(['logo.png'])]]"></h3>
+						</div>
+						<div class="error-template">
+							<h1>[[Modelo.Codigo]] <small>[[Modelo.Descricao]]</small></h1>
+							<div class="error-details">
+									[[Modelo.Mensagem]]
+							</div>
+							<div class="error-actions">
+								[[Botao(tbPrimary, NovaRota.Nome('Padrao'), 'Ir para o Principal', glyphicon_home).AddClasse('btn-success')]]
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		[[RecursoJS('jquery')]]
+		[[RecursoJS('bootstrap')]]
+		[[RecursoJS('metisMenu')]]
+		[[RecursoJS('sb-admin-2')]]
+		[[RecursoJS('ie10-viewport-bug-workaround')]]
+	</body>
+</html>

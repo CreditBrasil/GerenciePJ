@@ -1023,7 +1023,8 @@ const
     'TipoMemo', //arftMemo,
     'TipoB01', //arftB01
     'TipoColor', //arftColor
-    'TipoBinary' //arftBinary
+    'TipoBinary', //arftBinary
+    'TipoVarchar' //arftNVarchar
     );
 begin
   Result := HTMLPuro(CodificaParametro(LClasseParaOFieldTypeMetadata[AMetadata.FieldMetadata(AFieldIndex).FieldType]));

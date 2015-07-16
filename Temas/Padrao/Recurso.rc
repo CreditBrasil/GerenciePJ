@@ -10,6 +10,7 @@ fonts_glyphiconshalflingsregular EOT "..\..\ComponentesJS\bootstrap\fonts\glyphi
 fonts_glyphiconshalflingsregular SVG "..\..\ComponentesJS\bootstrap\fonts\glyphicons-halflings-regular.svg"
 fonts_glyphiconshalflingsregular TTF "..\..\ComponentesJS\bootstrap\fonts\glyphicons-halflings-regular.ttf"
 fonts_glyphiconshalflingsregular WOFF "..\..\ComponentesJS\bootstrap\fonts\glyphicons-halflings-regular.woff"
+fonts_glyphiconshalflingsregular WOFF2 "..\..\ComponentesJS\bootstrap\fonts\glyphicons-halflings-regular.woff2"
 /*
   metisMenu
   https://github.com/onokumus/metisMenu

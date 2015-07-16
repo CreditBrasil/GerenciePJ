@@ -6,6 +6,7 @@ program CreditBrDebug;
 {%File 'CreditBr.ini'}
 {%File 'Visoes\HTML\CreditBr_Visao_Pagina_Mestra.html'}
 {%File 'Visoes\HTML\CreditBr_Visao_Principal_Indice.html'}
+{%File 'Visoes\HTML\CreditBr_Visao_Erro_Padrao.html'}
 
 uses
   FastMM4 in 'Core\FastMM4.pas',
@@ -67,7 +68,8 @@ uses
   CreditBr_Visao_Autenticacao_Entrar in 'Visoes\CreditBr_Visao_Autenticacao_Entrar.pas',
   CreditBr_Controlador_Principal in 'Controladores\CreditBr_Controlador_Principal.pas',
   CreditBr_Visao_Pagina_Mestra in 'Visoes\CreditBr_Visao_Pagina_Mestra.pas',
-  CreditBr_Visao_Principal_Indice in 'Visoes\CreditBr_Visao_Principal_Indice.pas';
+  CreditBr_Visao_Principal_Indice in 'Visoes\CreditBr_Visao_Principal_Indice.pas',
+  CreditBr_Visao_Erro_Padrao in 'Visoes\CreditBr_Visao_Erro_Padrao.pas';
 
 {$R 'Recursos\Recursos.res' 'Recursos\Recursos.rc'}
 {$R *.res}
