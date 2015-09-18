@@ -5,7 +5,7 @@ interface
 uses
   SysUtils, ServiceLocator, uActiveRecord, ADOInt, Variants, SyncObjs;
 
-function CriaConexao_GerenciePJ: IActiveRecordConnection;
+function CriaConexao_GerenciePJ(const AConnectionString: string): IActiveRecordConnection;
 
 implementation
 
@@ -35,9 +35,9 @@ type
     function SQLNow: string;
   end;
 
-function CriaConexao_GerenciePJ: IActiveRecordConnection;
+function CriaConexao_GerenciePJ(const AConnectionString: string): IActiveRecordConnection;
 begin
-  Result := TActiveRecordConnectionADO.Create('Driver={SQL Server};Server=orderbysql\orderbysql;DataBase=netFactor;UID=sa;PWD=chica;Library=dbmssocn;');
+  Result := TActiveRecordConnectionADO.Create(AConnectionString);
 end;
 
 { TActiveRecordDependenciaProjetoGenerico }

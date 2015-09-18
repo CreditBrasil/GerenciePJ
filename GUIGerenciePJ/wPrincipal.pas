@@ -6,18 +6,31 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, Dialogs, ServiceLocator, uActiveRecord,
   uGerenciePJ_Conexao, uNFConsultaSerasaModel, StdCtrls, Buttons, SerasaMonitore,
   //
-  uRelatoFormatadoModel, uRelatoFormatadoParse, uRelatoFormatadoRelatorio;
+  uRelatoFormatadoModel, uRelatoFormatadoParse, uRelatoFormatadoRelatorio, IniFiles;
 
 type
   TPrincipal = class(TForm)
     BitBtn1: TBitBtn;
     Button1: TButton;
-    procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
+    txtConnectionString: TEdit;
+    Label1: TLabel;
+    GroupBox1: TGroupBox;
+    txtResponsavelCadastroNetFactorNome: TEdit;
+    Label2: TLabel;
+    Label3: TLabel;
+    txtResponsavelCadastroNetFactorEMail: TEdit;
+    GroupBox2: TGroupBox;
+    Label4: TLabel;
+    Label5: TLabel;
+    txtResponsavelMonitorarEMailsNome: TEdit;
+    txtResponsavelMonitorarEMailsEMail: TEdit;
     procedure BitBtn1Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
-    FConnection: IActiveRecordConnection;
+    procedure CarregaConfiguracoes;
+    procedure SalvaConfiguracoes;
   public
     { Public declarations }
   end;
@@ -29,21 +42,18 @@ implementation
 
 {$R *.dfm}
 
-procedure TPrincipal.FormCreate(Sender: TObject);
-begin
-  FConnection := CriaConexao_GerenciePJ;
-end;
-
-procedure TPrincipal.FormDestroy(Sender: TObject);
-begin
-  FConnection := nil;
-end;
-
 procedure TPrincipal.BitBtn1Click(Sender: TObject);
+var
+  LConnection: IActiveRecordConnection;
 begin
+  LConnection := CriaConexao_GerenciePJ(txtConnectionString.Text);
   with TMonitore.Create do
   try
-    RetornoMonitore(FConnection);
+    ResponsavelCadastroNetFactorNome := txtResponsavelCadastroNetFactorNome.Text;
+    ResponsavelCadastroNetFactorEMail := txtResponsavelCadastroNetFactorEMail.Text;
+    ResponsavelMonitorarEMailsNome := txtResponsavelMonitorarEMailsNome.Text;
+    ResponsavelMonitorarEMailsEMail := txtResponsavelMonitorarEMailsEMail.Text;
+    RetornoMonitore(LConnection);
   finally
     Free;
   end;
@@ -75,6 +85,50 @@ begin
     LRelatoAnterior.Free;
     LArquivo.Free;
   end;
+end;
+
+procedure TPrincipal.CarregaConfiguracoes;
+begin
+  with TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini')) do
+  try
+    txtConnectionString.Text := ReadString('Banco de dados', 'ConnectioString',
+      'Driver={SQL Server};Server=orderbysql\orderbysql;DataBase=netFactor;UID=sa;PWD=chica;Library=dbmssocn;');
+    txtResponsavelCadastroNetFactorNome.Text := ReadString('Configuracoes', 'ResponsavelCadastroNetFactorNome',
+      'Natalino Barros Amaral');
+    txtResponsavelCadastroNetFactorEMail.Text := ReadString('Configuracoes', 'ResponsavelCadastroNetFactorEMail',
+      'natalino.amaral@creditbr.com.br');
+    txtResponsavelMonitorarEMailsNome.Text := ReadString('Configuracoes', 'ResponsavelMonitorarEMailsNome',
+      'Natalino Barros Amaral');
+    txtResponsavelMonitorarEMailsEMail.Text := ReadString('Configuracoes', 'ResponsavelMonitorarEMailsEMail',
+      'natalino.amaral@creditbr.com.br');
+  finally
+    Free;
+  end;
+end;
+
+procedure TPrincipal.SalvaConfiguracoes;
+begin
+  with TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini')) do
+  try
+    WriteString('Banco de dados', 'ConnectioString', txtConnectionString.Text);
+    WriteString('Configuracoes', 'ResponsavelCadastroNetFactorNome', txtResponsavelCadastroNetFactorNome.Text);
+    WriteString('Configuracoes', 'ResponsavelCadastroNetFactorEMail', txtResponsavelCadastroNetFactorEMail.Text);
+    WriteString('Configuracoes', 'ResponsavelMonitorarEMailsNome', txtResponsavelMonitorarEMailsNome.Text);
+    WriteString('Configuracoes', 'ResponsavelMonitorarEMailsEMail', txtResponsavelMonitorarEMailsEMail.Text);
+    UpdateFile;
+  finally
+    Free;
+  end;
+end;
+
+procedure TPrincipal.FormDestroy(Sender: TObject);
+begin
+  SalvaConfiguracoes;
+end;
+
+procedure TPrincipal.FormCreate(Sender: TObject);
+begin
+  CarregaConfiguracoes;
 end;
 
 end.

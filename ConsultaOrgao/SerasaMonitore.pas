@@ -38,12 +38,20 @@ type
   TMonitore = class(TObject)
   private
     FConsultados: TCacheString;
+    FResponsavelCadastroNetFactorNome: string;
+    FResponsavelCadastroNetFactorEMail: string;
+    FResponsavelMonitorarEMailsNome: string;
+    FResponsavelMonitorarEMailsEMail: string;
     //procedure Imprime;
     //procedure RetornoMonitoreEmail(ASerasa: TSerasa);
   public
     //function EnvioMonitore(Lote: Integer): Boolean;
     procedure RetornoMonitore(const AConnection: IActiveRecordConnection);
     //procedure MonitoreRelato;
+    property ResponsavelCadastroNetFactorNome: string read FResponsavelCadastroNetFactorNome write FResponsavelCadastroNetFactorNome;
+    property ResponsavelCadastroNetFactorEMail: string read FResponsavelCadastroNetFactorEMail write FResponsavelCadastroNetFactorEMail;
+    property ResponsavelMonitorarEMailsNome: string read FResponsavelMonitorarEMailsNome write FResponsavelMonitorarEMailsNome;
+    property ResponsavelMonitorarEMailsEMail: string read FResponsavelMonitorarEMailsEMail write FResponsavelMonitorarEMailsEMail;
   end;
 
 implementation
@@ -420,15 +428,10 @@ var
         LEmails.CommaText := Trim(AEmails);
         if LEmails.Count = 0 then
         begin
-          {with LMsg.Recipients.Add do
-          begin
-            Name := 'Tamara Bellintani Rosa';
-            Address := 'tamara@creditbr.com.br';
-          end;}
           with LMsg.Recipients.Add do
           begin
-            Name := 'Natalino Barros Amaral';
-            Address := 'natalino.amaral@creditbr.com.br';
+            Name := FResponsavelCadastroNetFactorNome;
+            Address := FResponsavelCadastroNetFactorEmail;
           end;
           AConteudo := '<h2 style="color:red">ATENÇÃO, gerente não tem o e-mail cadastrado no Net Factor. Natalino verifique se é erro no cadastro do e-mail. Se não for encaminhe este e-mail para a Tamara para ver se o cliente ainda deve ser monitorado.</h2>' +
             AConteudo;
@@ -447,8 +450,8 @@ var
             begin
               with LMsg.Recipients.Add do
               begin
-                Name := 'Natalino Barros Amaral';
-                Address := 'natalino.amaral@creditbr.com.br';
+                Name := FResponsavelCadastroNetFactorNome;
+                Address := FResponsavelCadastroNetFactorEmail;
               end;
               AConteudo := '<h2 style="color:red">Natalino, o ' + AComplementoAssunto + ' tem um e-mail inválido: ' +
                 AEmails + ', por favor corrija no cadastro.</h2>' + AConteudo;
@@ -457,8 +460,8 @@ var
         end;
         with LMsg.CCList.Add do
         begin
-          Name := 'Alex Dundes';
-          Address := 'alex.dundes@creditbr.com.br';
+          Name := FResponsavelMonitorarEMailsNome;
+          Address := FResponsavelMonitorarEMailsEMail;
         end;
         LText := TIdText.Create(LMsg.MessageParts);
         LText.Body.Text := 'Este e-mail esta no formato HTML,'#13#10 +
