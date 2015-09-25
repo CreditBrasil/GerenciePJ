@@ -433,7 +433,9 @@ var
             Name := FResponsavelCadastroNetFactorNome;
             Address := FResponsavelCadastroNetFactorEmail;
           end;
-          AConteudo := '<h2 style="color:red">ATENÇÃO, gerente não tem o e-mail cadastrado no Net Factor. Natalino verifique se é erro no cadastro do e-mail. Se não for encaminhe este e-mail para a Tamara para ver se o cliente ainda deve ser monitorado.</h2>' +
+          AConteudo := '<h2 style="color:red">ATENÇÃO, gerente não tem o e-mail cadastrado no Net Factor. ' +
+            FResponsavelCadastroNetFactorNome  +
+            ' verifique se é erro no cadastro do e-mail. Se não for encaminhe este e-mail para quem cadastra o Gerencie Carteira para ver se o cliente ainda deve ser monitorado.</h2>' +
             AConteudo;
         end
         else
@@ -453,8 +455,9 @@ var
                 Name := FResponsavelCadastroNetFactorNome;
                 Address := FResponsavelCadastroNetFactorEmail;
               end;
-              AConteudo := '<h2 style="color:red">Natalino, o ' + AComplementoAssunto + ' tem um e-mail inválido: ' +
-                AEmails + ', por favor corrija no cadastro.</h2>' + AConteudo;
+              AConteudo := '<h2 style="color:red">' + FResponsavelCadastroNetFactorNome  + ', o ' +
+                AComplementoAssunto + ' tem um e-mail inválido: ' + LEmails[laco] +
+                ', por favor corrija no cadastro.</h2>' + AConteudo;
             end;
           end;
         end;
@@ -552,19 +555,19 @@ begin
             if LAgenteAnterior <> LCollectionResultadoDescobreEmailAgente[laco].PesNomeAgente.Value then
             begin
               if (LAgenteAnterior <> '@@@@@') then
-                EnviarEmail(LAgenteEmail, LEmail.Text + LResumos.Text, LAgenteAnterior);
+                EnviarEmail(LAgenteEmail, LEmail.Text + '</table>' + LResumos.Text, LAgenteAnterior);
               LAgenteAnterior := LCollectionResultadoDescobreEmailAgente[laco].PesNomeAgente.Value;
               LAgenteEmail := LCollectionResultadoDescobreEmailAgente[laco].PesEmail.Value;
               LEmail.Clear;
               LEmail.Add('<h2>' + LCollectionResultadoDescobreEmailAgente[laco].PesNomeAgente.Value + '</h2>');
-              LEmail.Add('<h3">Informamos que as seguintes empresas monitoradas tiveram alterações em suas informações comportamentais e/ou cadastrais. Esta é uma mensagem gerada de forma automática por um software.</h3>');
+              LEmail.Add('<h3">Informamos que as seguintes empresas monitoradas tiveram alterações em suas informações comportamentais e/ou cadastrais. Esta é uma mensagem gerada de forma automática por um software.</h3><table>');
               LResumos.Clear;
             end;
             Codigo := LCollectionResultadoDescobreEmailAgente[laco].PesCNPJCPF;
             LPlataformas.SetEmails(LCollectionResultadoDescobreEmailAgente[laco].PesEmail.Value,
               LCollectionResultadoDescobreEmailAgente[laco].PesNomeAgente.Value);
-            LEmail.Add('<p>' + LCollectionResultadoDescobreEmailAgente[laco].PesCNPJCPF + ' - ' +
-              LCollectionResultadoDescobreEmailAgente[laco].PesNomeCedente.Value + '</p>');
+            LEmail.Add('<tr><td>' + LCollectionResultadoDescobreEmailAgente[laco].PesCNPJCPF + '</td><td>' +
+              LCollectionResultadoDescobreEmailAgente[laco].PesNomeCedente.Value + '</td></tr>');
             LPlataformas.Plataforma.Mensagem.Add(LEmail[LEmail.Count - 1]);
             LArquivo.LoadFromFile('\\orderbyapp3\serasaemail\' + Cadastro.NomeArquivoGerado);
             LParser.TextoParaRelatoFormatadoModel(LArquivo, LRelato);
@@ -581,15 +584,16 @@ begin
             LPlataformas.Plataforma.Resumo.Add(LResumos[LResumos.Count - 1]);
           end;
           if (LAgenteAnterior <> '@@@@@') then
-            EnviarEmail(LAgenteEmail, LEmail.Text + LResumos.Text, LAgenteAnterior);
+            EnviarEmail(LAgenteEmail, LEmail.Text + '</table>' + LResumos.Text, LAgenteAnterior);
           LEmail.Clear;
           LResumos.Clear;
           LEmail.Add('<h3">Informamos que as seguintes empresas monitoradas tiveram alterações em suas informações comportamentais e/ou cadastrais. Esta é uma mensagem gerada de forma automática por um software.</h3>');
           for laco := 0 to LPlataformas.Count - 1 do
           begin
             LPlataformas.Posicao := laco;
-            LEmail.Add('<h2>' + LPlataformas.Codigo + '</h2>');
+            LEmail.Add('<h2>' + LPlataformas.Codigo + '</h2><table>');
             LEmail.AddStrings(LPlataformas.Plataforma.Mensagem);
+            LEmail.Add('</table>');
             LResumos.Add('<hr><h2>' + LPlataformas.Codigo + '</h2>');
             LResumos.AddStrings(LPlataformas.Plataforma.Resumo);
           end;
