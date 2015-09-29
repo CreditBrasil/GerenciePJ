@@ -76,7 +76,9 @@ begin
     LParser.TextoParaRelatoFormatadoModel(LArquivo, LRelatoAnterior);
     LArquivo.LoadFromFile('C:\GerenciePJ\GUIGerenciePJ\SerasaAtual.txt');
     LParser.TextoParaRelatoFormatadoModel(LArquivo, LRelatoAtual);
-    LArquivo.Text := LRelatorio.RelatorioDasDiferencas(LRelatoAnterior, LRelatoAtual, '');
+    LArquivo.Text := TRelatoFormatadoRelatorio.Table +
+      LRelatorio.RelatorioResumoDasDiferencas('213219670000145', 'ALEX SANDRE DUNDES RODRIGUES-ME', LRelatoAnterior,
+      LRelatoAtual) + TRelatoFormatadoRelatorio.FimTable + LRelatorio.RelatorioDasDiferencas(LRelatoAnterior, LRelatoAtual, '');
     LArquivo.SaveToFile('C:\GerenciePJ\GUIGerenciePJ\Comparacao.html');
   finally
     LRelatorio.Free;
