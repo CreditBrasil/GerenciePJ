@@ -3,15 +3,17 @@ unit uRelatoFormatadoRelatorio;
 interface
 
 uses
-  Classes, SysUtils, StringBuilder, uRelatoFormatadoModel;
+  Classes, SysUtils, StringBuilder, uRelatoFormatadoModel, uDescobreEmailAgente;
 
 type
   TRelatoFormatadoRelatorio = class(TObject)
   private
     function Cor(ACor, AEntrada: string): string;
   public
-    function RelatorioDasDiferencas(AAnterior, AAtual: TRelatoFormatadoModel; ALink: string): string;
-    function RelatorioResumoDasDiferencas(ACNPJ, ANome: string; AAnterior, AAtual: TRelatoFormatadoModel): string;
+    function RelatorioDasDiferencas(const AResultadoDescobreEmailAgente: IResultadoDescobreEmailAgente; AAnterior,
+      AAtual: TRelatoFormatadoModel; ALink: string): string;
+    function RelatorioResumoDasDiferencas(const AResultadoDescobreEmailAgente: IResultadoDescobreEmailAgente; AAnterior,
+      AAtual: TRelatoFormatadoModel; ALink: string): string;
     class function ResumoParaTipoSecao(AResumo: string): TRelatoFormatadoTipoSecao;
     class function Table: string;
     class function FimTable: string;
@@ -51,7 +53,8 @@ begin
   Result := '</table></div>';
 end;
 
-function TRelatoFormatadoRelatorio.RelatorioDasDiferencas(AAnterior, AAtual: TRelatoFormatadoModel;
+function TRelatoFormatadoRelatorio.RelatorioDasDiferencas(
+  const AResultadoDescobreEmailAgente: IResultadoDescobreEmailAgente; AAnterior, AAtual: TRelatoFormatadoModel;
   ALink: string): string;
 
   function Ocorrencia(ATexto: string; AOcorrenciasAnterior, AOcorrenciasAtual: Integer;
@@ -125,8 +128,15 @@ begin
   try
     LStringBuilder
       .AppendLine('<hr><p><strong>CNPJ na Serasa:</strong> ' + AAtual.CNPJ + '<br>')
+      .AppendLine('<strong>CNPJ na Credit:</strong> ' + AResultadoDescobreEmailAgente.PesCNPJCPF + '<br>')
       .AppendLine('<strong>RAZÃO SOCIAL na Serasa:</strong> ' + AAtual.RazaoSocial + '<br>')
-      .AppendLine('<strong>Relato completo:</strong> ' + ALink + '</p>')
+      .AppendLine('<strong>RAZÃO SOCIAL na Credit:</strong> ' + AResultadoDescobreEmailAgente.PesNomeCedente.Value + '<br>')
+      .AppendLine('<strong>Relato completo:</strong> ' + ALink + '<br>')
+      .AppendLine('<strong>Total Risco:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.Risco.Value) + '<br>')
+      .AppendLine(Cor(GCor[AResultadoDescobreEmailAgente.Vencido.Value >= 0.01, False],
+        '<strong>Vencidos:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.Vencido.Value)) + '<br>')
+      .AppendLine(Cor(GCor[AResultadoDescobreEmailAgente.NegativaGrave.Value >= 0.01, False],
+        '<strong>Negativa Grave:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.NegativaGrave.Value)) + '</p>')
       .AppendLine('<pre>');
     if (AAtual.Secoes[rfsPefin].Ultimas.Count > 0) or (AAtual.Secoes[rfsRefin].Ultimas.Count > 0) or
       (AAtual.Secoes[rfsPendenciasFinanceiras].Ultimas.Count > 0) then
@@ -275,66 +285,90 @@ begin
   end;
 end;
 
-function TRelatoFormatadoRelatorio.RelatorioResumoDasDiferencas(ACNPJ, ANome: string; AAnterior,
-  AAtual: TRelatoFormatadoModel): string;
+function TRelatoFormatadoRelatorio.RelatorioResumoDasDiferencas(
+  const AResultadoDescobreEmailAgente: IResultadoDescobreEmailAgente; AAnterior, AAtual: TRelatoFormatadoModel;
+  ALink: string): string;
 const
   LTR = '<tr style="font-size:10px; font-family:Helvetica;">';
 
-  function TD(ATexto: string; AValor: Boolean; ADuplo: Boolean = False): string;
+  function TD(ATexto: string; ADiferenca: Boolean): string;
   const
-    LDuplo: array [Boolean] of string = ('', ' rowspan="2"');
-    LColor: array [Boolean] of string = ('', 'background-color:#aad4ff; ');
+    LColor: array [Boolean] of string = ('', 'background-color:#e8fffc; ');
   begin
-    Result := Format('<td%s style="%spadding:4px; border:1px solid #000000; border-width:0px 0px 1px 1px; text-align:center;">%s</td>',
-      [LDuplo[ADuplo], LColor[AValor], ATexto]);
+    Result := Format('<td style="%spadding:4px; border:1px solid #000000; border-width:0px 0px 1px 1px; text-align:center;">%s</td>',
+      [LColor[ADiferenca], ATexto]);
   end;
 
-  function Ocorrencias(ATipoSecao: TRelatoFormatadoTipoSecao): string;
+  function SerasaCompleto(ATipoSecao: TRelatoFormatadoTipoSecao; ATemValor: Boolean = True): string;
+  var
+    LOcorrenciasAtual: Integer;
+    LValorAtual: Currency;
+  begin
+    LOcorrenciasAtual := AAtual.Secoes[ATipoSecao].TotalOcorrencias;
+    LValorAtual := AAtual.Secoes[ATipoSecao].ValorTotal;
+    if (LOcorrenciasAtual = 0) and (LValorAtual = 0) then
+      Result := '&nbsp;'
+    else
+    begin
+      Result := Format('%d', [LOcorrenciasAtual]);
+      if ATemValor then
+        Result := Format('%s<br>%s', [Result, FormatFloat(',0', LValorAtual)]);
+    end;
+  end;
+
+  function Diferenca(ATipoSecao: TRelatoFormatadoTipoSecao; ATemValor: Boolean = True): string;
   var
     LOcorrenciasAnterior, LOcorrenciasAtual: Integer;
+    LValorAnterior, LValorAtual: Currency;
   begin
     LOcorrenciasAnterior := AAnterior.Secoes[ATipoSecao].TotalOcorrencias;
     LOcorrenciasAtual := AAtual.Secoes[ATipoSecao].TotalOcorrencias;
-    Result := Cor(GCor[LOcorrenciasAnterior <> LOcorrenciasAtual, LOcorrenciasAnterior > LOcorrenciasAtual],
-      Format('%d', [LOcorrenciasAtual]));
-    if LOcorrenciasAnterior <> LOcorrenciasAtual then
-      Result := Result + Format(' %s%s%d', [GDirecao[LOcorrenciasAtual > LOcorrenciasAnterior],
-        GSinal[LOcorrenciasAtual > LOcorrenciasAnterior],
-        LOcorrenciasAtual - LOcorrenciasAnterior]);
-  end;
-
-  function Total(ATipoSecao: TRelatoFormatadoTipoSecao): string;
-  var
-    LValorAnterior, LValorAtual: Currency;
-  begin
     LValorAnterior := AAnterior.Secoes[ATipoSecao].ValorTotal;
     LValorAtual := AAtual.Secoes[ATipoSecao].ValorTotal;
-    Result := Cor(GCor[LValorAnterior <> LValorAtual, LValorAnterior > LValorAtual],
-      Format('%s', [FormatFloat(',0', LValorAtual)]));
-    if LValorAnterior <> LValorAtual then
-      Result := Result + Format(' %s%s%s', [GDirecao[LValorAtual > LValorAnterior],
-        GSinal[LValorAtual > LValorAnterior],
-        FormatFloat(',0', LValorAtual - LValorAnterior)]);
+    if LOcorrenciasAnterior = LOcorrenciasAtual then
+      Result := '&nbsp;'
+    else
+    begin
+      Result := Cor(GCor[LOcorrenciasAnterior <> LOcorrenciasAtual, LOcorrenciasAnterior > LOcorrenciasAtual],
+        Format('%s%s%d',  [GDirecao[LOcorrenciasAtual > LOcorrenciasAnterior],
+          GSinal[LOcorrenciasAtual > LOcorrenciasAnterior],
+          LOcorrenciasAtual - LOcorrenciasAnterior]));
+      if ATemValor and (TRue) then
+        Result := Result + '<br>' + Cor(GCor[LOcorrenciasAnterior <> LOcorrenciasAtual, LOcorrenciasAnterior > LOcorrenciasAtual],
+          Format('%s%s%s', [GDirecao[LValorAtual > LValorAnterior],
+          GSinal[LValorAtual > LValorAnterior],
+          FormatFloat(',0', LValorAtual - LValorAnterior)]));
+    end;
   end;
 
 begin
   Result := LTR + '<td rowspan="2" style="padding:4px; border:1px solid #000000; border-width:0px 0px 1px 1px;">' +
-    ANome + ' - ' + ACNPJ + '</td>' +
-    TD(Ocorrencias(rfsPefin), False) +
-    TD(Ocorrencias(rfsRefin), False) +
-    TD(Ocorrencias(rfsFalenRecupConc), False, True) +
-    TD(Ocorrencias(rfsDividaVencida), False) +
-    TD(Ocorrencias(rfsAcaoJudicial), False) +
-    TD(Ocorrencias(rfsProtesto), False) +
-    TD(Ocorrencias(rfsCheque), False) +
-    TD(Ocorrencias(rfsRecheque), False, True) +
+    AResultadoDescobreEmailAgente.PesNomeCedente.Value + ' - ' + AResultadoDescobreEmailAgente.PesCNPJCPF +
+    '<br><strong>Total Risco: </strong>' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.Risco.Value) +
+    ' / ' + Cor(GCor[AResultadoDescobreEmailAgente.Vencido.Value >= 0.01, False],
+    '<strong>Vencidos:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.Vencido.Value)) +
+    ' / ' + Cor(GCor[AResultadoDescobreEmailAgente.NegativaGrave.Value >= 0.01, False],
+    '<strong>Negativa Grave:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.NegativaGrave.Value)) +
+    '</td>' +
+    TD('Novo<br>Apontamento', True) +
+    TD(Diferenca(rfsPefin), True) +
+    TD(Diferenca(rfsRefin), True) +
+    TD(Diferenca(rfsFalenRecupConc, False), True) +
+    TD(Diferenca(rfsDividaVencida), True) +
+    TD(Diferenca(rfsAcaoJudicial), True) +
+    TD(Diferenca(rfsProtesto), True) +
+    TD(Diferenca(rfsCheque), True) +
+    TD(Diferenca(rfsRecheque, False), True) +
     '</tr>' + LTR +
-    TD(Total(rfsPefin), True) +
-    TD(Total(rfsRefin), True) +
-    TD(Total(rfsDividaVencida), True) +
-    TD(Total(rfsAcaoJudicial), True) +
-    TD(Total(rfsProtesto), True) +
-    TD(Total(rfsCheque), True) +
+    TD(ALink, False) +
+    TD(SerasaCompleto(rfsPefin), False) +
+    TD(SerasaCompleto(rfsRefin), False) +
+    TD(SerasaCompleto(rfsFalenRecupConc, False), False) +
+    TD(SerasaCompleto(rfsDividaVencida), False) +
+    TD(SerasaCompleto(rfsAcaoJudicial), False) +
+    TD(SerasaCompleto(rfsProtesto), False) +
+    TD(SerasaCompleto(rfsCheque), False) +
+    TD(SerasaCompleto(rfsRecheque, False), False) +
     '</tr>';
 end;
 
@@ -357,6 +391,7 @@ begin
     '<table style="border-collapse: collapse; border-spacing: 0; width:100%; margin:0px;padding:0px;">' +
     '<tr style="background-color:#005fbf; font-size:12px; font-family:Helvetica; color:#ffffff;">' +
     '<th style="padding:4px; border:1px solid #000000; border-width:0px 0px 1px 1px;">Empresa</th>' +
+    '<th style="border:1px solid #000000; border-width:0px 0px 1px 1px;">Situação</th>' +
     '<th style="border:1px solid #000000; border-width:0px 0px 1px 1px;">PEFIN</th>' +
     '<th style="border:1px solid #000000; border-width:0px 0px 1px 1px;">REFIN</th>' +
     '<th style="border:1px solid #000000; border-width:0px 0px 1px 1px;">Fal Rec Con</th>' +

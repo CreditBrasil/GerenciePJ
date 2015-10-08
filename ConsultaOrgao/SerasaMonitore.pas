@@ -575,12 +575,13 @@ begin
             if LConsultaAnterior <> nil then
               LConsultaAnterior.CarregaRelatoFormatado(LArquivoAntigo);
             LParser.TextoParaRelatoFormatadoModel(LArquivoAntigo, LRelatoAnterior);
-            LEmail.Add(LRelatorio.RelatorioResumoDasDiferencas(LCollectionResultadoDescobreEmailAgente[laco].PesCNPJCPF,
-              LCollectionResultadoDescobreEmailAgente[laco].PesNomeCedente.Value, LRelatoAnterior, LRelato));
+            LEmail.Add(LRelatorio.RelatorioResumoDasDiferencas(LCollectionResultadoDescobreEmailAgente[laco],
+              LRelatoAnterior, LRelato, '<a href="http://sistema.creditbr.com.br:8080/netFactor/serasaemail/' +
+              Cadastro.NomeArquivoGerado + '">Serasa<br>Completo</a>'));
             LPlataformas.Plataforma.Mensagem.Add(LEmail[LEmail.Count - 1]);
-            LResumos.Add(LRelatorio.RelatorioDasDiferencas(LRelatoAnterior, LRelato,
-              '<a href="http://sistema.creditbr.com.br:8080/netFactor/serasaemail/' + Cadastro.NomeArquivoGerado + '">' +
-              Cadastro.NomeArquivoGerado + '</a>'));
+            LResumos.Add(LRelatorio.RelatorioDasDiferencas(LCollectionResultadoDescobreEmailAgente[laco],
+              LRelatoAnterior, LRelato, '<a href="http://sistema.creditbr.com.br:8080/netFactor/serasaemail/' +
+              Cadastro.NomeArquivoGerado + '">' + Cadastro.NomeArquivoGerado + '</a>'));
             LPlataformas.Plataforma.Resumo.Add(LResumos[LResumos.Count - 1]);
           end;
           if (LAgenteAnterior <> '@@@@@') then

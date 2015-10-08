@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, Dialogs, ServiceLocator, uActiveRecord,
   uGerenciePJ_Conexao, uNFConsultaSerasaModel, StdCtrls, Buttons, SerasaMonitore,
   //
-  uRelatoFormatadoModel, uRelatoFormatadoParse, uRelatoFormatadoRelatorio, IniFiles;
+  uRelatoFormatadoModel, uRelatoFormatadoParse, uRelatoFormatadoRelatorio, IniFiles, uDescobreEmailAgente, cachecod;
 
 type
   TPrincipal = class(TForm)
@@ -65,22 +65,35 @@ var
   LRelatoAnterior, LRelatoAtual: TRelatoFormatadoModel;
   LParser: TRelatoFormatadoParser;
   LRelatorio: TRelatoFormatadoRelatorio;
+  LConnection: IActiveRecordConnection;
+  LCNPJs: TCacheString;
+  LIterator: IIteratorResultadoDescobreEmailAgente;
 begin
+  LConnection := CriaConexao_GerenciePJ(txtConnectionString.Text);
   LArquivo := TStringList.Create;
   LRelatoAnterior := TRelatoFormatadoModel.Create;
   LRelatoAtual := TRelatoFormatadoModel.Create;
   LParser := TRelatoFormatadoParser.Create;
   LRelatorio := TRelatoFormatadoRelatorio.Create;
+  LCNPJs := TCacheString.Create;
   try
     LArquivo.LoadFromFile('C:\GerenciePJ\GUIGerenciePJ\SerasaAnterior.txt');
     LParser.TextoParaRelatoFormatadoModel(LArquivo, LRelatoAnterior);
     LArquivo.LoadFromFile('C:\GerenciePJ\GUIGerenciePJ\SerasaAtual.txt');
     LParser.TextoParaRelatoFormatadoModel(LArquivo, LRelatoAtual);
-    LArquivo.Text := TRelatoFormatadoRelatorio.Table +
-      LRelatorio.RelatorioResumoDasDiferencas('213219670000145', 'ALEX SANDRE DUNDES RODRIGUES-ME', LRelatoAnterior,
-      LRelatoAtual) + TRelatoFormatadoRelatorio.FimTable + LRelatorio.RelatorioDasDiferencas(LRelatoAnterior, LRelatoAtual, '');
-    LArquivo.SaveToFile('C:\GerenciePJ\GUIGerenciePJ\Comparacao.html');
+    LCNPJs.Codigo := '02656196000100'; //BD VEST CONFECÇOES LTDA
+    LIterator := (SL as IResultadoDescobreEmailAgenteService).FindByCnpjs(LCNPJs, LConnection);
+    if LIterator.Next then
+    begin
+      LArquivo.Text := TRelatoFormatadoRelatorio.Table +
+        LRelatorio.RelatorioResumoDasDiferencas(LIterator.CurrentItem, LRelatoAnterior, LRelatoAtual,
+        '<a href="http://google.com">Serasa<br>Completo</a>') +
+        TRelatoFormatadoRelatorio.FimTable + LRelatorio.RelatorioDasDiferencas(LIterator.CurrentItem, LRelatoAnterior,
+        LRelatoAtual, '<a href="http://google.com">Serasa Completo</a>');
+      LArquivo.SaveToFile('C:\GerenciePJ\GUIGerenciePJ\Comparacao.html');
+    end;
   finally
+    LCNPJs.Free;
     LRelatorio.Free;
     LParser.Free;
     LRelatoAtual.Free;
