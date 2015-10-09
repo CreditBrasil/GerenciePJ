@@ -6,6 +6,8 @@ uses
   ServiceLocator, uActiveRecord, cachecod;
 
 type
+  TCanTipo = (cantipoSem, cantipoMonitoramento, cantipoCan);
+
   IResultadoDescobreEmailAgente = interface(IResultadoSQL)
     ['{94C6EA41-1282-42F9-9B4C-8FA7E2D8352A}']
     function GetPesCNPJCPF: string;
@@ -15,6 +17,10 @@ type
     function GetRisco: TNullableCurrency;
     function GetVencido: TNullableCurrency;
     function GetNegativaGrave: TNullableCurrency;
+    function GetCanData: TNullableDateTime;
+    function GetCanUsuario: TNullableString;
+    function GetCanTipo: TCanTipo;
+    function GetCanMotivo: TNullableString;
 
     property PesCNPJCPF: string read GetPesCNPJCPF;
     property PesEmail: TNullableString read GetPesEmail;
@@ -23,6 +29,10 @@ type
     property Risco: TNullableCurrency read GetRisco;
     property Vencido: TNullableCurrency read GetVencido;
     property NegativaGrave: TNullableCurrency read GetNegativaGrave;
+    property CanData: TNullableDateTime read GetCanData;
+    property CanUsuario: TNullableString read GetCanUsuario;
+    property CanTipo: TCanTipo read GetCanTipo;
+    property CanMotivo: TNullableString read GetCanMotivo;
   end;
 
   ICollectionResultadoDescobreEmailAgente = interface(ICollectionActiveRecord)
@@ -73,6 +83,10 @@ type
     function GetRisco: TNullableCurrency;
     function GetVencido: TNullableCurrency;
     function GetNegativaGrave: TNullableCurrency;
+    function GetCanData: TNullableDateTime;
+    function GetCanUsuario: TNullableString;
+    function GetCanTipo: TCanTipo;
+    function GetCanMotivo: TNullableString;
   end;
 
   IResultadoDescobreEmailAgenteService = interface
@@ -98,6 +112,11 @@ const
   Resultado_DescobreEmailAgente_Risco = 4;
   Resultado_DescobreEmailAgente_Vencido = 5;
   Resultado_DescobreEmailAgente_NegativaGrave = 6;
+  Resultado_DescobreEmailAgente_CanData = 7;
+  Resultado_DescobreEmailAgente_CanUsuario = 8;
+  Resultado_DescobreEmailAgente_Can = 9;
+  Resultado_DescobreEmailAgente_CanMonitoramento = 10;
+  Resultado_DescobreEmailAgente_CanMotivo = 11;
 
 implementation
 
@@ -159,6 +178,35 @@ end;
 
 { TResultadoDescobreEmailAgente }
 
+function TResultadoDescobreEmailAgente.GetCanData: TNullableDateTime;
+begin
+  Result := VariantToNullableDateTime(GetValue(Resultado_DescobreEmailAgente_CanData));
+end;
+
+function TResultadoDescobreEmailAgente.GetCanMotivo: TNullableString;
+begin
+  Result := VariantToNullableString(GetValue(Resultado_DescobreEmailAgente_CanMotivo));
+end;
+
+function TResultadoDescobreEmailAgente.GetCanTipo: TCanTipo;
+var
+  LCan, LCanMonitoramento: Boolean;
+begin
+  LCan := VariantToNullableBoolean(GetValue(Resultado_DescobreEmailAgente_Can)).Value;
+  LCanMonitoramento := VariantToNullableBoolean(GetValue(Resultado_DescobreEmailAgente_CanMonitoramento)).Value;
+  if LCan then
+    Result := cantipoCan
+  else if LCanMonitoramento then
+    Result := cantipoMonitoramento
+  else
+    Result := cantipoSem;
+end;
+
+function TResultadoDescobreEmailAgente.GetCanUsuario: TNullableString;
+begin
+  Result := VariantToNullableString(GetValue(Resultado_DescobreEmailAgente_CanUsuario));
+end;
+
 function TResultadoDescobreEmailAgente.GetNegativaGrave: TNullableCurrency;
 begin
   Result := VariantToNullableCurrency(GetValue(Resultado_DescobreEmailAgente_NegativaGrave));
@@ -214,6 +262,11 @@ begin
     '    and coalesce(nfFocoNegocio.fneExibeNaoTotalizaRiscoRaioX, 0) = 0 and I.ingDataPrevisao < DATEADD(dd, DATEDIFF(dd, 0, GETDATE()), 0) then I.ingValordeFace else 0 end) Vencido,'#13#10 +
     '  sum(case when I.ingDataliquidacao is null and (nfSituacao.sitAgruparDesconsiderarDosDemaisRiscoRaiox IS NULL OR nfSituacao.sitAgruparDesconsiderarDosDemaisRiscoRaiox = 0) and (I.idgCodigo NOT LIKE ''02__03'' AND I.idgCodigo NOT LIKE ''02__09'')'#13#10 +
     '    and coalesce(nfFocoNegocio.fneExibeNaoTotalizaRiscoRaioX, 0) = 0 and netTipoConfirmacao.tcoSituacao = 8 then I.ingValordeFace else 0 end) NegativaGrave'#13#10 +
+    '  ,poc.pocCanData'#13#10 +
+    '  ,poc.pocCanUsuario'#13#10 +
+    '  ,poc.pocCan'#13#10 +
+    '  ,poc.pocCANMonitoramento'#13#10 +
+    '  ,poc.pocCanMotivo'#13#10 +
     'from'#13#10 +
     '  nfCedente c'#13#10 +
     '  join nfPessoa p on c.pesCNPJCPF = p.pesCNPJCPF'#13#10 +
@@ -224,13 +277,19 @@ begin
     '  left join nfSituacao ON nfSituacao.sitCodigo = nfIdentificadorGlobal.sitCodigo'#13#10 +
     '  left join nfFocoNegocio ON nfFocoNegocio.fneCodigo = nfIdentificadorGlobal.fneCodigo'#13#10 +
     '  left join netTipoConfirmacao on CAST(netTipoConfirmacao.tco_id AS VARCHAR) = LTRIM(RTRIM(I.ingconfirmacaotipo))'#13#10 +
+    '  left join netPoc poc on poc.poc_id = (select max(poc_id) from netPoc where proCNPJCPF = c.pesCNPJCPF and empCodigo = 1 and pocDataAprovacao is not null)'#13#10 +
     'where'#13#10 +
     '  c.pesCNPJCPF in (' + ACnpjs.StringCodigos('''', ',') + ')'#13#10 +
     'group by'#13#10 +
     '  c.pesCNPJCPF'#13#10 +
-    '  , p.pesNome'#13#10 +
+    '  ,p.pesNome'#13#10 +
+    '  ,poc.pocCanData'#13#10 +
+    '  ,poc.pocCanUsuario'#13#10 +
+    '  ,poc.pocCan'#13#10 +
+    '  ,poc.pocCANMonitoramento'#13#10 +
+    '  ,poc.pocCanMotivo'#13#10 +
     'order by'#13#10 +
-    '  3, 6 desc, 2', AConnection);
+    '  3, 5 desc, 2', AConnection);
 end;
 
 initialization

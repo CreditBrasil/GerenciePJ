@@ -136,7 +136,17 @@ begin
       .AppendLine(Cor(GCor[AResultadoDescobreEmailAgente.Vencido.Value >= 0.01, False],
         '<strong>Vencidos:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.Vencido.Value)) + '<br>')
       .AppendLine(Cor(GCor[AResultadoDescobreEmailAgente.NegativaGrave.Value >= 0.01, False],
-        '<strong>Negativa Grave:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.NegativaGrave.Value)) + '</p>')
+        '<strong>Negativa Grave:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.NegativaGrave.Value)));
+    case AResultadoDescobreEmailAgente.CanTipo of
+      cantipoMonitoramento: LStringBuilder.Append('<br><strong><span style="background-color:yellow;">MONITORAMENTO</span> ');
+      canTipoCan: LStringBuilder.Append('<br><strong><span style="background-color:red; color:white;">CURSO ANORMAL - CAN</span> ');
+    end;
+    if AResultadoDescobreEmailAgente.CanTipo <> cantipoSem then
+      LStringBuilder.AppendLine(AResultadoDescobreEmailAgente.CanUsuario.Value + '</strong> - ' +
+      FormatDateTime('dd/mm/yyyy', AResultadoDescobreEmailAgente.CanData.Value) + ': ' +
+      AResultadoDescobreEmailAgente.CanMotivo.Value);
+    LStringBuilder
+      .AppendLine('</p>')
       .AppendLine('<pre>');
     if (AAtual.Secoes[rfsPefin].Ultimas.Count > 0) or (AAtual.Secoes[rfsRefin].Ultimas.Count > 0) or
       (AAtual.Secoes[rfsPendenciasFinanceiras].Ultimas.Count > 0) then
@@ -341,6 +351,8 @@ const
     end;
   end;
 
+const
+  LCoresCan: array [Boolean] of string = ('background-color:yellow;', 'background-color:red; color:white;');
 begin
   Result := LTR + '<td rowspan="2" style="padding:4px; border:1px solid #000000; border-width:0px 0px 1px 1px;">' +
     AResultadoDescobreEmailAgente.PesNomeCedente.Value + ' - ' + AResultadoDescobreEmailAgente.PesCNPJCPF +
@@ -348,7 +360,12 @@ begin
     ' / ' + Cor(GCor[AResultadoDescobreEmailAgente.Vencido.Value >= 0.01, False],
     '<strong>Vencidos:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.Vencido.Value)) +
     ' / ' + Cor(GCor[AResultadoDescobreEmailAgente.NegativaGrave.Value >= 0.01, False],
-    '<strong>Negativa Grave:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.NegativaGrave.Value)) +
+    '<strong>Negativa Grave:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.NegativaGrave.Value));
+  if AResultadoDescobreEmailAgente.CanTipo <> cantipoSem then
+    Result := Result +
+      '<br><span style="' + LCoresCan[AResultadoDescobreEmailAgente.CanTipo = cantipoCan] + '">' +
+      AResultadoDescobreEmailAgente.CanMotivo.Value + '</span>';
+  Result := Result +
     '</td>' +
     TD('Novo<br>Apontamento', True) +
     TD(Diferenca(rfsPefin), True) +
