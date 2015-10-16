@@ -21,6 +21,8 @@ type
     function GetCanUsuario: TNullableString;
     function GetCanTipo: TCanTipo;
     function GetCanMotivo: TNullableString;
+    function GetTotal: TNullableCurrency;
+    function GetTotalVencido: TNullableCurrency;
 
     property PesCNPJCPF: string read GetPesCNPJCPF;
     property PesEmail: TNullableString read GetPesEmail;
@@ -33,6 +35,8 @@ type
     property CanUsuario: TNullableString read GetCanUsuario;
     property CanTipo: TCanTipo read GetCanTipo;
     property CanMotivo: TNullableString read GetCanMotivo;
+    property Total: TNullableCurrency read GetTotal;
+    property TotalVencido: TNullableCurrency read GetTotalVencido;
   end;
 
   ICollectionResultadoDescobreEmailAgente = interface(ICollectionActiveRecord)
@@ -87,6 +91,8 @@ type
     function GetCanUsuario: TNullableString;
     function GetCanTipo: TCanTipo;
     function GetCanMotivo: TNullableString;
+    function GetTotal: TNullableCurrency;
+    function GetTotalVencido: TNullableCurrency;
   end;
 
   IResultadoDescobreEmailAgenteService = interface
@@ -117,6 +123,8 @@ const
   Resultado_DescobreEmailAgente_Can = 9;
   Resultado_DescobreEmailAgente_CanMonitoramento = 10;
   Resultado_DescobreEmailAgente_CanMotivo = 11;
+  Resultado_DescobreEmailAgente_Total = 12;
+  Resultado_DescobreEmailAgente_TotalVencido = 13;
 
 implementation
 
@@ -237,6 +245,16 @@ begin
   Result := VariantToNullableCurrency(GetValue(Resultado_DescobreEmailAgente_Risco));
 end;
 
+function TResultadoDescobreEmailAgente.GetTotal: TNullableCurrency;
+begin
+  Result := VariantToNullableCurrency(GetValue(Resultado_DescobreEmailAgente_Total));
+end;
+
+function TResultadoDescobreEmailAgente.GetTotalVencido: TNullableCurrency;
+begin
+  Result := VariantToNullableCurrency(GetValue(Resultado_DescobreEmailAgente_TotalVencido));
+end;
+
 function TResultadoDescobreEmailAgente.GetVencido: TNullableCurrency;
 begin
   Result := VariantToNullableCurrency(GetValue(Resultado_DescobreEmailAgente_Vencido));
@@ -267,6 +285,10 @@ begin
     '  ,poc.pocCan'#13#10 +
     '  ,poc.pocCANMonitoramento'#13#10 +
     '  ,poc.pocCanMotivo'#13#10 +
+    '  ,sum(case when I.ingDataliquidacao is null and (I.idgCodigo NOT LIKE ''02__03'' AND I.idgCodigo NOT LIKE ''02__09'')'#13#10 +
+    '    and coalesce(nfFocoNegocio.fneExibeNaoTotalizaRiscoRaioX, 0) = 0 then I.ingValordeFace else 0 end) Total'#13#10 +
+    '  ,sum(case when I.ingDataliquidacao is null and (I.idgCodigo NOT LIKE ''02__03'' AND I.idgCodigo NOT LIKE ''02__09'')'#13#10 +
+    '    and coalesce(nfFocoNegocio.fneExibeNaoTotalizaRiscoRaioX, 0) = 0 and I.ingDataPrevisao < DATEADD(dd, DATEDIFF(dd, 0, GETDATE()), 0) then I.ingValordeFace else 0 end) TotalVencido'#13#10 +
     'from'#13#10 +
     '  nfCedente c'#13#10 +
     '  join nfPessoa p on c.pesCNPJCPF = p.pesCNPJCPF'#13#10 +
