@@ -286,9 +286,9 @@ begin
     '  ,poc.pocCANMonitoramento'#13#10 +
     '  ,poc.pocCanMotivo'#13#10 +
     '  ,sum(case when I.ingDataliquidacao is null and (I.idgCodigo NOT LIKE ''02__03'' AND I.idgCodigo NOT LIKE ''02__09'')'#13#10 +
-    '    and coalesce(nfFocoNegocio.fneExibeNaoTotalizaRiscoRaioX, 0) = 0 then I.ingValordeFace else 0 end) Total'#13#10 +
+    '    then I.ingValordeFace else 0 end) Total'#13#10 +
     '  ,sum(case when I.ingDataliquidacao is null and (I.idgCodigo NOT LIKE ''02__03'' AND I.idgCodigo NOT LIKE ''02__09'')'#13#10 +
-    '    and coalesce(nfFocoNegocio.fneExibeNaoTotalizaRiscoRaioX, 0) = 0 and I.ingDataPrevisao < DATEADD(dd, DATEDIFF(dd, 0, GETDATE()), 0) then I.ingValordeFace else 0 end) TotalVencido'#13#10 +
+    '    and I.ingDataPrevisao < DATEADD(dd, DATEDIFF(dd, 0, GETDATE()), 0) then I.ingValordeFace else 0 end) TotalVencido'#13#10 +
     'from'#13#10 +
     '  nfCedente c'#13#10 +
     '  join nfPessoa p on c.pesCNPJCPF = p.pesCNPJCPF'#13#10 +
