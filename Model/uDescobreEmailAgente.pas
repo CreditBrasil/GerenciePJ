@@ -23,6 +23,7 @@ type
     function GetCanMotivo: TNullableString;
     function GetTotal: TNullableCurrency;
     function GetTotalVencido: TNullableCurrency;
+    function GetTotalGrupo: TNullableCurrency;
 
     property PesCNPJCPF: string read GetPesCNPJCPF;
     property PesEmail: TNullableString read GetPesEmail;
@@ -37,6 +38,7 @@ type
     property CanMotivo: TNullableString read GetCanMotivo;
     property Total: TNullableCurrency read GetTotal;
     property TotalVencido: TNullableCurrency read GetTotalVencido;
+    property TotalGrupo: TNullableCurrency read GetTotalGrupo;
   end;
 
   ICollectionResultadoDescobreEmailAgente = interface(ICollectionActiveRecord)
@@ -93,6 +95,7 @@ type
     function GetCanMotivo: TNullableString;
     function GetTotal: TNullableCurrency;
     function GetTotalVencido: TNullableCurrency;
+    function GetTotalGrupo: TNullableCurrency;
   end;
 
   IResultadoDescobreEmailAgenteService = interface
@@ -125,6 +128,7 @@ const
   Resultado_DescobreEmailAgente_CanMotivo = 11;
   Resultado_DescobreEmailAgente_Total = 12;
   Resultado_DescobreEmailAgente_TotalVencido = 13;
+  Resultado_DescobreEmailAgente_TotalGrupo = 14;
 
 implementation
 
@@ -250,6 +254,11 @@ begin
   Result := VariantToNullableCurrency(GetValue(Resultado_DescobreEmailAgente_Total));
 end;
 
+function TResultadoDescobreEmailAgente.GetTotalGrupo: TNullableCurrency;
+begin
+  Result := VariantToNullableCurrency(GetValue(Resultado_DescobreEmailAgente_TotalGrupo));
+end;
+
 function TResultadoDescobreEmailAgente.GetTotalVencido: TNullableCurrency;
 begin
   Result := VariantToNullableCurrency(GetValue(Resultado_DescobreEmailAgente_TotalVencido));
@@ -289,6 +298,16 @@ begin
     '    then I.ingValordeFace else 0 end) Total'#13#10 +
     '  ,sum(case when I.ingDataliquidacao is null and (I.idgCodigo NOT LIKE ''02__03'' AND I.idgCodigo NOT LIKE ''02__09'')'#13#10 +
     '    and I.ingDataPrevisao < DATEADD(dd, DATEDIFF(dd, 0, GETDATE()), 0) then I.ingValordeFace else 0 end) TotalVencido'#13#10 +
+    '  ,(select sum(grpI.ingValordeFace)'#13#10 +
+    '  from'#13#10 +
+    '		nfIngressos grpI'#13#10 +
+    '		join nfCedente grpC on grpI.empCodigo = grpC.empCodigo and grpI.cedCodigo = grpC.cedCodigo'#13#10 +
+    '		join netCedenteGrupoCedentes grp on grpC.pesCNPJCPF = grp.pesCNPJCPF'#13#10 +
+    '  where'#13#10 +
+    '		grpI.ingDataliquidacao is null'#13#10 +
+    '		and (grpI.idgCodigo NOT LIKE ''02__03'' AND grpI.idgCodigo NOT LIKE ''02__09'')'#13#10 +
+    '		and grp.cedgru_id = (select top 1 cedgru_id from netCedenteGrupoCedentes where pesCNPJCPF = c.pesCNPJCPF)'#13#10 +
+    '  ) TotalGrupo'#13#10 +
     'from'#13#10 +
     '  nfCedente c'#13#10 +
     '  join nfPessoa p on c.pesCNPJCPF = p.pesCNPJCPF'#13#10 +

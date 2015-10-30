@@ -3,7 +3,7 @@ unit uRelatoFormatadoRelatorio;
 interface
 
 uses
-  Classes, SysUtils, StringBuilder, uRelatoFormatadoModel, uDescobreEmailAgente;
+  Classes, SysUtils, StringBuilder, uRelatoFormatadoModel, uDescobreEmailAgente, math;
 
 type
   TRelatoFormatadoRelatorio = class(TObject)
@@ -135,8 +135,14 @@ begin
       .AppendLine('<strong>Total Risco:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.Risco.Value) + '<br>')
       .AppendLine(Cor(GCor[AResultadoDescobreEmailAgente.Vencido.Value >= 0.01, False],
         '<strong>Vencidos:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.Vencido.Value)) + '<br>')
+      .AppendLine('<strong>Total Geral:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.Total.Value) + '<br>')
+      .AppendLine(Cor(GCor[AResultadoDescobreEmailAgente.TotalVencido.Value >= 0.01, False],
+        '<strong>Vencidos:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.TotalVencido.Value)) + '<br>')
       .AppendLine(Cor(GCor[AResultadoDescobreEmailAgente.NegativaGrave.Value >= 0.01, False],
         '<strong>Negativa Grave:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.NegativaGrave.Value)));
+    if not AResultadoDescobreEmailAgente.TotalGrupo.Null then
+      LStringBuilder
+        .AppendLine('<br><strong>Total Grupo: </strong>' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.TotalGrupo.Value));
     case AResultadoDescobreEmailAgente.CanTipo of
       cantipoMonitoramento: LStringBuilder.Append('<br><strong><span style="background-color:yellow;">MONITORAMENTO</span> ');
       canTipoCan: LStringBuilder.Append('<br><strong><span style="background-color:red; color:white;">CURSO ANORMAL - CAN</span> ');
@@ -361,10 +367,15 @@ begin
     ' / ' + Cor(GCor[AResultadoDescobreEmailAgente.Vencido.Value >= 0.01, False],
     '<strong>Vencidos:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.Vencido.Value)) +
     ' / ' + Cor(GCor[AResultadoDescobreEmailAgente.NegativaGrave.Value >= 0.01, False],
-    '<strong>Negativa Grave:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.NegativaGrave.Value)) +
-    '<br><strong>Total Geral: </strong>' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.Total.Value) +
-    ' / ' + Cor(GCor[AResultadoDescobreEmailAgente.TotalVencido.Value >= 0.01, False],
-    '<strong>Vencidos:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.TotalVencido.Value));
+    '<strong>Negativa Grave:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.NegativaGrave.Value));
+  if not SameValue(AResultadoDescobreEmailAgente.Risco.Value, AResultadoDescobreEmailAgente.Total.Value) then
+    Result := Result +
+      '<br><strong>Total Geral: </strong>' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.Total.Value) +
+      ' / ' + Cor(GCor[AResultadoDescobreEmailAgente.TotalVencido.Value >= 0.01, False],
+      '<strong>Vencidos:</strong> ' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.TotalVencido.Value));
+  if not AResultadoDescobreEmailAgente.TotalGrupo.Null then
+    Result := Result +
+      '<br><strong>Total Grupo: </strong>' + FormatFloat(',0.00', AResultadoDescobreEmailAgente.TotalGrupo.Value);
   if AResultadoDescobreEmailAgente.CanTipo <> cantipoSem then
     Result := Result +
       '<br><span style="' + LCoresCan[AResultadoDescobreEmailAgente.CanTipo = cantipoCan] + '"><strong>' +
