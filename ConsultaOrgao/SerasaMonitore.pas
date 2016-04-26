@@ -12,7 +12,8 @@ uses
   uLogControlIntf,
   uDialogos{, Funcoes, uSigcadModel, uSigcreModel}, SerasaLocal, uActiveRecord, IdSMTP, IdMessage, IdEMailAddress,
   uDescobreEmailAgente, uNFParametroConfiguracaoEmailModel, progrssInterface, uRelatoFormatadoRelatorio,
-  uRelatoFormatadoModel, uRelatoFormatadoParse, uNFConsultaSerasaModel, Math, FacMetodos;
+  uRelatoFormatadoModel, uRelatoFormatadoParse, uNFConsultaSerasaModel, Math, FacMetodos, IdSSLOpenSSL, IdText,
+  IdExplicitTLSClientServerBase;
 
 type
   TPlataforma = class(TString)
@@ -407,6 +408,7 @@ var
     LText: TIdText;
     LEmails: TStringList;
     laco: Integer;
+    LSSL: TIdSSLIOHandlerSocketOpenSSL;
   begin
     LEmails := TStringList.Create;
     LSMTP := TIdSMTP.Create(nil);
@@ -415,9 +417,14 @@ var
       LSMTP.Port := LNFParametroConfiguracaoEmail.CEmPorta.Value;
       LSMTP.Username := LNFParametroConfiguracaoEmail.CEmEmailFactoring.Value;
       LSMTP.Password := LNFParametroConfiguracaoEmail.CEmSenha.Value;
-      LSMTP.AuthenticationType := atLogin;
+      LSMTP.AuthType := atDefault;
       LSMTP.UseEhlo := False;
       LSMTP.MailAgent := 'CreditBR';
+      LSSL := TIdSSLIOHandlerSocketOpenSSL.Create(LSMTP);
+      LSSL.SSLOptions.Method := sslvTLSv1;
+      LSSL.SSLOptions.Mode := sslmClient;
+      LSMTP.IOHandler := LSSL;
+      LSMTP.UseTLS := utUseRequireTLS;
       LMsg := TIdMessage.Create(LSMTP);
       try
         LMsg.Priority := mpNormal;
@@ -477,7 +484,7 @@ var
         ForceDirectories(GetCurrentDir + '\emails\' + FormatDateTime('YYYY-MM', Date));
         LMsg.SaveToFile(GetCurrentDir + '\emails\' + FormatDateTime('YYYY-MM\DD', Date) + '_' +
           TFacMetodos.PoeLetraEsq(IntToStr(contaEmail), 5, '0') + '.eml');
-        LSMTP.Connect(15000); //15 segundos de timeout;
+        LSMTP.Connect;
         try;
           LSMTP.Send(LMsg);
         finally
