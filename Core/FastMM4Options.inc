@@ -87,7 +87,7 @@ Set the default options for FastMM here.
  dramatically and should only be used to debug an application that is
  overwriting memory or reusing freed pointers. Setting this option
  automatically enables CheckHeapForCorruption and disables ASMVersion.}
-{$define FullDebugMode} //*
+{.$define FullDebugMode} //*
 
   {Set this option to perform "raw" stack traces, i.e. check all entries on the
    stack for valid return addresses. Note that this is significantly slower

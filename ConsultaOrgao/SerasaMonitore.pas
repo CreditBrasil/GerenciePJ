@@ -12,7 +12,8 @@ uses
   uLogControlIntf,
   uDialogos{, Funcoes, uSigcadModel, uSigcreModel}, SerasaLocal, uActiveRecord, IdSMTP, IdMessage, IdEMailAddress,
   uDescobreEmailAgente, uNFParametroConfiguracaoEmailModel, progrssInterface, uRelatoFormatadoRelatorio,
-  uRelatoFormatadoModel, uRelatoFormatadoParse, uNFConsultaSerasaModel, Math, FacMetodos;
+  uRelatoFormatadoModel, uRelatoFormatadoParse, uNFConsultaSerasaModel, Math, FacMetodos, IdSSLOpenSSL, IdText,
+  IdExplicitTLSClientServerBase;
 
 type
   TPlataforma = class(TString)
@@ -38,12 +39,20 @@ type
   TMonitore = class(TObject)
   private
     FConsultados: TCacheString;
+    FResponsavelCadastroNetFactorNome: string;
+    FResponsavelCadastroNetFactorEMail: string;
+    FResponsavelMonitorarEMailsNome: string;
+    FResponsavelMonitorarEMailsEMail: string;
     //procedure Imprime;
     //procedure RetornoMonitoreEmail(ASerasa: TSerasa);
   public
     //function EnvioMonitore(Lote: Integer): Boolean;
     procedure RetornoMonitore(const AConnection: IActiveRecordConnection);
     //procedure MonitoreRelato;
+    property ResponsavelCadastroNetFactorNome: string read FResponsavelCadastroNetFactorNome write FResponsavelCadastroNetFactorNome;
+    property ResponsavelCadastroNetFactorEMail: string read FResponsavelCadastroNetFactorEMail write FResponsavelCadastroNetFactorEMail;
+    property ResponsavelMonitorarEMailsNome: string read FResponsavelMonitorarEMailsNome write FResponsavelMonitorarEMailsNome;
+    property ResponsavelMonitorarEMailsEMail: string read FResponsavelMonitorarEMailsEMail write FResponsavelMonitorarEMailsEMail;
   end;
 
 implementation
@@ -399,6 +408,7 @@ var
     LText: TIdText;
     LEmails: TStringList;
     laco: Integer;
+    LSSL: TIdSSLIOHandlerSocketOpenSSL;
   begin
     LEmails := TStringList.Create;
     LSMTP := TIdSMTP.Create(nil);
@@ -407,9 +417,14 @@ var
       LSMTP.Port := LNFParametroConfiguracaoEmail.CEmPorta.Value;
       LSMTP.Username := LNFParametroConfiguracaoEmail.CEmEmailFactoring.Value;
       LSMTP.Password := LNFParametroConfiguracaoEmail.CEmSenha.Value;
-      LSMTP.AuthenticationType := atLogin;
+      LSMTP.AuthType := atDefault;
       LSMTP.UseEhlo := False;
       LSMTP.MailAgent := 'CreditBR';
+      LSSL := TIdSSLIOHandlerSocketOpenSSL.Create(LSMTP);
+      LSSL.SSLOptions.Method := sslvTLSv1;
+      LSSL.SSLOptions.Mode := sslmClient;
+      LSMTP.IOHandler := LSSL;
+      LSMTP.UseTLS := utUseRequireTLS;
       LMsg := TIdMessage.Create(LSMTP);
       try
         LMsg.Priority := mpNormal;
@@ -420,17 +435,14 @@ var
         LEmails.CommaText := Trim(AEmails);
         if LEmails.Count = 0 then
         begin
-          {with LMsg.Recipients.Add do
-          begin
-            Name := 'Tamara Bellintani Rosa';
-            Address := 'tamara@creditbr.com.br';
-          end;}
           with LMsg.Recipients.Add do
           begin
-            Name := 'Natalino Barros Amaral';
-            Address := 'natalino.amaral@creditbr.com.br';
+            Name := FResponsavelCadastroNetFactorNome;
+            Address := FResponsavelCadastroNetFactorEmail;
           end;
-          AConteudo := '<h2 style="color:red">ATENÇÃO, gerente não tem o e-mail cadastrado no Net Factor. Natalino verifique se é erro no cadastro do e-mail. Se não for encaminhe este e-mail para a Tamara para ver se o cliente ainda deve ser monitorado.</h2>' +
+          AConteudo := '<h2 style="color:red">ATENÇÃO, gerente não tem o e-mail cadastrado no Net Factor. ' +
+            FResponsavelCadastroNetFactorNome  +
+            ' verifique se é erro no cadastro do e-mail. Se não for encaminhe este e-mail para quem cadastra o Gerencie Carteira para ver se o cliente ainda deve ser monitorado.</h2>' +
             AConteudo;
         end
         else
@@ -447,18 +459,19 @@ var
             begin
               with LMsg.Recipients.Add do
               begin
-                Name := 'Natalino Barros Amaral';
-                Address := 'natalino.amaral@creditbr.com.br';
+                Name := FResponsavelCadastroNetFactorNome;
+                Address := FResponsavelCadastroNetFactorEmail;
               end;
-              AConteudo := '<h2 style="color:red">Natalino, o ' + AComplementoAssunto + ' tem um e-mail inválido: ' +
-                AEmails + ', por favor corrija no cadastro.</h2>' + AConteudo;
+              AConteudo := '<h2 style="color:red">' + FResponsavelCadastroNetFactorNome  + ', o ' +
+                AComplementoAssunto + ' tem um e-mail inválido: ' + LEmails[laco] +
+                ', por favor corrija no cadastro.</h2>' + AConteudo;
             end;
           end;
         end;
         with LMsg.CCList.Add do
         begin
-          Name := 'Alex Dundes';
-          Address := 'alex.dundes@creditbr.com.br';
+          Name := FResponsavelMonitorarEMailsNome;
+          Address := FResponsavelMonitorarEMailsEMail;
         end;
         LText := TIdText.Create(LMsg.MessageParts);
         LText.Body.Text := 'Este e-mail esta no formato HTML,'#13#10 +
@@ -471,7 +484,7 @@ var
         ForceDirectories(GetCurrentDir + '\emails\' + FormatDateTime('YYYY-MM', Date));
         LMsg.SaveToFile(GetCurrentDir + '\emails\' + FormatDateTime('YYYY-MM\DD', Date) + '_' +
           TFacMetodos.PoeLetraEsq(IntToStr(contaEmail), 5, '0') + '.eml');
-        LSMTP.Connect(15000); //15 segundos de timeout;
+        LSMTP.Connect;
         try;
           LSMTP.Send(LMsg);
         finally
@@ -549,20 +562,17 @@ begin
             if LAgenteAnterior <> LCollectionResultadoDescobreEmailAgente[laco].PesNomeAgente.Value then
             begin
               if (LAgenteAnterior <> '@@@@@') then
-                EnviarEmail(LAgenteEmail, LEmail.Text + LResumos.Text, LAgenteAnterior);
+                EnviarEmail(LAgenteEmail, LEmail.Text + TRelatoFormatadoRelatorio.FimTable + LResumos.Text, LAgenteAnterior);
               LAgenteAnterior := LCollectionResultadoDescobreEmailAgente[laco].PesNomeAgente.Value;
               LAgenteEmail := LCollectionResultadoDescobreEmailAgente[laco].PesEmail.Value;
               LEmail.Clear;
               LEmail.Add('<h2>' + LCollectionResultadoDescobreEmailAgente[laco].PesNomeAgente.Value + '</h2>');
-              LEmail.Add('<h3">Informamos que as seguintes empresas monitoradas tiveram alterações em suas informações comportamentais e/ou cadastrais. Esta é uma mensagem gerada de forma automática por um software.</h3>');
+              LEmail.Add('<h3">Informamos que as seguintes empresas monitoradas tiveram alterações em suas informações comportamentais e/ou cadastrais. Esta é uma mensagem gerada de forma automática por um software.</h3>' + TRelatoFormatadoRelatorio.Table);
               LResumos.Clear;
             end;
             Codigo := LCollectionResultadoDescobreEmailAgente[laco].PesCNPJCPF;
             LPlataformas.SetEmails(LCollectionResultadoDescobreEmailAgente[laco].PesEmail.Value,
               LCollectionResultadoDescobreEmailAgente[laco].PesNomeAgente.Value);
-            LEmail.Add('<p>' + LCollectionResultadoDescobreEmailAgente[laco].PesCNPJCPF + ' - ' +
-              LCollectionResultadoDescobreEmailAgente[laco].PesNomeCedente.Value + '</p>');
-            LPlataformas.Plataforma.Mensagem.Add(LEmail[LEmail.Count - 1]);
             LArquivo.LoadFromFile('\\orderbyapp3\serasaemail\' + Cadastro.NomeArquivoGerado);
             LParser.TextoParaRelatoFormatadoModel(LArquivo, LRelato);
             LConsultaAnterior := LNFConsultaSerasaModelService
@@ -572,21 +582,26 @@ begin
             if LConsultaAnterior <> nil then
               LConsultaAnterior.CarregaRelatoFormatado(LArquivoAntigo);
             LParser.TextoParaRelatoFormatadoModel(LArquivoAntigo, LRelatoAnterior);
-            LResumos.Add(LRelatorio.RelatorioDasDiferencas(LRelatoAnterior, LRelato,
-              '<a href="http://sistema.creditbr.com.br:8080/netFactor/serasaemail/' + Cadastro.NomeArquivoGerado + '">' +
-              Cadastro.NomeArquivoGerado + '</a>'));
+            LEmail.Add(LRelatorio.RelatorioResumoDasDiferencas(LCollectionResultadoDescobreEmailAgente[laco],
+              LRelatoAnterior, LRelato, '<a href="http://sistema.creditbr.com.br:8080/netFactor/serasaemail/' +
+              Cadastro.NomeArquivoGerado + '">Serasa<br>Completo</a>'));
+            LPlataformas.Plataforma.Mensagem.Add(LEmail[LEmail.Count - 1]);
+            LResumos.Add(LRelatorio.RelatorioDasDiferencas(LCollectionResultadoDescobreEmailAgente[laco],
+              LRelatoAnterior, LRelato, '<a href="http://sistema.creditbr.com.br:8080/netFactor/serasaemail/' +
+              Cadastro.NomeArquivoGerado + '">' + Cadastro.NomeArquivoGerado + '</a>'));
             LPlataformas.Plataforma.Resumo.Add(LResumos[LResumos.Count - 1]);
           end;
           if (LAgenteAnterior <> '@@@@@') then
-            EnviarEmail(LAgenteEmail, LEmail.Text + LResumos.Text, LAgenteAnterior);
+            EnviarEmail(LAgenteEmail, LEmail.Text + TRelatoFormatadoRelatorio.FimTable + LResumos.Text, LAgenteAnterior);
           LEmail.Clear;
           LResumos.Clear;
           LEmail.Add('<h3">Informamos que as seguintes empresas monitoradas tiveram alterações em suas informações comportamentais e/ou cadastrais. Esta é uma mensagem gerada de forma automática por um software.</h3>');
           for laco := 0 to LPlataformas.Count - 1 do
           begin
             LPlataformas.Posicao := laco;
-            LEmail.Add('<h2>' + LPlataformas.Codigo + '</h2>');
+            LEmail.Add('<h2>' + LPlataformas.Codigo + '</h2>' + TRelatoFormatadoRelatorio.Table);
             LEmail.AddStrings(LPlataformas.Plataforma.Mensagem);
+            LEmail.Add(TRelatoFormatadoRelatorio.FimTable);
             LResumos.Add('<hr><h2>' + LPlataformas.Codigo + '</h2>');
             LResumos.AddStrings(LPlataformas.Plataforma.Resumo);
           end;
