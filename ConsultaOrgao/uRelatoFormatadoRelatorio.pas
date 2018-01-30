@@ -393,7 +393,7 @@ begin
     TD(Diferenca(rfsCheque), True) +
     TD(Diferenca(rfsRecheque, False), True) +
     '</tr>' + LTR +
-    TD(ALink, False) +
+    // TD(ALink, False) +
     TD(SerasaCompleto(rfsPefin), False) +
     TD(SerasaCompleto(rfsRefin), False) +
     TD(SerasaCompleto(rfsFalenRecupConc, False), False) +

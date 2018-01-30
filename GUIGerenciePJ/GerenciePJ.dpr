@@ -61,7 +61,8 @@ uses
   uRelatoFormatadoModel in '..\ConsultaOrgao\uRelatoFormatadoModel.pas',
   uRelatoFormatadoParse in '..\ConsultaOrgao\uRelatoFormatadoParse.pas',
   uRelatoFormatadoRelatorio in '..\ConsultaOrgao\uRelatoFormatadoRelatorio.pas',
-  StringBuilder in '..\Core\StringBuilder.pas';
+  StringBuilder in '..\Core\StringBuilder.pas',
+  Utils in '..\Core\Utils.pas';
 
 {$R *.res}
 

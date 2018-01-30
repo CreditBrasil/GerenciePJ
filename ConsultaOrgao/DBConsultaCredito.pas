@@ -84,7 +84,8 @@ uses
   uRelatoSegmento20_89_02_11Model},
   uNFConsultaSerasaModel,
   uRelatoFormatadoModel,
-  uRelatoFormatadoParse;
+  uRelatoFormatadoParse,
+  Utils;
 
 type
   TRelatorioSerasa = class(TObject)
@@ -1243,7 +1244,7 @@ begin
     LService.Save(LNFConsultaSerasa);
     Cadastro.NomeArquivoGerado := 'SERASA-R' + IntToStr(LNFConsultaSerasa.ID) + FormatDateTime('YYYY-MM-DD',
       LNFConsultaSerasa.SConsData.Value) + '.txt';
-    LArquivo.SaveToFile('\\orderbyapp3\serasaemail\' + Cadastro.NomeArquivoGerado);
+    LArquivo.SaveToFile(GetTempDirectory + '\' + Cadastro.NomeArquivoGerado);
   finally
     LParser.Free;
     LRelatoFormatado.Free;

@@ -13,7 +13,7 @@ uses
   uDialogos{, Funcoes, uSigcadModel, uSigcreModel}, SerasaLocal, uActiveRecord, IdSMTP, IdMessage, IdEMailAddress,
   uDescobreEmailAgente, uNFParametroConfiguracaoEmailModel, progrssInterface, uRelatoFormatadoRelatorio,
   uRelatoFormatadoModel, uRelatoFormatadoParse, uNFConsultaSerasaModel, Math, FacMetodos, IdSSLOpenSSL, IdText,
-  IdExplicitTLSClientServerBase;
+  IdExplicitTLSClientServerBase, Utils;
 
 type
   TPlataforma = class(TString)
@@ -573,7 +573,7 @@ begin
             Codigo := LCollectionResultadoDescobreEmailAgente[laco].PesCNPJCPF;
             LPlataformas.SetEmails(LCollectionResultadoDescobreEmailAgente[laco].PesEmail.Value,
               LCollectionResultadoDescobreEmailAgente[laco].PesNomeAgente.Value);
-            LArquivo.LoadFromFile('\\orderbyapp3\serasaemail\' + Cadastro.NomeArquivoGerado);
+            LArquivo.LoadFromFile(GetTempDirectory + '\' + Cadastro.NomeArquivoGerado);
             LParser.TextoParaRelatoFormatadoModel(LArquivo, LRelato);
             LConsultaAnterior := LNFConsultaSerasaModelService
               .FindBySConsCnpjCpfAndAntesDeSConsData(LCollectionResultadoDescobreEmailAgente[laco].PesCNPJCPF,

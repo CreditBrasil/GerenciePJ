@@ -91,10 +91,10 @@ ImageBase=4194304
 ExeDescription=
 [Directories]
 OutputDir=
-UnitOutputDir=C:\Lixo\GerenciePJ
+UnitOutputDir=D:\Lixo\GerenciePJ
 PackageDLLOutputDir=
 PackageDCPOutputDir=
-SearchPath=
+SearchPath=D:\GerenciePJ\FastCode;D:\GerenciePJ\Indy10\System;D:\GerenciePJ\Indy10\Core;D:\GerenciePJ\Indy10\Protocols
 Packages=vcl;rtl;vclactnband;vclx;dbrtl;adortl;vcldb;bdertl;vcldbx;dbexpress;vclie;xmlrtl;inet;inetdbbde;inetdbxpress;dsnap;VclSmp;dbxcds;soaprtl;inetdb;ibxpress;dclOfficeXP;vclshlctrls
 Conditionals=
 DebugSourceDirs=
@@ -133,6 +133,11 @@ Comments=
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+[HistoryLists\hlSearchPath]
+Count=2
+Item0=D:\GerenciePJ\FastCode;D:\GerenciePJ\Indy10\System;D:\GerenciePJ\Indy10\Core;D:\GerenciePJ\Indy10\Protocols
+Item1=D:\GerenciePJ\FastCode
 [HistoryLists\hlUnitOutputDirectory]
-Count=1
-Item0=C:\Lixo\GerenciePJ
+Count=2
+Item0=D:\Lixo\GerenciePJ
+Item1=C:\Lixo\GerenciePJ
